@@ -1,5 +1,8 @@
 name: Draft Github Release
 on:
+  push:
+    branches:
+      - '**'
   # Enable manual run
   workflow_dispatch:
     inputs:
@@ -21,7 +24,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda
         with:
-          tag_name: ${{ github.event.inputs.version }}
+          tag_name: ${{ github.event.inputs.version || 'v0.0.0-manual' }}
           draft: true
           prerelease: false
           generate_release_notes: true
