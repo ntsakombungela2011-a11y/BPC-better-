@@ -23,8 +23,8 @@ import 'package:lichess_mobile/src/model/log/app_log_service.dart';
 import 'package:lichess_mobile/src/model/message/message_service.dart';
 import 'package:lichess_mobile/src/model/notifications/notification_service.dart';
 import 'package:lichess_mobile/src/model/settings/board_preferences.dart';
+import "package:lichess_mobile/src/model/settings/theme_preferences.dart";
 import 'package:lichess_mobile/src/model/settings/general_preferences.dart';
-import 'package:lichess_mobile/src/model/settings/theme_preferences.dart';
 import 'package:lichess_mobile/src/model/study/study_preferences.dart';
 import 'package:lichess_mobile/src/network/connectivity.dart';
 import 'package:lichess_mobile/src/network/socket.dart';
@@ -68,6 +68,10 @@ class AppInitializationScreen extends ConsumerWidget {
   }
 }
 
+/// The main application widget.
+///
+/// This widget is the root of the application and is responsible for setting up
+/// the theme, locale, and other global settings.
 class Application extends ConsumerStatefulWidget {
   const Application({super.key});
 
@@ -82,6 +86,8 @@ class _AppState extends ConsumerState<Application> {
 
   // Adjusts some settings for small screens based on the MediaQuery data.
   Future<void> _screenSizeBasedInitialization(WidgetRef ref) async {
+    // Bump version here in case we adjust the thresholds for screen size based initialization
+    // and want it to run again for users who already launched the app with a previous version.
     const kDoneScreenSizeInitKey = 'done_screen_size_init_v1';
 
     final prefs = LichessBinding.instance.sharedPreferences;
@@ -99,6 +105,9 @@ class _AppState extends ConsumerState<Application> {
         isTablet ||
         estimateHeightMinusBoard(mediaQueryData) > kSmallHeightMinusBoard - 30;
 
+    // For tablets in portrait mode using the full board size makes the bottom analysis tabs tiny,
+    // see https://github.com/lichess-org/mobile/issues/3150,
+    // so use a small board there by default as well.
     final smallBoard = isTablet || isSmallScreen;
 
     await ref
@@ -137,7 +146,6 @@ class _AppState extends ConsumerState<Application> {
 
   @override
   void initState() {
-    super.initState();
     _screenSizeBasedInitialization(ref);
 
     // Start services
@@ -187,6 +195,7 @@ class _AppState extends ConsumerState<Application> {
       final prevWasOffline = prev?.value?.isOnline == false;
       final currentIsOnline = current.value?.isOnline == true;
 
+      // Play registered moves whenever the app comes back online.
       if (prevWasOffline && currentIsOnline) {
         final nbMovesPlayed = await ref
             .read(correspondenceServiceProvider)
@@ -196,12 +205,13 @@ class _AppState extends ConsumerState<Application> {
         }
       }
 
+      // Perform actions once when the app comes online.
       if (current.value?.isOnline == true && !_firstTimeOnlineCheck) {
         _firstTimeOnlineCheck = true;
-        ref.read(notificationServiceProvider).registerDevice();
+        ref.read(correspondenceServiceProvider).syncGames();
       }
 
-      final socketClient = ref.read(socketClientProvider);
+      final socketClient = ref.read(socketPoolProvider).currentClient;
       if (current.value?.isOnline == true &&
           current.value?.appState == AppLifecycleState.resumed &&
           !socketClient.isActive) {
@@ -210,20 +220,20 @@ class _AppState extends ConsumerState<Application> {
         socketClient.close();
       }
     });
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final themePrefs = ref.watch(themePreferencesProvider);
-    final themeNotifier = ref.watch(themePreferencesProvider.notifier);
     final generalPrefs = ref.watch(generalPreferencesProvider);
     final boardPrefs = ref.watch(boardPreferencesProvider);
     final theme = makeAppTheme(
       context,
       generalPrefs,
       boardPrefs,
-      themePrefs,
-      themeNotifier,
+      ref.watch(themePreferencesProvider),
+      ref.watch(themePreferencesProvider.notifier),
     );
 
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;

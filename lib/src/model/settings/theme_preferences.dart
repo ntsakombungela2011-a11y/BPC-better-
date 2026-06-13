@@ -28,10 +28,10 @@ class ThemePrefs implements Serializable {
 
   @override
   Map<String, dynamic> toJson() => {
-        'selectedThemeId': selectedThemeId,
-        'favoriteThemeIds': favoriteThemeIds,
-        'recentThemeIds': recentThemeIds,
-      };
+    'selectedThemeId': selectedThemeId,
+    'favoriteThemeIds': favoriteThemeIds,
+    'recentThemeIds': recentThemeIds,
+  };
 
   factory ThemePrefs.fromJson(Map<String, dynamic> json) {
     return ThemePrefs(
@@ -46,9 +46,9 @@ class ThemePrefs implements Serializable {
 
 final themePreferencesProvider =
     NotifierProvider<ThemePreferencesNotifier, ThemePrefs>(
-  ThemePreferencesNotifier.new,
-  name: 'ThemePreferencesProvider',
-);
+      ThemePreferencesNotifier.new,
+      name: 'ThemePreferencesProvider',
+    );
 
 class ThemePreferencesNotifier extends Notifier<ThemePrefs>
     with PreferencesStorage<ThemePrefs> {
@@ -104,7 +104,8 @@ class ThemePreferencesNotifier extends Notifier<ThemePrefs>
     // Base colors from palette
     final primary = palette.primary;
     final secondary = palette.secondary;
-    final surface = palette.background ??
+    final surface =
+        palette.background ??
         (isDark ? const Color(0xFF121212) : const Color(0xFFF5F5F5));
 
     // Create a base scheme from seed
