@@ -56,7 +56,9 @@ mixin PreferencesStorage<T extends Serializable> on Notifier<T> {
   }
 
   T fetch() {
-    final stored = LichessBinding.instance.sharedPreferences.getString(prefCategory.storageKey);
+    final stored = LichessBinding.instance.sharedPreferences.getString(
+      prefCategory.storageKey,
+    );
     if (stored == null) {
       return defaults;
     }
@@ -102,5 +104,6 @@ mixin SessionPreferencesStorage<T extends Serializable> on Notifier<T> {
     }
   }
 
-  static String key(String key, AuthUser? authUser) => '$key.${authUser?.user.id ?? '**anon**'}';
+  static String key(String key, AuthUser? authUser) =>
+      '$key.${authUser?.user.id ?? '**anon**'}';
 }
