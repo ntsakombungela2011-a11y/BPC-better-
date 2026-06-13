@@ -24,6 +24,7 @@ import 'package:lichess_mobile/src/model/message/message_service.dart';
 import 'package:lichess_mobile/src/model/notifications/notification_service.dart';
 import 'package:lichess_mobile/src/model/settings/board_preferences.dart';
 import 'package:lichess_mobile/src/model/settings/general_preferences.dart';
+import 'package:lichess_mobile/src/model/settings/theme_preferences.dart';
 import 'package:lichess_mobile/src/model/study/study_preferences.dart';
 import 'package:lichess_mobile/src/network/connectivity.dart';
 import 'package:lichess_mobile/src/network/socket.dart';
@@ -65,133 +66,58 @@ class AppInitializationScreen extends ConsumerWidget {
   }
 }
 
-/// The main application widget.
-///
-/// This widget is the root of the application and is responsible for setting up
-/// the theme, locale, and other global settings.
 class Application extends ConsumerStatefulWidget {
   const Application({super.key});
 
   @override
-  ConsumerState<Application> createState() => _AppState();
+  ConsumerState<Application> createState() => _ApplicationState();
 }
 
-class _AppState extends ConsumerState<Application> {
-  /// Whether the app has checked for online status for the first time.
-  bool _firstTimeOnlineCheck = false;
+class _ApplicationState extends ConsumerState<Application> {
   final _navigatorKey = GlobalKey<NavigatorState>();
-
-  // Adjusts some settings for small screens based on the MediaQuery data.
-  Future<void> _screenSizeBasedInitialization(WidgetRef ref) async {
-    // Bump version here in case we adjust the thresholds for screen size based initialization
-    // and want it to run again for users who already launched the app with a previous version.
-    const kDoneScreenSizeInitKey = 'done_screen_size_init_v1';
-
-    final prefs = LichessBinding.instance.sharedPreferences;
-    if (prefs.getBool(kDoneScreenSizeInitKey) == true) {
-      return;
-    }
-
-    final mediaQueryData = MediaQueryData.fromView(
-      WidgetsBinding.instance.platformDispatcher.views.first,
-    );
-    final isTablet = mediaQueryData.size.shortestSide > FormFactor.tablet;
-    final isSmallScreen = estimateHeightMinusBoard(mediaQueryData) < kSmallHeightMinusBoard;
-    final showEngineLines =
-        isTablet || estimateHeightMinusBoard(mediaQueryData) > kSmallHeightMinusBoard - 30;
-
-    // For tablets in portrait mode using the full board size makes the bottom analysis tabs tiny,
-    // see https://github.com/lichess-org/mobile/issues/3150,
-    // so use a small board there by default as well.
-    final smallBoard = isTablet || isSmallScreen;
-
-    await ref
-        .read(analysisPreferencesProvider.notifier)
-        .save(
-          ref
-              .read(analysisPreferencesProvider)
-              .copyWith(smallBoard: smallBoard, showEngineLines: showEngineLines),
-        );
-    await ref
-        .read(studyPreferencesProvider.notifier)
-        .save(
-          ref
-              .read(studyPreferencesProvider)
-              .copyWith(smallBoard: smallBoard, showEngineLines: showEngineLines),
-        );
-    await ref
-        .read(broadcastPreferencesProvider.notifier)
-        .save(
-          ref
-              .read(broadcastPreferencesProvider)
-              .copyWith(smallBoard: smallBoard, showEngineLines: showEngineLines),
-        );
-
-    await prefs.setBool(kDoneScreenSizeInitKey, true);
-  }
 
   @override
   void initState() {
-    _screenSizeBasedInitialization(ref);
+    LichessBinding.instance.setNavigatorKey(_navigatorKey);
+    LichessBinding.instance.setRef(ref);
 
-    // Start services
-    ref.read(appLogServiceProvider).start();
-    ref.read(notificationServiceProvider).start();
-    ref.read(messageServiceProvider).start();
-    ref.read(challengeServiceProvider).start();
-    ref.read(accountServiceProvider).start();
-    ref.read(correspondenceServiceProvider).start();
-    ref.read(quickActionServiceProvider).start();
-    ref.read(announceServiceProvider).start();
-    ref.read(appLinksServiceProvider).start();
-    ref.read(sharedPgnServiceProvider).start();
+    ref.read(quickActionsProvider).initialize(_navigatorKey);
+    ref.read(appLinksServiceProvider).initialize(_navigatorKey);
+    ref.read(sharedPgnServiceProvider).initialize(_navigatorKey);
+    ref.read(notificationServiceProvider).initialize(_navigatorKey);
+    ref.read(announceServiceProvider).initialize();
 
     if (Platform.isIOS) {
       HomeWidget.setAppGroupId(_kIosAppGroupId);
-      HomeWidget.saveWidgetData<String>('lichessHost', kLichessHost);
-      ref.listenManual(kidModeProvider, (prev, state) {
-        if (state.hasValue && prev?.value != state.value) {
-          HomeWidget.saveWidgetData<bool>('isKidMode', state.value).then((_) {
-            Future.wait([
-              for (final kind in _kIosBlogWidgetKinds) HomeWidget.updateWidget(iOSName: kind),
-            ]);
-          });
-        }
-      }, fireImmediately: true);
-      ref.listenManual(boardPreferencesProvider, (prev, state) {
-        if (prev == null ||
-            prev.boardTheme != state.boardTheme ||
-            prev.pieceSet != state.pieceSet) {
-          Future.wait([
-            HomeWidget.saveWidgetData<String>('boardTheme', state.boardTheme.name),
-            HomeWidget.saveWidgetData<String>('pieceSet', state.pieceSet.name),
-          ]).then((_) {
-            HomeWidget.updateWidget(iOSName: 'DailyPuzzleLargeWidget');
-          });
-        }
-      }, fireImmediately: true);
     }
 
-    // Listen for connectivity changes and perform actions accordingly.
-    ref.listenManual(connectivityChangesProvider, (prev, current) async {
-      final prevWasOffline = prev?.value?.isOnline == false;
-      final currentIsOnline = current.value?.isOnline == true;
-
-      // Play registered moves whenever the app comes back online.
-      if (prevWasOffline && currentIsOnline) {
-        final nbMovesPlayed = await ref.read(correspondenceServiceProvider).playRegisteredMoves();
-        if (nbMovesPlayed > 0) {
-          ref.invalidate(ongoingGamesProvider);
+    ref.listenManual(accountServiceProvider, (previous, next) {
+      if (next.value != previous?.value && Platform.isIOS) {
+        for (final kind in _kIosBlogWidgetKinds) {
+          HomeWidget.updateWidget(iOSWidget: kind);
         }
       }
+    });
 
-      // Perform actions once when the app comes online.
-      if (current.value?.isOnline == true && !_firstTimeOnlineCheck) {
-        _firstTimeOnlineCheck = true;
-        ref.read(correspondenceServiceProvider).syncGames();
+    ref.listenManual(ongoingGameProvider, (previous, next) {
+      if (next.value?.id != previous?.value?.id && Platform.isIOS) {
+        HomeWidget.updateWidget(iOSWidget: 'OngoingGameWidget');
       }
+    });
 
-      final socketClient = ref.read(socketPoolProvider).currentClient;
+    ref.listenManual(connectivityProvider, (previous, next) {
+      final socketClient = ref.read(socketClientProvider);
+      if (next.value?.isOnline == true &&
+          ref.read(appLifecycleProvider).value?.appState == AppLifecycleState.resumed &&
+          !socketClient.isActive) {
+        socketClient.connect();
+      } else if (next.value?.isOnline == false) {
+        socketClient.close();
+      }
+    });
+
+    ref.listenManual(appLifecycleProvider, (previous, current) {
+      final socketClient = ref.read(socketClientProvider);
       if (current.value?.isOnline == true &&
           current.value?.appState == AppLifecycleState.resumed &&
           !socketClient.isActive) {
@@ -206,31 +132,41 @@ class _AppState extends ConsumerState<Application> {
 
   @override
   Widget build(BuildContext context) {
+    final themePrefs = ref.watch(themePreferencesProvider);
+    final themeNotifier = ref.watch(themePreferencesProvider.notifier);
     final generalPrefs = ref.watch(generalPreferencesProvider);
     final boardPrefs = ref.watch(boardPreferencesProvider);
-    final theme = makeAppTheme(context, generalPrefs, boardPrefs);
+    final theme = makeAppTheme(context, generalPrefs, boardPrefs, themePrefs, themeNotifier);
 
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
-    return MaterialApp(
-      navigatorKey: _navigatorKey,
-      localizationsDelegates: const [
-        ...AppLocalizations.localizationsDelegates,
-        MaterialLocalizationsEo.delegate,
-        CupertinoLocalizationsEo.delegate,
-      ],
-      supportedLocales: AppLocalizations.supportedLocales,
-      title: 'lichess.org',
-      locale: generalPrefs.locale,
-      theme: theme.copyWith(
-        navigationBarTheme: isIOS
-            ? null
-            : NavigationBarTheme.of(
-                context,
-              ).copyWith(height: isShortVerticalScreen(context) ? 60 : null),
+    return AnimatedTheme(
+      data: theme,
+      duration: const Duration(milliseconds: 300),
+      child: Builder(
+        builder: (context) {
+          return MaterialApp(
+            navigatorKey: _navigatorKey,
+            localizationsDelegates: const [
+              ...AppLocalizations.localizationsDelegates,
+              MaterialLocalizationsEo.delegate,
+              CupertinoLocalizationsEo.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            title: 'lichess.org',
+            locale: generalPrefs.locale,
+            theme: theme.copyWith(
+              navigationBarTheme: isIOS
+                  ? null
+                  : NavigationBarTheme.of(
+                      context,
+                    ).copyWith(height: isShortVerticalScreen(context) ? 60 : null),
+            ),
+            home: const MainTabScaffold(),
+            navigatorObservers: [rootNavPageRouteObserver],
+          );
+        }
       ),
-      home: const MainTabScaffold(),
-      navigatorObservers: [rootNavPageRouteObserver],
     );
   }
 }

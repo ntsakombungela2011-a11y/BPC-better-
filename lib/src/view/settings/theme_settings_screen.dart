@@ -1,35 +1,39 @@
-import 'package:chessground/chessground.dart';
-import 'package:dartchess/dartchess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lichess_mobile/src/constants.dart';
+import 'package:lichess_mobile/l10n/l10n.dart';
 import 'package:lichess_mobile/src/model/common/chess.dart';
 import 'package:lichess_mobile/src/model/settings/board_preferences.dart';
 import 'package:lichess_mobile/src/model/settings/general_preferences.dart';
-import 'package:lichess_mobile/src/styles/lichess_icons.dart';
-import 'package:lichess_mobile/src/styles/styles.dart';
-import 'package:lichess_mobile/src/utils/color_palette.dart';
-import 'package:lichess_mobile/src/utils/l10n_context.dart';
-import 'package:lichess_mobile/src/utils/navigation.dart';
-import 'package:lichess_mobile/src/utils/screen.dart';
 import 'package:lichess_mobile/src/view/settings/background_theme_choice_screen.dart';
 import 'package:lichess_mobile/src/view/settings/board_choice_screen.dart';
 import 'package:lichess_mobile/src/view/settings/piece_set_screen.dart';
-import 'package:lichess_mobile/src/widgets/adaptive_choice_picker.dart';
+import 'package:lichess_mobile/src/view/settings/theme_browser_screen.dart';
+import 'package:lichess_mobile/src/widgets/board.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
+import 'package:lichess_mobile/src/widgets/platform.dart';
 import 'package:lichess_mobile/src/widgets/settings.dart';
+import 'package:lichess_mobile/src/styles/styles.dart';
+import 'package:lichess_mobile/src/utils/color_palette.dart';
+import 'package:lichess_mobile/src/styles/lichess_icons.dart';
+import 'package:dartchess/dartchess.dart';
+import 'package:chessground/chessground.dart';
 
-class ThemeSettingsScreen extends ConsumerWidget {
+class ThemeSettingsScreen extends StatelessWidget {
   const ThemeSettingsScreen({super.key});
 
-  static Route<dynamic> buildRoute() {
-    return buildScreenRoute(screen: const ThemeSettingsScreen());
+  static Route<void> buildRoute() {
+    return MaterialPageRoute(
+      builder: (context) => const ThemeSettingsScreen(),
+      settings: const RouteSettings(name: 'ThemeSettings'),
+    );
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.mobileTheme), animateColor: true),
+      appBar: AppBar(
+        title: Text(context.l10n.mobileTheme),
+      ),
       body: const _Body(),
     );
   }
@@ -92,6 +96,15 @@ class _BodyState extends ConsumerState<_Body> {
                 ListSection(
                   hasLeading: true,
                   children: [
+                    ListTile(
+                      leading: const Icon(Icons.palette_outlined),
+                      title: const Text("Theme Browser"),
+                      subtitle: const Text("Select a production-grade theme"),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () {
+                        Navigator.of(context).push(ThemeBrowserScreen.buildRoute());
+                      },
+                    ),
                     if (getCorePalette() != null)
                       SwitchSettingTile(
                         leading: const Icon(Icons.colorize_outlined),
