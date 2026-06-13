@@ -1,0 +1,66 @@
+name: Crowdin pull
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # https://crontab.guru/every-week
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  crowdin-pull-mobile:
+    if: github.repository_owner == 'lichess-org'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Pull Crowdin mobile translations
+        uses: crowdin/github-action@8868a33591d21088edfc398968173a3b98d51706 # v2.16.2
+        with:
+          upload_sources: false
+          upload_translations: false
+          download_sources: false
+          download_translations: true
+          crowdin_branch_name: '[lichess-org.mobile] main'
+          localization_branch_name: l10n_crowdin_mobile
+
+          create_pull_request: true
+          pull_request_title: 'New Crowdin mobile translations'
+          pull_request_body: 'This pull request contains the latest translations from Crowdin.'
+          pull_request_labels: 'cat: l10n'
+          pull_request_base_branch_name: 'main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
+  crowdin-pull-lila:
+    if: github.repository_owner == 'lichess-org'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Pull Crowdin lila sources and translations
+        uses: crowdin/github-action@8868a33591d21088edfc398968173a3b98d51706 # v2.16.2
+        with:
+          upload_sources: false
+          upload_translations: false
+          download_sources: true
+          download_translations: true
+          download_translations_args: '--all'
+          crowdin_branch_name: '[lichess-org.lila] master'
+          localization_branch_name: l10n_crowdin_lila
+
+          create_pull_request: true
+          pull_request_title: 'New Crowdin lila sources and translations'
+          pull_request_body: 'This pull request contains the latest translations from Crowdin.'
+          pull_request_labels: 'cat: l10n'
+          pull_request_base_branch_name: 'main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}

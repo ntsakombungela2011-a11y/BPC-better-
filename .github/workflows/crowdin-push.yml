@@ -1,0 +1,29 @@
+name: Crowdin mobile source push
+
+on:
+  push:
+    paths:
+        - 'translation/source/mobile.xml'
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  crowdin-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Crowdin push
+        uses: crowdin/github-action@8868a33591d21088edfc398968173a3b98d51706 # v2.16.2
+        with:
+          upload_sources: true
+          upload_translations: false
+          download_translations: false
+          source: translation/source/mobile.xml
+          translation: /translation/dest/%file_name%/%locale%.%file_extension%
+          crowdin_branch_name: '[lichess-org.mobile] main'
+          upload_sources_args: '--preserve-hierarchy'
+        env:
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
