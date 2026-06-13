@@ -37,18 +37,22 @@ class ThemePrefs implements Serializable {
   factory ThemePrefs.fromJson(Map<String, dynamic> json) {
     return ThemePrefs(
       selectedThemeId: json['selectedThemeId'] as String,
-      favoriteThemeIds: (json['favoriteThemeIds'] as List<dynamic>?)?.cast<String>() ?? [],
-      recentThemeIds: (json['recentThemeIds'] as List<dynamic>?)?.cast<String>() ?? [],
+      favoriteThemeIds:
+          (json['favoriteThemeIds'] as List<dynamic>?)?.cast<String>() ?? [],
+      recentThemeIds:
+          (json['recentThemeIds'] as List<dynamic>?)?.cast<String>() ?? [],
     );
   }
 }
 
-final themePreferencesProvider = NotifierProvider<ThemePreferencesNotifier, ThemePrefs>(
-  ThemePreferencesNotifier.new,
-  name: 'ThemePreferencesProvider',
-);
+final themePreferencesProvider =
+    NotifierProvider<ThemePreferencesNotifier, ThemePrefs>(
+      ThemePreferencesNotifier.new,
+      name: 'ThemePreferencesProvider',
+    );
 
-class ThemePreferencesNotifier extends Notifier<ThemePrefs> with PreferencesStorage<ThemePrefs> {
+class ThemePreferencesNotifier extends Notifier<ThemePrefs>
+    with PreferencesStorage<ThemePrefs> {
   @override
   @protected
   PrefCategory get prefCategory => PrefCategory.theme;
@@ -72,7 +76,9 @@ class ThemePreferencesNotifier extends Notifier<ThemePrefs> with PreferencesStor
     if (recent.length > 10) {
       recent.removeLast();
     }
-    await save(state.copyWith(selectedThemeId: themeId, recentThemeIds: recent));
+    await save(
+      state.copyWith(selectedThemeId: themeId, recentThemeIds: recent),
+    );
   }
 
   Future<void> toggleFavorite(String themeId) async {
@@ -99,7 +105,9 @@ class ThemePreferencesNotifier extends Notifier<ThemePrefs> with PreferencesStor
     // Base colors from palette
     final primary = palette.primary;
     final secondary = palette.secondary;
-    final surface = palette.background ?? (isDark ? const Color(0xFF121212) : const Color(0xFFF5F5F5));
+    final surface =
+        palette.background ??
+        (isDark ? const Color(0xFF121212) : const Color(0xFFF5F5F5));
 
     // Create a base scheme from seed
     final baseScheme = ColorScheme.fromSeed(

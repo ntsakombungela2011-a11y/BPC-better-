@@ -42,7 +42,11 @@ class ThemePalette {
         Color(0xFF00E59B), // Mint
         Color(0xFF0D0D0D), // Void
       ],
-      categories: [ThemeCategory.named, ThemeCategory.gaming, ThemeCategory.premium],
+      categories: [
+        ThemeCategory.named,
+        ThemeCategory.gaming,
+        ThemeCategory.premium,
+      ],
     ),
     ThemePalette(
       id: 'wabi_sabi',
@@ -78,7 +82,11 @@ class ThemePalette {
         Color(0xFF9C4B1B), // Cognac
         Color(0xFFE5E5E5), // Platinum
       ],
-      categories: [ThemeCategory.named, ThemeCategory.dark, ThemeCategory.premium],
+      categories: [
+        ThemeCategory.named,
+        ThemeCategory.dark,
+        ThemeCategory.premium,
+      ],
     ),
     ThemePalette(
       id: 'sage_clay',
@@ -253,7 +261,11 @@ class ThemePalette {
         Color(0xFF323232), // Dark Gray
         Color(0xFFFFDB00), // Vivid Yellow
       ],
-      categories: [ThemeCategory.named, ThemeCategory.dark, ThemeCategory.gaming],
+      categories: [
+        ThemeCategory.named,
+        ThemeCategory.dark,
+        ThemeCategory.gaming,
+      ],
     ),
     ThemePalette(
       id: 'jasmine_dark_graphite',
@@ -271,7 +283,11 @@ class ThemePalette {
         Color(0xFF001F7B), // Deep Dark Blue
         Color(0xFFFFBA09), // Warm Yellow Orange
       ],
-      categories: [ThemeCategory.named, ThemeCategory.dark, ThemeCategory.premium],
+      categories: [
+        ThemeCategory.named,
+        ThemeCategory.dark,
+        ThemeCategory.premium,
+      ],
     ),
     ThemePalette(
       id: 'dark_green_neon_green',
@@ -280,7 +296,11 @@ class ThemePalette {
         Color(0xFF01210A), // Dark Green
         Color(0xFFA8FF00), // Neon Green
       ],
-      categories: [ThemeCategory.named, ThemeCategory.dark, ThemeCategory.gaming],
+      categories: [
+        ThemeCategory.named,
+        ThemeCategory.dark,
+        ThemeCategory.gaming,
+      ],
     ),
     ThemePalette(
       id: 'dark_rich_green_golden_yellow',
@@ -361,7 +381,11 @@ class ThemePalette {
         Color(0xFF4B0C37), // Deep Magenta
         Color(0xFFC8005A), // Bright Magenta
       ],
-      categories: [ThemeCategory.named, ThemeCategory.dark, ThemeCategory.premium],
+      categories: [
+        ThemeCategory.named,
+        ThemeCategory.dark,
+        ThemeCategory.premium,
+      ],
     ),
     ThemePalette(
       id: 'muted_blue_green_fresh_green',
@@ -370,7 +394,11 @@ class ThemePalette {
         Color(0xFF162531), // Muted Blue Green
         Color(0xFF9AF376), // Fresh Green
       ],
-      categories: [ThemeCategory.named, ThemeCategory.dark, ThemeCategory.gaming],
+      categories: [
+        ThemeCategory.named,
+        ThemeCategory.dark,
+        ThemeCategory.gaming,
+      ],
     ),
     ThemePalette(
       id: 'deep_rich_purple_light_cream',
@@ -397,7 +425,11 @@ class ThemePalette {
         Color(0xFF001935), // Deep Navy
         Color(0xFF2FE8FF), // Vibrant Cyan
       ],
-      categories: [ThemeCategory.named, ThemeCategory.dark, ThemeCategory.gaming],
+      categories: [
+        ThemeCategory.named,
+        ThemeCategory.dark,
+        ThemeCategory.gaming,
+      ],
     ),
     ThemePalette(
       id: 'vanilla_latte_teal_forest',
@@ -454,7 +486,11 @@ class ThemePalette {
         Color(0xFFFF4D73), // Fiery Rose
         Color(0xFF00181B), // Black Pearl
       ],
-      categories: [ThemeCategory.named, ThemeCategory.dark, ThemeCategory.gaming],
+      categories: [
+        ThemeCategory.named,
+        ThemeCategory.dark,
+        ThemeCategory.gaming,
+      ],
     ),
     ThemePalette(
       id: 'tranquil_orange_maastricht_blue',
@@ -472,7 +508,11 @@ class ThemePalette {
         Color(0xFFC0392B), // Sangria Red
         Color(0xFF080205), // Midnight Black
       ],
-      categories: [ThemeCategory.named, ThemeCategory.dark, ThemeCategory.premium],
+      categories: [
+        ThemeCategory.named,
+        ThemeCategory.dark,
+        ThemeCategory.premium,
+      ],
     ),
     ThemePalette(
       id: 'forest_night',
@@ -505,7 +545,11 @@ class ThemePalette {
       colors: [
         Color(0xFF00D4FF), // Cyan Spark
       ],
-      categories: [ThemeCategory.named, ThemeCategory.dark, ThemeCategory.gaming],
+      categories: [
+        ThemeCategory.named,
+        ThemeCategory.dark,
+        ThemeCategory.gaming,
+      ],
     ),
     ThemePalette(
       id: 'near_black',
@@ -513,7 +557,11 @@ class ThemePalette {
       colors: [
         Color(0xFF1A0508), // Near Black
       ],
-      categories: [ThemeCategory.named, ThemeCategory.dark, ThemeCategory.highContrast],
+      categories: [
+        ThemeCategory.named,
+        ThemeCategory.dark,
+        ThemeCategory.highContrast,
+      ],
     ),
   ];
 }

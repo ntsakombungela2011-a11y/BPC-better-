@@ -12,14 +12,17 @@ on:
         default: "v0.4.0"
         type: string
 
-# Declare default permissions as read only.
-permissions: read-all
+permissions:
+  contents: write
 
 jobs:
   draft-release:
     name: Draft Github release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout mobile code
+        uses: actions/checkout@v6.0.2
+
       - name: Draft release with release notes
         id: create_release
         uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda

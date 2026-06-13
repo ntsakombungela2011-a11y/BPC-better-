@@ -9,7 +9,9 @@ class ThemeDetailsScreen extends ConsumerWidget {
   final ThemePalette palette;
 
   static Route<void> buildRoute(ThemePalette palette) {
-    return MaterialPageRoute(builder: (context) => ThemeDetailsScreen(palette: palette));
+    return MaterialPageRoute(
+      builder: (context) => ThemeDetailsScreen(palette: palette),
+    );
   }
 
   @override
@@ -40,7 +42,12 @@ class ThemeDetailsScreen extends ConsumerWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 gradient: LinearGradient(
-                  colors: palette.colors.length > 1 ? palette.colors : [palette.primary, palette.primary.withValues(alpha: 0.7)],
+                  colors: palette.colors.length > 1
+                      ? palette.colors
+                      : [
+                          palette.primary,
+                          palette.primary.withValues(alpha: 0.7),
+                        ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -49,16 +56,22 @@ class ThemeDetailsScreen extends ConsumerWidget {
             const SizedBox(height: 24),
             Text(
               palette.name,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Wrap(
               spacing: 8,
-              children: palette.categories.map((c) => Chip(label: Text(c.name))).toList(),
+              children: palette.categories
+                  .map((c) => Chip(label: Text(c.name)))
+                  .toList(),
             ),
             const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: isSelected ? null : () => themeNotifier.selectTheme(palette.id),
+              onPressed: isSelected
+                  ? null
+                  : () => themeNotifier.selectTheme(palette.id),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: palette.primary,

@@ -57,7 +57,9 @@ class AppInitializationScreen extends ConsumerWidget {
       case AsyncData():
         return const Application();
       case AsyncError(:final error, :final stackTrace):
-        debugPrint('SEVERE: [App] could not initialize app; $error\n$stackTrace');
+        debugPrint(
+          'SEVERE: [App] could not initialize app; $error\n$stackTrace',
+        );
         return const SizedBox.shrink();
       case _:
         // loading screen is handled by the native splash screen
@@ -108,7 +110,8 @@ class _ApplicationState extends ConsumerState<Application> {
     ref.listenManual(connectivityProvider, (previous, next) {
       final socketClient = ref.read(socketClientProvider);
       if (next.value?.isOnline == true &&
-          ref.read(appLifecycleProvider).value?.appState == AppLifecycleState.resumed &&
+          ref.read(appLifecycleProvider).value?.appState ==
+              AppLifecycleState.resumed &&
           !socketClient.isActive) {
         socketClient.connect();
       } else if (next.value?.isOnline == false) {
@@ -136,7 +139,13 @@ class _ApplicationState extends ConsumerState<Application> {
     final themeNotifier = ref.watch(themePreferencesProvider.notifier);
     final generalPrefs = ref.watch(generalPreferencesProvider);
     final boardPrefs = ref.watch(boardPreferencesProvider);
-    final theme = makeAppTheme(context, generalPrefs, boardPrefs, themePrefs, themeNotifier);
+    final theme = makeAppTheme(
+      context,
+      generalPrefs,
+      boardPrefs,
+      themePrefs,
+      themeNotifier,
+    );
 
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
@@ -158,14 +167,14 @@ class _ApplicationState extends ConsumerState<Application> {
             theme: theme.copyWith(
               navigationBarTheme: isIOS
                   ? null
-                  : NavigationBarTheme.of(
-                      context,
-                    ).copyWith(height: isShortVerticalScreen(context) ? 60 : null),
+                  : NavigationBarTheme.of(context).copyWith(
+                      height: isShortVerticalScreen(context) ? 60 : null,
+                    ),
             ),
             home: const MainTabScaffold(),
             navigatorObservers: [rootNavPageRouteObserver],
           );
-        }
+        },
       ),
     );
   }

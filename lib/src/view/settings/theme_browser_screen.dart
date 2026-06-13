@@ -25,13 +25,16 @@ class _ThemeBrowserScreenState extends ConsumerState<ThemeBrowserScreen> {
     final themeNotifier = ref.read(themePreferencesProvider.notifier);
 
     final filteredPalettes = ThemePalette.allPalettes.where((p) {
-      final matchesSearch = p.name.toLowerCase().contains(_searchQuery.toLowerCase());
-      final matchesCategory = _selectedCategory == null ||
+      final matchesSearch = p.name.toLowerCase().contains(
+        _searchQuery.toLowerCase(),
+      );
+      final matchesCategory =
+          _selectedCategory == null ||
           (_selectedCategory == ThemeCategory.favorites
               ? themePrefs.favoriteThemeIds.contains(p.id)
               : _selectedCategory == ThemeCategory.recent
-                  ? themePrefs.recentThemeIds.contains(p.id)
-                  : p.categories.contains(_selectedCategory));
+              ? themePrefs.recentThemeIds.contains(p.id)
+              : p.categories.contains(_selectedCategory));
       return matchesSearch && matchesCategory;
     }).toList();
 
@@ -50,7 +53,10 @@ class _ThemeBrowserScreenState extends ConsumerState<ThemeBrowserScreen> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: TextField(
                   decoration: const InputDecoration(
                     hintText: 'Search themes...',
@@ -64,17 +70,26 @@ class _ThemeBrowserScreenState extends ConsumerState<ThemeBrowserScreen> {
               ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: ThemeCategory.values.map((category) {
                     final isSelected = _selectedCategory == category;
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: FilterChip(
-                        label: Text(category.name[0].toUpperCase() + category.name.substring(1)),
+                        label: Text(
+                          category.name[0].toUpperCase() +
+                              category.name.substring(1),
+                        ),
                         selected: isSelected,
                         onSelected: (selected) {
-                          setState(() => _selectedCategory = selected ? category : null);
+                          setState(
+                            () =>
+                                _selectedCategory = selected ? category : null,
+                          );
                         },
                       ),
                     );
@@ -99,13 +114,17 @@ class _ThemeBrowserScreenState extends ConsumerState<ThemeBrowserScreen> {
               itemBuilder: (context, index) {
                 final palette = filteredPalettes[index];
                 final isSelected = themePrefs.selectedThemeId == palette.id;
-                final isFavorite = themePrefs.favoriteThemeIds.contains(palette.id);
+                final isFavorite = themePrefs.favoriteThemeIds.contains(
+                  palette.id,
+                );
 
                 return ThemePreviewCard(
                   palette: palette,
                   isSelected: isSelected,
                   isFavorite: isFavorite,
-                  onTap: () => Navigator.of(context).push(ThemeDetailsScreen.buildRoute(palette)),
+                  onTap: () => Navigator.of(
+                    context,
+                  ).push(ThemeDetailsScreen.buildRoute(palette)),
                   onFavoriteTap: () => themeNotifier.toggleFavorite(palette.id),
                 );
               },
@@ -149,7 +168,12 @@ class ThemePreviewCard extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: palette.colors.length > 1 ? palette.colors : [palette.primary, palette.primary.withValues(alpha: 0.7)],
+                    colors: palette.colors.length > 1
+                        ? palette.colors
+                        : [
+                            palette.primary,
+                            palette.primary.withValues(alpha: 0.7),
+                          ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -182,7 +206,10 @@ class ThemePreviewCard extends StatelessWidget {
               child: Text(
                 palette.name,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
