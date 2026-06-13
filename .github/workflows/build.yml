@@ -1,5 +1,6 @@
 name: Builds
-on: workflow_dispatch
+on:
+  workflow_dispatch:
 
 # Declare default permissions as read only.
 permissions: read-all
@@ -7,12 +8,15 @@ permissions: read-all
 jobs:
   build:
     name: Build ${{ matrix.target }}
-    runs-on: macos-latest
+    runs-on: macos-13
     strategy:
       fail-fast: false
       matrix:
         target: ["appbundle --debug", "ios --no-codesign"]
     steps:
+      - name: Checkout mobile code
+        uses: actions/checkout@v6.0.2
+
       - name: Set up JDK 17
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
@@ -20,11 +24,12 @@ jobs:
           distribution: temurin
 
       - name: Install Flutter
-        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
-      - run: flutter doctor -v
+        uses: subosito/flutter-action@v2.23.0
+        with:
+          cache: true
+          flutter-version-file: pubspec.yaml
 
-      - name: Checkout mobile code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - run: flutter doctor -v
 
       - name: Install dependencies
         run: flutter pub get

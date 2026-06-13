@@ -2,6 +2,7 @@ import 'package:chessground/chessground.dart';
 import 'package:dartchess/dartchess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lichess_mobile/l10n/l10n.dart';
 import 'package:lichess_mobile/src/constants.dart';
 import 'package:lichess_mobile/src/model/common/chess.dart';
 import 'package:lichess_mobile/src/model/settings/board_preferences.dart';
@@ -12,11 +13,12 @@ import 'package:lichess_mobile/src/utils/color_palette.dart';
 import 'package:lichess_mobile/src/utils/l10n_context.dart';
 import 'package:lichess_mobile/src/utils/navigation.dart';
 import 'package:lichess_mobile/src/utils/screen.dart';
-import "package:lichess_mobile/src/view/settings/theme_browser_screen.dart";
 import 'package:lichess_mobile/src/view/settings/background_theme_choice_screen.dart';
 import 'package:lichess_mobile/src/view/settings/board_choice_screen.dart';
 import 'package:lichess_mobile/src/view/settings/piece_set_screen.dart';
+import 'package:lichess_mobile/src/view/settings/theme_browser_screen.dart';
 import 'package:lichess_mobile/src/widgets/adaptive_choice_picker.dart';
+import 'package:lichess_mobile/src/widgets/board.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/settings.dart';
 
@@ -37,11 +39,11 @@ class ThemeSettingsScreen extends ConsumerWidget {
 }
 
 String shapeColorL10n(ShapeColor shapeColor) => switch (shapeColor) {
-  ShapeColor.green => 'Green',
-  ShapeColor.red => 'Red',
-  ShapeColor.blue => 'Blue',
-  ShapeColor.yellow => 'Yellow',
-};
+      ShapeColor.green => 'Green',
+      ShapeColor.red => 'Red',
+      ShapeColor.blue => 'Blue',
+      ShapeColor.yellow => 'Yellow',
+    };
 
 class _Body extends ConsumerStatefulWidget {
   const _Body();
@@ -70,8 +72,7 @@ class _BodyState extends ConsumerState<_Body> {
     final boardPrefs = ref.watch(boardPreferencesProvider);
 
     final bool hasAjustedColors =
-        brightness != kBoardDefaultBrightnessFilter ||
-        hue != kBoardDefaultHueFilter;
+        brightness != kBoardDefaultBrightnessFilter || hue != kBoardDefaultHueFilter;
 
     final boardSize = isTabletOrLarger(context) ? 350.0 : 200.0;
 
@@ -100,9 +101,7 @@ class _BodyState extends ConsumerState<_Body> {
                       subtitle: const Text("Select a production-grade theme"),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {
-                        Navigator.of(
-                          context,
-                        ).push(ThemeBrowserScreen.buildRoute());
+                        Navigator.of(context).push(ThemeBrowserScreen.buildRoute());
                       },
                     ),
                     if (getCorePalette() != null)
@@ -111,9 +110,7 @@ class _BodyState extends ConsumerState<_Body> {
                         title: Text(context.l10n.mobileSystemColors),
                         value: generalPrefs.systemColors,
                         onChanged: (value) {
-                          ref
-                              .read(generalPreferencesProvider.notifier)
-                              .toggleSystemColors();
+                          ref.read(generalPreferencesProvider.notifier).toggleSystemColors();
                         },
                       ),
                     SettingsListTile(
@@ -121,13 +118,9 @@ class _BodyState extends ConsumerState<_Body> {
                       settingsLabel: Text(context.l10n.background),
                       settingsValue: generalPrefs.backgroundColor != null
                           ? generalPrefs.backgroundColor!.$1.label
-                          : (generalPrefs.backgroundImage != null
-                                ? 'Image'
-                                : 'Default'),
+                          : (generalPrefs.backgroundImage != null ? 'Image' : 'Default'),
                       onTap: () {
-                        Navigator.of(
-                          context,
-                        ).push(BackgroundChoiceScreen.buildRoute());
+                        Navigator.of(context).push(BackgroundChoiceScreen.buildRoute());
                       },
                     ),
                     if (generalPrefs.backgroundColor != null ||
@@ -138,10 +131,7 @@ class _BodyState extends ConsumerState<_Body> {
                         onTap: () {
                           ref
                               .read(generalPreferencesProvider.notifier)
-                              .setBackground(
-                                backgroundColor: null,
-                                backgroundImage: null,
-                              );
+                              .setBackground(backgroundColor: null, backgroundImage: null);
                         },
                       ),
                     SettingsListTile(
@@ -149,9 +139,7 @@ class _BodyState extends ConsumerState<_Body> {
                       settingsLabel: Text(context.l10n.board),
                       settingsValue: boardPrefs.boardTheme.label,
                       onTap: () {
-                        Navigator.of(
-                          context,
-                        ).push(BoardChoiceScreen.buildRoute());
+                        Navigator.of(context).push(BoardChoiceScreen.buildRoute());
                       },
                     ),
                     SettingsListTile(
@@ -178,13 +166,7 @@ class _BodyState extends ConsumerState<_Body> {
                               children: [
                                 TextSpan(text: shapeColorL10n(t)),
                                 const TextSpan(text: '   '),
-                                WidgetSpan(
-                                  child: Container(
-                                    width: 15,
-                                    height: 15,
-                                    color: t.color,
-                                  ),
-                                ),
+                                WidgetSpan(child: Container(width: 15, height: 15, color: t.color)),
                               ],
                             ),
                           ),
@@ -201,9 +183,7 @@ class _BodyState extends ConsumerState<_Body> {
                       title: Text(context.l10n.preferencesBoardCoordinates),
                       value: boardPrefs.coordinates,
                       onChanged: (value) {
-                        ref
-                            .read(boardPreferencesProvider.notifier)
-                            .toggleCoordinates();
+                        ref.read(boardPreferencesProvider.notifier).toggleCoordinates();
                       },
                     ),
                     SwitchSettingTile(
@@ -212,9 +192,7 @@ class _BodyState extends ConsumerState<_Body> {
                       title: const Text('Show border'),
                       value: boardPrefs.showBorder,
                       onChanged: (value) {
-                        ref
-                            .read(boardPreferencesProvider.notifier)
-                            .toggleBorder();
+                        ref.read(boardPreferencesProvider.notifier).toggleBorder();
                       },
                     ),
                   ],
@@ -253,9 +231,7 @@ class _BodyState extends ConsumerState<_Body> {
                           });
                         },
                         onChangeEnd: (value) {
-                          ref
-                              .read(boardPreferencesProvider.notifier)
-                              .adjustColors(hue: hue);
+                          ref.read(boardPreferencesProvider.notifier).adjustColors(hue: hue);
                         },
                       ),
                     ),
@@ -271,10 +247,7 @@ class _BodyState extends ConsumerState<_Body> {
                               });
                               ref
                                   .read(boardPreferencesProvider.notifier)
-                                  .adjustColors(
-                                    brightness: brightness,
-                                    hue: hue,
-                                  );
+                                  .adjustColors(brightness: brightness, hue: hue);
                             }
                           : null,
                     ),
@@ -311,10 +284,7 @@ class _BoardPreview extends StatelessWidget {
         lastMove: const NormalMove(from: Square.e2, to: Square.e4),
         fen: 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
         shapes: {
-          Circle(
-            color: boardPrefs.shapeColor.color,
-            orig: Square.fromName('b8'),
-          ),
+          Circle(color: boardPrefs.shapeColor.color, orig: Square.fromName('b8')),
           Arrow(
             color: boardPrefs.shapeColor.color,
             orig: Square.fromName('b8'),
