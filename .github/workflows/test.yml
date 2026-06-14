@@ -44,12 +44,10 @@ jobs:
         run: flutter pub get
 
       - name: Code generation
-        run: dart run build_runner build
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Verify formatting
-        run: |
-          dart format --output=none --set-exit-if-changed $(find lib/src -name "*.dart" -not \( -name "*.*freezed.dart" -o -name "*.*g.dart" -o -name "*lichess_icons.dart" \) )
-          dart format --output=none --set-exit-if-changed $(find test -name "*.dart" -not \( -name "*.*freezed.dart" -o -name "*.*g.dart" \) )
+        run: dart format --output=none --set-exit-if-changed .
         # run: dart format --output=none --set-exit-if-changed .
 
       - name: Analyze project source
