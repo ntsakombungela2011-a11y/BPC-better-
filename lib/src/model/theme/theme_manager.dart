@@ -53,18 +53,9 @@ class ThemeManager {
   ThemePalette? getThemeById(String id) => ThemePalettes.getById(id);
 
   /// Get the color scheme for the current theme.
-  ({ColorGenerator light, ColorGenerator dark}) getColorSchemes() {
-    final palette = currentTheme;
-    if (palette == null) {
-      return (
-        light: AppColorGenerator.generateLight,
-        dark: AppColorGenerator.generateDark,
-      );
-    }
-    return (
-      light: AppColorGenerator.generateLight,
-      dark: AppColorGenerator.generateDark,
-    );
+  AppColorScheme getAppColorScheme({bool isDark = false}) {
+    final palette = currentTheme ?? ThemePalettes.all.first;
+    return AppColorGenerator.generateFromPalette(palette, isDark: isDark);
   }
 
   /// Get all categories.
@@ -77,10 +68,9 @@ class ThemeManager {
 }
 
 /// Provider for current theme color scheme.
-final currentThemeColorSchemeProvider = Provider<ColorGenerator>((ref) {
-  final prefs = ref.watch(themePreferencesProvider);
-  final palette = ThemePalettes.getById(prefs.currentThemeId);
-  return AppColorGenerator.generateLight;
+final currentAppColorSchemeProvider = Provider.family<AppColorScheme, bool>((ref, isDark) {
+  final manager = ref.watch(themeManagerProvider);
+  return manager.getAppColorScheme(isDark: isDark);
 });
 
 /// Provider for themes filtered by category.
