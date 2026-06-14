@@ -106,7 +106,7 @@ class AppColorScheme {
 
 /// Utility class for generating color schemes from seed colors.
 class AppColorGenerator {
-  ColorGenerator._();
+  AppColorGenerator._();
 
   /// Generate a complete color scheme from a seed color.
   static AppColorScheme generateFromSeed(Color seedColor, {bool isDark = false}) {
