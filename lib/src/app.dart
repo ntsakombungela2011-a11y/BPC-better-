@@ -24,6 +24,8 @@ import 'package:lichess_mobile/src/model/message/message_service.dart';
 import 'package:lichess_mobile/src/model/notifications/notification_service.dart';
 import 'package:lichess_mobile/src/model/settings/board_preferences.dart';
 import 'package:lichess_mobile/src/model/settings/general_preferences.dart';
+import 'package:lichess_mobile/src/model/settings/theme_preferences.dart';
+import 'package:lichess_mobile/src/model/theme/theme_palette.dart';
 import 'package:lichess_mobile/src/model/study/study_preferences.dart';
 import 'package:lichess_mobile/src/network/connectivity.dart';
 import 'package:lichess_mobile/src/network/socket.dart';
@@ -208,7 +210,9 @@ class _AppState extends ConsumerState<Application> {
   Widget build(BuildContext context) {
     final generalPrefs = ref.watch(generalPreferencesProvider);
     final boardPrefs = ref.watch(boardPreferencesProvider);
-    final theme = makeAppTheme(context, generalPrefs, boardPrefs);
+    final themePrefs = ref.watch(themePreferencesProvider);
+    final currentPalette = ThemePalettes.getById(themePrefs.currentThemeId);
+    final theme = makeAppTheme(context, generalPrefs, boardPrefs, palette: currentPalette);
 
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 

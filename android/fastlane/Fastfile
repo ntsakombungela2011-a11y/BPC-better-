@@ -16,33 +16,13 @@
 default_platform(:android)
 
 platform :android do
-  desc "Deploy an internal test version to Google Play"
-  lane :internal do
-    deploy_to_play_store('internal')
+  desc "Build an Android App Bundle for release"
+  lane :build_appbundle do
+    build_appbundle
   end
 end
 
-platform :android do
-  desc "Deploy an closed test version to Google Play"
-  lane :alpha do
-    deploy_to_play_store('alpha')
-  end
-end
-
-platform :android do
-  desc "Upload a production version to Google Play"
-  lane :production do
-    deploy_to_play_store('production')
-  end
-end
-
-def deploy_to_play_store(track)
-  sh "flutter build appbundle -v --obfuscate --split-debug-info=./build/app/outputs/bundle/release/symbols --dart-define=cronetHttpNoPlay=true --dart-define=LICHESS_HOST=lichess.org --dart-define=LICHESS_WS_HOST=socket.lichess.org --dart-define=LICHESS_WS_SECRET=#{ENV['WS_SECRET']}"
+def build_appbundle
+  sh "flutter build appbundle -v --obfuscate --split-debug-info=./build/app/outputs/bundle/release/symbols --dart-define=cronetHttpNoPlay=true --dart-define=LICHESS_HOST=lichess.org --dart-define=LICHESS_WS_HOST=socket.lichess.org"
   sh "./add-debug-symbols.sh"
-  upload_to_play_store(
-    track: track,
-    aab: '../build/app/outputs/bundle/release/app-release.aab',
-    json_key_data: ENV['PLAY_STORE_CONFIG_JSON'],
-    mapping_paths: ['../build/app/outputs/mapping/release/mapping.txt', '../build/app/outputs/bundle/release/native-debug-symbols/native-debug-symbols.zip'],
-  )
 end

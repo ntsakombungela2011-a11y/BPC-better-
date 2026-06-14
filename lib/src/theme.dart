@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:lichess_mobile/src/constants.dart';
 import 'package:lichess_mobile/src/model/settings/board_preferences.dart';
 import 'package:lichess_mobile/src/model/settings/general_preferences.dart';
+import 'package:lichess_mobile/src/model/theme/theme_colors.dart';
+import 'package:lichess_mobile/src/model/theme/theme_palette.dart';
 import 'package:lichess_mobile/src/styles/styles.dart';
 import 'package:lichess_mobile/src/utils/color_palette.dart';
 
@@ -11,7 +13,7 @@ const kSliderTheme = SliderThemeData(
   year2023: false,
 );
 
-ThemeData makeAppTheme(BuildContext context, GeneralPrefs generalPrefs, BoardPrefs boardPrefs) {
+ThemeData makeAppTheme(BuildContext context, GeneralPrefs generalPrefs, BoardPrefs boardPrefs, {ThemePalette? palette}) {
   final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
   final brightness = generalPrefs.isForcedDarkMode
       ? Brightness.dark
@@ -22,7 +24,7 @@ ThemeData makeAppTheme(BuildContext context, GeneralPrefs generalPrefs, BoardPre
         };
 
   if (generalPrefs.backgroundColor == null && generalPrefs.backgroundImage == null) {
-    return _makeDefaultTheme(brightness, generalPrefs, boardPrefs, isIOS);
+    return _makeDefaultTheme(brightness, generalPrefs, boardPrefs, isIOS, palette: palette);
   } else {
     return _makeBackgroundImageTheme(
       baseTheme:
@@ -36,6 +38,68 @@ ThemeData makeAppTheme(BuildContext context, GeneralPrefs generalPrefs, BoardPre
       isBackgroundImage: generalPrefs.backgroundImage != null,
     );
   }
+}
+
+/// Generate a theme from a theme palette.
+ThemeData makeAppThemeFromPalette(
+  BuildContext context,
+  ThemePalette palette,
+  Brightness brightness,
+) {
+  final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+  final seedColor = palette.primaryColor;
+
+  final colorScheme = brightness == Brightness.dark
+      ? ColorGenerator.generateDark(seedColor).toColorScheme(brightness)
+      : ColorGenerator.generateLight(seedColor).toColorScheme(brightness);
+
+  final textTheme = isIOS ? kCupertinoDefaultTextTheme : null;
+  final theme = ThemeData.from(colorScheme: colorScheme, textTheme: textTheme);
+
+  return theme.copyWith(
+    cupertinoOverrideTheme: _makeCupertinoThemeData(theme.colorScheme, brightness),
+    splashFactory: isIOS ? NoSplash.splashFactory : null,
+    appBarTheme: _appBarTheme.copyWith(
+      backgroundColor: isIOS
+          ? theme.colorScheme.surface.withValues(alpha: kCupertinoBarOpacity)
+          : null,
+      scrolledUnderElevation: isIOS ? 0 : null,
+      titleTextStyle: isIOS
+          ? const CupertinoTextThemeData().navTitleTextStyle.copyWith(
+              color: theme.colorScheme.onSurface,
+            )
+          : null,
+    ),
+    navigationBarTheme: isIOS
+        ? NavigationBarThemeData(
+            backgroundColor: theme.colorScheme.surface.withValues(alpha: kCupertinoBarOpacity),
+          )
+        : null,
+    bottomAppBarTheme: BottomAppBarThemeData(
+      color: theme.colorScheme.surface,
+      elevation: isIOS ? 0 : null,
+    ),
+    searchBarTheme: isIOS ? _kCupertinoSearchBarTheme : null,
+    iconTheme: IconThemeData(color: theme.colorScheme.onSurface.withValues(alpha: 0.7)),
+    listTileTheme: _makeListTileTheme(theme.colorScheme, isIOS),
+    cardTheme: isIOS
+        ? _kCupertinoCardTheme.copyWith(color: theme.colorScheme.surfaceContainerHigh)
+        : null,
+    inputDecorationTheme: isIOS ? _makeCupertinoInputDecorationTheme(theme.colorScheme) : null,
+    floatingActionButtonTheme: isIOS
+        ? FloatingActionButtonThemeData(
+            backgroundColor: theme.colorScheme.secondaryFixedDim,
+            foregroundColor: theme.colorScheme.onSecondaryFixedVariant,
+          )
+        : null,
+    dialogTheme: isIOS ? _kCupertinoDialogTheme : null,
+    filledButtonTheme: isIOS ? _kCupertinoFilledButtonTheme : null,
+    outlinedButtonTheme: isIOS ? _kCupertinoOutlinedButtonTheme : null,
+    menuTheme: isIOS ? _kCupertinoMenuThemeData : null,
+    bottomSheetTheme: isIOS ? _kCupertinoBottomSheetTheme : null,
+    sliderTheme: kSliderTheme,
+    extensions: [lichessCustomColors.harmonized(theme.colorScheme)],
+  );
 }
 
 /// A custom theme extension that adds lichess custom properties to the theme.
@@ -79,8 +143,9 @@ ThemeData _makeDefaultTheme(
   Brightness brightness,
   GeneralPrefs generalPrefs,
   BoardPrefs boardPrefs,
-  bool isIOS,
-) {
+  bool isIOS, {
+  ThemePalette? palette,
+}) {
   final boardTheme = boardPrefs.boardTheme;
   final dynamicColorSchemes = getDynamicColorSchemes();
   final systemScheme = switch (brightness) {

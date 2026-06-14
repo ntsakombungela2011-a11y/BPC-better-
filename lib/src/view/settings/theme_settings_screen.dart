@@ -6,6 +6,8 @@ import 'package:lichess_mobile/src/constants.dart';
 import 'package:lichess_mobile/src/model/common/chess.dart';
 import 'package:lichess_mobile/src/model/settings/board_preferences.dart';
 import 'package:lichess_mobile/src/model/settings/general_preferences.dart';
+import 'package:lichess_mobile/src/model/settings/theme_preferences.dart';
+import 'package:lichess_mobile/src/model/theme/theme_palette.dart';
 import 'package:lichess_mobile/src/styles/lichess_icons.dart';
 import 'package:lichess_mobile/src/styles/styles.dart';
 import 'package:lichess_mobile/src/utils/color_palette.dart';
@@ -15,6 +17,7 @@ import 'package:lichess_mobile/src/utils/screen.dart';
 import 'package:lichess_mobile/src/view/settings/background_theme_choice_screen.dart';
 import 'package:lichess_mobile/src/view/settings/board_choice_screen.dart';
 import 'package:lichess_mobile/src/view/settings/piece_set_screen.dart';
+import 'package:lichess_mobile/src/view/settings/theme_browser_screen.dart';
 import 'package:lichess_mobile/src/widgets/adaptive_choice_picker.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/settings.dart';
@@ -122,6 +125,18 @@ class _BodyState extends ConsumerState<_Body> {
                               .setBackground(backgroundColor: null, backgroundImage: null);
                         },
                       ),
+                    ListTile(
+                      leading: const Icon(Icons.palette_outlined),
+                      title: const Text('Browse All Themes'),
+                      subtitle: Text(
+                        _getCurrentThemeName(ref),
+                        style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                      ),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () {
+                        Navigator.of(context).push(ThemeBrowserScreen.buildRoute());
+                      },
+                    ),
                     SettingsListTile(
                       icon: const Icon(LichessIcons.chess_board),
                       settingsLabel: Text(context.l10n.board),
@@ -247,6 +262,12 @@ class _BodyState extends ConsumerState<_Body> {
         ],
       ),
     );
+  }
+
+  String _getCurrentThemeName(WidgetRef ref) {
+    final prefs = ref.watch(themePreferencesProvider);
+    final palette = ThemePalettes.getById(prefs.currentThemeId);
+    return palette?.name ?? 'Default';
   }
 }
 
