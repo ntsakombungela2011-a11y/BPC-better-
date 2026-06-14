@@ -1,7 +1,7 @@
-typedef ColorGenerator = AppColorScheme Function(Color seedColor);
 
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+typedef ColorGenerator = AppColorScheme Function(Color seedColor);
 
 /// Function type for generating color schemes.
 

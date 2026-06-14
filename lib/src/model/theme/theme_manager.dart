@@ -62,8 +62,8 @@ class ThemeManager {
       );
     }
     return (
-      light: (seed) => AppColorGenerator.generateLight(seed),
-      dark: (seed) => AppColorGenerator.generateDark(seed),
+      light: AppColorGenerator.generateLight,
+      dark: AppColorGenerator.generateDark,
     );
   }
 
@@ -80,7 +80,7 @@ class ThemeManager {
 final currentThemeColorSchemeProvider = Provider<ColorGenerator>((ref) {
   final prefs = ref.watch(themePreferencesProvider);
   final palette = ThemePalettes.getById(prefs.currentThemeId);
-  return (seed) => AppColorGenerator.generateLight(seed);
+  return AppColorGenerator.generateLight;
 });
 
 /// Provider for themes filtered by category.

@@ -28,6 +28,9 @@ jobs:
           flutter-version-file: pubspec.yaml
       - run: flutter doctor -v
 
+      - name: Create build directory
+        run: mkdir -p build/ios/SourcePackages
+
       - name: Install dependencies
         run: flutter pub get
 
