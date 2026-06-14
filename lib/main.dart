@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -18,25 +19,28 @@ Future<void> main() async {
   // See src/app.dart for splash screen removal
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
+  // Critical startup tasks
   await lichessBinding.preloadSharedPreferences();
 
-  await preloadPieceImages();
-
-  await initializeApp();
-
-  await SoundService.initialize();
-
-  final locale = await setupIntl(widgetsBinding);
-
-  await initializeLocalNotifications(locale);
+  // Parallelize non-dependent initialization tasks to speed up startup
+  final initTasks = <Future<void>>[
+    initializeApp(),
+    SoundService.initialize(),
+    setupIntl(widgetsBinding).then((locale) => initializeLocalNotifications(locale)),
+  ];
 
   if (defaultTargetPlatform != TargetPlatform.linux) {
-    await lichessBinding.initializeFirebase();
+    initTasks.add(lichessBinding.initializeFirebase());
   }
 
   if (defaultTargetPlatform == TargetPlatform.android) {
-    await androidDisplayInitialization(widgetsBinding);
+    initTasks.add(androidDisplayInitialization(widgetsBinding));
   }
+
+  // Defer piece preloading and wait for critical tasks
+  unawaited(preloadPieceImages());
+
+  await Future.wait(initTasks);
 
   runApp(
     ProviderScope(

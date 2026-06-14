@@ -473,13 +473,13 @@ class ThemePalettes {
     ),
   ];
 
+  static final Map<String, ThemePalette> _idMap = {
+    for (final palette in all) palette.id: palette,
+  };
+
   /// Get a palette by its ID.
   static ThemePalette? getById(String id) {
-    try {
-      return all.firstWhere((p) => p.id == id);
-    } catch (_) {
-      return null;
-    }
+    return _idMap[id];
   }
 
   /// Get all palettes in a specific category.

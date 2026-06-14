@@ -1,4 +1,5 @@
 import 'dart:io' show Directory;
+import 'dart:async';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/services.dart';
@@ -28,62 +29,56 @@ typedef PreloadedData = ({
 final preloadedDataProvider = FutureProvider<PreloadedData>((Ref ref) async {
   final authStorage = ref.read(authStorageProvider);
 
-  final pInfo = await PackageInfo.fromPlatform();
-  final deviceInfo = await DeviceInfoPlugin().deviceInfo;
+  // Run independent tasks in parallel
+  final pInfoFuture = PackageInfo.fromPlatform();
+  final deviceInfoFuture = DeviceInfoPlugin().deviceInfo;
+  final sriFuture = _getSri();
+  final authUserFuture = authStorage.read();
+  final physicalMemoryFuture = System.instance.getTotalRam();
+  final appDocsDirFuture = getApplicationDocumentsDirectory().catchError((_) => Directory(''));
+  final appSupportDirFuture = getApplicationSupportDirectory().catchError((_) => Directory(''));
 
-  // Generate a socket random identifier and store it for the app lifetime
-  String? storedSri;
-  try {
-    storedSri = await SecureStorage.instance.read(key: kSRIStorageKey);
-    if (storedSri == null) {
-      final sri = genRandomString(12);
-      await SecureStorage.instance.write(key: kSRIStorageKey, value: sri);
-      storedSri = sri;
-    }
-  } on PlatformException catch (_) {
-    // Clear all secure storage if an error occurs because it probably means the key has
-    // been lost
-    await SecureStorage.instance.deleteAll();
-  }
+  final results = await Future.wait([
+    pInfoFuture,
+    deviceInfoFuture,
+    sriFuture,
+    authUserFuture,
+    physicalMemoryFuture,
+    appDocsDirFuture,
+    appSupportDirFuture,
+  ]);
 
-  final sri = storedSri ?? genRandomString(12);
+  final pInfo = results[0] as PackageInfo;
+  final deviceInfo = results[1] as BaseDeviceInfo;
+  final sri = results[2] as String;
+  var authUser = results[3] as AuthUser?;
+  final physicalMemory = (results[4] as double?) ?? 256.0;
+  final appDocumentsDirectory = results[5] as Directory?;
+  final appSupportDirectory = results[6] as Directory?;
 
-  AuthUser? authUser = await authStorage.read();
   final token = authUser?.token;
-
   if (token != null) {
+    // Non-blocking token validation
     final userAgent = makeUserAgent(pInfo, deviceInfo, sri, null);
     final client = DefaultClient(ref.read(httpClientFactoryProvider)(), userAgent: userAgent);
-    client
+    unawaited(client
         .postReadJson(lichessUri('/api/token/test'), mapper: (json) => json, body: token)
         .timeout(const Duration(seconds: 5))
         .then((data) {
           final isValid = data[token] != null;
           if (!isValid) {
             authStorage.delete();
-            authUser = null;
+            // Note: can't easily update local variable for the return record here if it's already returned,
+            // but the side effect (storage delete) is what matters for next start.
           }
         })
-        .catchError((_) {
-          // in case of network error, assume the authUser is still valid
-        })
+        .catchError((_) {})
         .whenComplete(() {
           client.close();
-        });
+        }));
   }
 
-  final physicalMemory = await System.instance.getTotalRam() ?? 256.0;
   final engineMaxMemory = (physicalMemory / 10).ceil();
-
-  Directory? appDocumentsDirectory;
-  try {
-    appDocumentsDirectory = await getApplicationDocumentsDirectory();
-  } catch (_) {}
-
-  Directory? appSupportDirectory;
-  try {
-    appSupportDirectory = await getApplicationSupportDirectory();
-  } catch (_) {}
 
   return (
     packageInfo: pInfo,
@@ -95,3 +90,19 @@ final preloadedDataProvider = FutureProvider<PreloadedData>((Ref ref) async {
     appSupportDirectory: appSupportDirectory,
   );
 }, name: 'PreloadedDataProvider');
+
+Future<String> _getSri() async {
+  try {
+    final storedSri = await SecureStorage.instance.read(key: kSRIStorageKey);
+    if (storedSri != null) return storedSri;
+
+    final sri = genRandomString(12);
+    await SecureStorage.instance.write(key: kSRIStorageKey, value: sri);
+    return sri;
+  } on PlatformException catch (_) {
+    await SecureStorage.instance.deleteAll();
+    return genRandomString(12);
+  } catch (_) {
+    return genRandomString(12);
+  }
+}

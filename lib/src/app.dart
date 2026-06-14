@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,16 +62,11 @@ class AppInitializationScreen extends ConsumerWidget {
         debugPrint('SEVERE: [App] could not initialize app; $error\n$stackTrace');
         return const SizedBox.shrink();
       case _:
-        // loading screen is handled by the native splash screen
         return const SizedBox.shrink();
     }
   }
 }
 
-/// The main application widget.
-///
-/// This widget is the root of the application and is responsible for setting up
-/// the theme, locale, and other global settings.
 class Application extends ConsumerStatefulWidget {
   const Application({super.key});
 
@@ -79,14 +75,10 @@ class Application extends ConsumerStatefulWidget {
 }
 
 class _AppState extends ConsumerState<Application> {
-  /// Whether the app has checked for online status for the first time.
   bool _firstTimeOnlineCheck = false;
   final _navigatorKey = GlobalKey<NavigatorState>();
 
-  // Adjusts some settings for small screens based on the MediaQuery data.
   Future<void> _screenSizeBasedInitialization(WidgetRef ref) async {
-    // Bump version here in case we adjust the thresholds for screen size based initialization
-    // and want it to run again for users who already launched the app with a previous version.
     const kDoneScreenSizeInitKey = 'done_screen_size_init_v1';
 
     final prefs = LichessBinding.instance.sharedPreferences;
@@ -102,51 +94,46 @@ class _AppState extends ConsumerState<Application> {
     final showEngineLines =
         isTablet || estimateHeightMinusBoard(mediaQueryData) > kSmallHeightMinusBoard - 30;
 
-    // For tablets in portrait mode using the full board size makes the bottom analysis tabs tiny,
-    // see https://github.com/lichess-org/mobile/issues/3150,
-    // so use a small board there by default as well.
     final smallBoard = isTablet || isSmallScreen;
 
-    await ref
-        .read(analysisPreferencesProvider.notifier)
-        .save(
-          ref
-              .read(analysisPreferencesProvider)
-              .copyWith(smallBoard: smallBoard, showEngineLines: showEngineLines),
-        );
-    await ref
-        .read(studyPreferencesProvider.notifier)
-        .save(
-          ref
-              .read(studyPreferencesProvider)
-              .copyWith(smallBoard: smallBoard, showEngineLines: showEngineLines),
-        );
-    await ref
-        .read(broadcastPreferencesProvider.notifier)
-        .save(
-          ref
-              .read(broadcastPreferencesProvider)
-              .copyWith(smallBoard: smallBoard, showEngineLines: showEngineLines),
-        );
+    await Future.wait([
+      ref.read(analysisPreferencesProvider.notifier).save(
+            ref
+                .read(analysisPreferencesProvider)
+                .copyWith(smallBoard: smallBoard, showEngineLines: showEngineLines),
+          ),
+      ref.read(studyPreferencesProvider.notifier).save(
+            ref
+                .read(studyPreferencesProvider)
+                .copyWith(smallBoard: smallBoard, showEngineLines: showEngineLines),
+          ),
+      ref.read(broadcastPreferencesProvider.notifier).save(
+            ref
+                .read(broadcastPreferencesProvider)
+                .copyWith(smallBoard: smallBoard, showEngineLines: showEngineLines),
+          ),
+    ]);
 
     await prefs.setBool(kDoneScreenSizeInitKey, true);
   }
 
   @override
   void initState() {
-    _screenSizeBasedInitialization(ref);
+    unawaited(_screenSizeBasedInitialization(ref));
 
-    // Start services
-    ref.read(appLogServiceProvider).start();
-    ref.read(notificationServiceProvider).start();
-    ref.read(messageServiceProvider).start();
-    ref.read(challengeServiceProvider).start();
-    ref.read(accountServiceProvider).start();
-    ref.read(correspondenceServiceProvider).start();
-    ref.read(quickActionServiceProvider).start();
-    ref.read(announceServiceProvider).start();
-    ref.read(appLinksServiceProvider).start();
-    ref.read(sharedPgnServiceProvider).start();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ref.read(appLogServiceProvider).start();
+      ref.read(notificationServiceProvider).start();
+      ref.read(messageServiceProvider).start();
+      ref.read(challengeServiceProvider).start();
+      ref.read(accountServiceProvider).start();
+      ref.read(correspondenceServiceProvider).start();
+      ref.read(quickActionServiceProvider).start();
+      ref.read(announceServiceProvider).start();
+      ref.read(appLinksServiceProvider).start();
+      ref.read(sharedPgnServiceProvider).start();
+    });
 
     if (Platform.isIOS) {
       HomeWidget.setAppGroupId(_kIosAppGroupId);
@@ -174,12 +161,10 @@ class _AppState extends ConsumerState<Application> {
       }, fireImmediately: true);
     }
 
-    // Listen for connectivity changes and perform actions accordingly.
     ref.listenManual(connectivityChangesProvider, (prev, current) async {
       final prevWasOffline = prev?.value?.isOnline == false;
       final currentIsOnline = current.value?.isOnline == true;
 
-      // Play registered moves whenever the app comes back online.
       if (prevWasOffline && currentIsOnline) {
         final nbMovesPlayed = await ref.read(correspondenceServiceProvider).playRegisteredMoves();
         if (nbMovesPlayed > 0) {
@@ -187,7 +172,6 @@ class _AppState extends ConsumerState<Application> {
         }
       }
 
-      // Perform actions once when the app comes online.
       if (current.value?.isOnline == true && !_firstTimeOnlineCheck) {
         _firstTimeOnlineCheck = true;
         ref.read(correspondenceServiceProvider).syncGames();
@@ -209,11 +193,7 @@ class _AppState extends ConsumerState<Application> {
   @override
   Widget build(BuildContext context) {
     final generalPrefs = ref.watch(generalPreferencesProvider);
-    final boardPrefs = ref.watch(boardPreferencesProvider);
-    final themePrefs = ref.watch(themePreferencesProvider);
-    final currentPalette = ThemePalettes.getById(themePrefs.currentThemeId);
-    final theme = makeAppTheme(context, generalPrefs, boardPrefs, palette: currentPalette);
-
+    final theme = ref.watch(appThemeProvider);
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
     return MaterialApp(
@@ -238,3 +218,12 @@ class _AppState extends ConsumerState<Application> {
     );
   }
 }
+
+final appThemeProvider = Provider<ThemeData>((ref) {
+  final generalPrefs = ref.watch(generalPreferencesProvider);
+  final boardPrefs = ref.watch(boardPreferencesProvider);
+  final themePrefs = ref.watch(themePreferencesProvider);
+
+  final currentPalette = ThemePalettes.getById(themePrefs.currentThemeId);
+  return makeAppThemeNoContext(generalPrefs, boardPrefs, palette: currentPalette);
+});

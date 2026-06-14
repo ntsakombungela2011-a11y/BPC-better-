@@ -1,6 +1,7 @@
 import 'package:chessground/chessground.dart';
 import 'package:dartchess/dartchess.dart';
 import 'package:flutter/widgets.dart';
+import 'dart:isolate';
 
 /// Computes the set of squares that should have an atomic explosion animation
 /// after [move] was played from [positionBefore].
@@ -23,10 +24,11 @@ Future<void> precachePieceImages(PieceSet pieceSet) async {
 
     ChessgroundImages.instance.clear();
 
-    for (final asset in pieceSet.assets.values) {
-      await ChessgroundImages.instance.load(asset, devicePixelRatio: devicePixelRatio);
-      debugPrint('Preloaded piece image: ${asset.assetName}');
-    }
+    // Use Future.wait to parallelize image loading
+    await Future.wait(pieceSet.assets.values.map((asset) =>
+      ChessgroundImages.instance.load(asset, devicePixelRatio: devicePixelRatio)
+        .then((_) => debugPrint('Preloaded piece image: ${asset.assetName}'))
+    ));
   } catch (e) {
     debugPrint('Failed to preload piece images: $e');
   }

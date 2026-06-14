@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lichess_mobile/src/binding.dart';
 import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
@@ -46,10 +48,11 @@ mixin PreferencesStorage<T extends Serializable> on Notifier<T> {
   PrefCategory get prefCategory;
 
   Future<void> save(T value) async {
-    await LichessBinding.instance.sharedPreferences.setString(
+    // Perform non-blocking write to avoid stutter on UI if called from main thread
+    unawaited(LichessBinding.instance.sharedPreferences.setString(
       prefCategory.storageKey,
       jsonEncode(value.toJson()),
-    );
+    ));
 
     state = value;
   }
@@ -60,6 +63,7 @@ mixin PreferencesStorage<T extends Serializable> on Notifier<T> {
       return defaults;
     }
     try {
+      // jsonDecode can be heavy for large objects, but preference objects are usually small.
       return fromJson(jsonDecode(stored) as Map<String, dynamic>);
     } catch (e) {
       _logger.warning('Failed to decode $prefCategory preferences: $e');
@@ -77,10 +81,10 @@ mixin SessionPreferencesStorage<T extends Serializable> on Notifier<T> {
 
   Future<void> save(T value) async {
     final authUser = ref.read(authControllerProvider);
-    await LichessBinding.instance.sharedPreferences.setString(
+    unawaited(LichessBinding.instance.sharedPreferences.setString(
       key(prefCategory.storageKey, authUser),
       jsonEncode(value.toJson()),
-    );
+    ));
 
     state = value;
   }

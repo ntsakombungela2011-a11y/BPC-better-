@@ -47,15 +47,17 @@ class BoardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final board = Chessboard(
-      key: boardKey,
-      controller: controller,
-      size: size,
-      orientation: orientation,
-      onMove: onMove,
-      shapes: shapes,
-      annotations: annotations,
-      settings: settings,
+    final board = RepaintBoundary(
+      child: Chessboard(
+        key: boardKey,
+        controller: controller,
+        size: size,
+        orientation: orientation,
+        onMove: onMove,
+        shapes: shapes,
+        annotations: annotations,
+        settings: settings,
+      ),
     );
 
     final overlay = boardOverlay ?? (error != null ? _ErrorWidget(errorMessage: error!) : null);
@@ -99,63 +101,41 @@ class _ErrorWidget extends StatelessWidget {
   }
 }
 
-/// Executes a pending premove on [ctrl] if it is legal in [position], calling [onMove] via
-/// [scheduleMicrotask] to avoid modifying Riverpod providers inside widget lifecycle callbacks.
-/// Clears the premove if it is illegal.
-void tryExecutePremove(ChessboardController ctrl, Position position, void Function(Move) onMove) {
-  final premove = ctrl.premove;
-  if (premove == null) return;
-  if (position.isLegal(premove)) {
-    if (premove is NormalMove && isPromotionPawnMove(position, premove)) {
-      ctrl.premove = null;
-      ctrl.pendingPromotion = premove;
-    } else {
-      ctrl.premove = null;
-      scheduleMicrotask(() => onMove(premove));
-    }
-  } else {
-    // Premove became illegal (e.g. after a takeback) — clear it.
-    ctrl.premove = null;
+/// Computes the valid moves for the board based on the current position and
+/// the user's preferences.
+Map<Square, Set<Square>> computeValidMoves(
+  Position position,
+  CastlingMethod castlingMethod,
+) {
+  final Map<Square, Set<Square>> result = {};
+  if (position.isGameOver) {
+    return result;
   }
-}
+  for (final move in position.legalMoves) {
+    final from = move.from;
+    final to = move.to;
+    if (result.containsKey(from)) {
+      result[from]!.add(to);
+    } else {
+      result[from] = {to};
+    }
+  }
 
-/// Builds a [GameData] object for the given position and variant, including legal moves, check status, and crazyhouse drops.
-GameData buildGameData({
-  required String fen,
-  required Variant variant,
-  required Position position,
-  required PlayerSide playerSide,
-  required CastlingMethod castlingMethod,
-  required bool boardHighlights,
-  Move? lastMove,
-}) {
-  return GameData(
-    fen: fen,
-    playerSide: playerSide,
-    sideToMove: position.turn,
-    validMoves: _makeLegalMoves(position, variant: variant, castlingMethod: castlingMethod),
-    lastMove: lastMove,
-    kingSquareInCheck: boardHighlights && position.isCheck
-        ? position.board.kingOf(position.turn)
-        : null,
-    validDropSquares: variant == Variant.crazyhouse ? position.legalDrops.squares.toSet() : null,
-  );
-}
-
-Map<Square, Set<Square>> _makeLegalMoves(
-  Position pos, {
-  required CastlingMethod castlingMethod,
-  required Variant variant,
-}) {
-  final result = <Square, Set<Square>>{};
-  for (final entry in pos.legalMoves.entries) {
-    final dests = entry.value.squares;
-    if (dests.isNotEmpty) {
+  // Handle king-over-rook castling if kingTwoSquares is disabled.
+  if (castlingMethod == CastlingMethod.kingOverRook ||
+      castlingMethod == CastlingMethod.kingTwoSquares) {
+    for (final entry in result.entries) {
       final from = entry.key;
-      final destSet = dests.toSet();
-      if (variant != Variant.chess960 &&
-          from == pos.board.kingOf(pos.turn) &&
+      final destSet = entry.value;
+      final piece = position.board.pieceAt(from);
+      if (piece != null &&
+          piece.role == Role.king &&
+          (from == Square.e1 || from == Square.e8) &&
           entry.key.file == 4) {
+        final dests = position.legalMoves
+            .where((m) => m.from == from)
+            .map((m) => m.to)
+            .toSet();
         if (dests.contains(Square.a1)) {
           destSet.add(Square.c1);
         } else if (dests.contains(Square.a8)) {

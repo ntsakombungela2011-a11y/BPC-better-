@@ -125,36 +125,54 @@ class AppColorScheme {
 class AppColorGenerator {
   AppColorGenerator._();
 
+  static final Map<String, AppColorScheme> _cache = {};
+
   /// Generate a color scheme from a theme palette.
   static AppColorScheme generateFromPalette(ThemePalette palette, {bool isDark = false}) {
+    final cacheKey = '${palette.id}_${isDark ? 'dark' : 'light'}';
+    if (_cache.containsKey(cacheKey)) {
+      return _cache[cacheKey]!;
+    }
+
     final primary = palette.primaryColor;
     final secondary = palette.secondaryColor;
     final tertiary = palette.tertiaryColor;
     final surface = palette.surfaceColor;
 
-    return _generate(
+    final scheme = _generate(
       primary: primary,
       secondary: secondary,
       tertiary: tertiary,
       surface: surface,
       isDark: isDark,
     );
+
+    _cache[cacheKey] = scheme;
+    return scheme;
   }
 
   /// Legacy support for seed color.
   static AppColorScheme generateFromSeed(Color seedColor, {bool isDark = false}) {
+    final cacheKey = 'seed_${seedColor.toARGB32()}_${isDark ? 'dark' : 'light'}';
+    if (_cache.containsKey(cacheKey)) {
+      return _cache[cacheKey]!;
+    }
+
     final hsl = HSLColor.fromColor(seedColor);
     final secondary = hsl.withHue((hsl.hue + 30) % 360).toColor();
     final tertiary = hsl.withHue((hsl.hue + 120) % 360).toColor();
     final surface = isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF2F2F2);
 
-    return _generate(
+    final scheme = _generate(
       primary: seedColor,
       secondary: secondary,
       tertiary: tertiary,
       surface: surface,
       isDark: isDark,
     );
+
+    _cache[cacheKey] = scheme;
+    return scheme;
   }
 
   static AppColorScheme _generate({

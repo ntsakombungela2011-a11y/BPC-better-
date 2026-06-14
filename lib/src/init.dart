@@ -1,3 +1,4 @@
+import "dart:async";
 import 'dart:convert';
 
 import 'package:dynamic_system_colors/dynamic_system_colors.dart';
@@ -98,7 +99,9 @@ Future<void> preloadPieceImages() async {
     }
   }
 
-  await precachePieceImages(boardPrefs.pieceSet);
+  // Optimize: Do not await piece image preloading on startup to speed up cold start.
+  // This will happen in the background.
+  unawaited(precachePieceImages(boardPrefs.pieceSet));
 }
 
 /// Display setup on Android.

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lichess_mobile/src/constants.dart';
 import 'package:lichess_mobile/src/model/settings/board_preferences.dart';
@@ -14,13 +15,17 @@ const kSliderTheme = SliderThemeData(
 );
 
 ThemeData makeAppTheme(BuildContext context, GeneralPrefs generalPrefs, BoardPrefs boardPrefs, {ThemePalette? palette}) {
-  final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+  return makeAppThemeNoContext(generalPrefs, boardPrefs, palette: palette);
+}
+
+ThemeData makeAppThemeNoContext(GeneralPrefs generalPrefs, BoardPrefs boardPrefs, {ThemePalette? palette}) {
+  final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
   final brightness = generalPrefs.isForcedDarkMode
       ? Brightness.dark
       : switch (generalPrefs.themeMode) {
           BackgroundThemeMode.light => Brightness.light,
           BackgroundThemeMode.dark => Brightness.dark,
-          BackgroundThemeMode.system => MediaQuery.platformBrightnessOf(context),
+          BackgroundThemeMode.system => PlatformDispatcher.instance.platformBrightness,
         };
 
   if (generalPrefs.backgroundColor == null && generalPrefs.backgroundImage == null) {
@@ -40,56 +45,53 @@ ThemeData makeAppTheme(BuildContext context, GeneralPrefs generalPrefs, BoardPre
   }
 }
 
-/// Generate a theme from a theme palette.
 ThemeData makeAppThemeFromPalette(
-  BuildContext context,
   ThemePalette palette,
   Brightness brightness,
 ) {
-  final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
-  final seedColor = palette.primaryColor;
+  final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
+  final appColorScheme = AppColorGenerator.generateFromPalette(
+    palette,
+    isDark: brightness == Brightness.dark,
+  );
 
-  final colorScheme = brightness == Brightness.dark
-      ? AppColorGenerator.generateDark(seedColor).toColorScheme(brightness)
-      : AppColorGenerator.generateLight(seedColor).toColorScheme(brightness);
+  final colorScheme = appColorScheme.toColorScheme(brightness);
 
-  final textTheme = isIOS ? kCupertinoDefaultTextTheme : null;
-  final theme = ThemeData.from(colorScheme: colorScheme, textTheme: textTheme);
-
-  return theme.copyWith(
-    cupertinoOverrideTheme: _makeCupertinoThemeData(theme.colorScheme, brightness),
-    splashFactory: isIOS ? NoSplash.splashFactory : null,
+  return ThemeData(
+    useMaterial3: true,
+    brightness: brightness,
+    colorScheme: colorScheme,
+    scaffoldBackgroundColor: appColorScheme.surface,
+    cupertinoOverrideTheme: _makeCupertinoThemeData(colorScheme, brightness),
     appBarTheme: _appBarTheme.copyWith(
-      backgroundColor: isIOS
-          ? theme.colorScheme.surface.withValues(alpha: kCupertinoBarOpacity)
-          : null,
+      backgroundColor: isIOS ? null : appColorScheme.surface,
       scrolledUnderElevation: isIOS ? 0 : null,
       titleTextStyle: isIOS
           ? const CupertinoTextThemeData().navTitleTextStyle.copyWith(
-              color: theme.colorScheme.onSurface,
+              color: appColorScheme.onSurface,
             )
           : null,
     ),
     navigationBarTheme: isIOS
         ? NavigationBarThemeData(
-            backgroundColor: theme.colorScheme.surface.withValues(alpha: kCupertinoBarOpacity),
+            backgroundColor: appColorScheme.surface.withValues(alpha: kCupertinoBarOpacity),
           )
         : null,
     bottomAppBarTheme: BottomAppBarThemeData(
-      color: theme.colorScheme.surface,
+      color: appColorScheme.surface,
       elevation: isIOS ? 0 : null,
     ),
     searchBarTheme: isIOS ? _kCupertinoSearchBarTheme : null,
-    iconTheme: IconThemeData(color: theme.colorScheme.onSurface.withValues(alpha: 0.7)),
-    listTileTheme: _makeListTileTheme(theme.colorScheme, isIOS),
+    iconTheme: IconThemeData(color: appColorScheme.onSurface.withValues(alpha: 0.7)),
+    listTileTheme: _makeListTileTheme(colorScheme, isIOS),
     cardTheme: isIOS
-        ? _kCupertinoCardTheme.copyWith(color: theme.colorScheme.surfaceContainerHigh)
+        ? _kCupertinoCardTheme.copyWith(color: appColorScheme.surfaceContainerHigh)
         : null,
-    inputDecorationTheme: isIOS ? _makeCupertinoInputDecorationTheme(theme.colorScheme) : null,
+    inputDecorationTheme: isIOS ? _makeCupertinoInputDecorationTheme(colorScheme) : null,
     floatingActionButtonTheme: isIOS
         ? FloatingActionButtonThemeData(
-            backgroundColor: theme.colorScheme.secondaryFixedDim,
-            foregroundColor: theme.colorScheme.onSecondaryFixedVariant,
+            backgroundColor: appColorScheme.secondary,
+            foregroundColor: appColorScheme.onSecondary,
           )
         : null,
     dialogTheme: isIOS ? _kCupertinoDialogTheme : null,
@@ -98,46 +100,9 @@ ThemeData makeAppThemeFromPalette(
     menuTheme: isIOS ? _kCupertinoMenuThemeData : null,
     bottomSheetTheme: isIOS ? _kCupertinoBottomSheetTheme : null,
     sliderTheme: kSliderTheme,
-    extensions: [lichessCustomColors.harmonized(theme.colorScheme)],
+    extensions: [lichessCustomColors.harmonized(colorScheme)],
   );
 }
-
-/// A custom theme extension that adds lichess custom properties to the theme.
-@immutable
-class CustomTheme extends ThemeExtension<CustomTheme> {
-  const CustomTheme({required this.rowEven, required this.rowOdd});
-
-  final Color rowEven;
-  final Color rowOdd;
-
-  @override
-  CustomTheme copyWith({Color? rowEven, Color? rowOdd}) {
-    return CustomTheme(rowEven: rowEven ?? this.rowEven, rowOdd: rowOdd ?? this.rowOdd);
-  }
-
-  @override
-  CustomTheme lerp(ThemeExtension<CustomTheme>? other, double t) {
-    if (other is! CustomTheme) {
-      return this;
-    }
-    return CustomTheme(
-      rowEven: Color.lerp(rowEven, other.rowEven, t) ?? rowEven,
-      rowOdd: Color.lerp(rowOdd, other.rowOdd, t) ?? rowOdd,
-    );
-  }
-}
-
-/// A [BuildContext] extension that provides the [lichessTheme] property.
-extension CustomThemeBuildContext on BuildContext {
-  CustomTheme get _defaultLichessTheme => CustomTheme(
-    rowEven: ColorScheme.of(this).surfaceContainer,
-    rowOdd: ColorScheme.of(this).surfaceContainerLow,
-  );
-
-  CustomTheme get lichessTheme => Theme.of(this).extension<CustomTheme>() ?? _defaultLichessTheme;
-}
-
-// --
 
 ThemeData _makeDefaultTheme(
   Brightness brightness,
@@ -146,82 +111,49 @@ ThemeData _makeDefaultTheme(
   bool isIOS, {
   ThemePalette? palette,
 }) {
-  final boardTheme = boardPrefs.boardTheme;
-  final dynamicColorSchemes = getDynamicColorSchemes();
-  final systemScheme = switch (brightness) {
-    Brightness.light => dynamicColorSchemes?.light,
-    Brightness.dark => dynamicColorSchemes?.dark,
-  };
-  final hasSystemColors = systemScheme != null && generalPrefs.systemColors == true;
+  if (palette != null) {
+    return makeAppThemeFromPalette(palette, brightness);
+  }
 
-  final neutralScheme = ColorScheme.fromSeed(
-    seedColor: boardTheme.colors.darkSquare,
+  final seedColor = brightness == Brightness.dark ? const Color(0xFF121414) : const Color(0xFFFFFFFF);
+  final appColorScheme = AppColorGenerator.generateFromSeed(seedColor, isDark: brightness == Brightness.dark);
+  final colorScheme = appColorScheme.toColorScheme(brightness);
+
+  return ThemeData(
+    useMaterial3: true,
     brightness: brightness,
-    dynamicSchemeVariant: DynamicSchemeVariant.neutral,
-  );
-  final defaultScheme = ColorScheme.fromSeed(
-    seedColor: boardTheme.colors.darkSquare,
-    brightness: brightness,
-  );
-  // makes a theme with neutral surfaces and default colors
-  final boardScheme = defaultScheme.copyWith(
-    surface: neutralScheme.surface,
-    onSurface: neutralScheme.onSurface,
-    surfaceDim: neutralScheme.surfaceDim,
-    surfaceBright: neutralScheme.surfaceBright,
-    surfaceContainer: neutralScheme.surfaceContainer,
-    surfaceContainerLowest: neutralScheme.surfaceContainerLowest,
-    surfaceContainerLow: neutralScheme.surfaceContainerLow,
-    surfaceContainerHigh: neutralScheme.surfaceContainerHigh,
-    surfaceContainerHighest: neutralScheme.surfaceContainerHighest,
-    onSurfaceVariant: neutralScheme.onSurfaceVariant,
-    inverseSurface: neutralScheme.inverseSurface,
-    onInverseSurface: neutralScheme.onInverseSurface,
-    shadow: neutralScheme.shadow,
-    scrim: neutralScheme.scrim,
-    surfaceTint: neutralScheme.surfaceTint,
-  );
-
-  final textTheme = isIOS ? kCupertinoDefaultTextTheme : null;
-
-  final theme = hasSystemColors
-      ? ThemeData.from(colorScheme: systemScheme, textTheme: textTheme)
-      : ThemeData.from(colorScheme: boardScheme, textTheme: textTheme);
-
-  return theme.copyWith(
-    cupertinoOverrideTheme: _makeCupertinoThemeData(theme.colorScheme, brightness),
-    splashFactory: isIOS ? NoSplash.splashFactory : null,
+    colorScheme: colorScheme,
+    scaffoldBackgroundColor: appColorScheme.surface,
+    cupertinoOverrideTheme: _makeCupertinoThemeData(colorScheme, brightness),
     appBarTheme: _appBarTheme.copyWith(
-      backgroundColor: isIOS
-          ? theme.colorScheme.surface.withValues(alpha: kCupertinoBarOpacity)
-          : null,
+      backgroundColor: isIOS ? null : appColorScheme.surface,
       scrolledUnderElevation: isIOS ? 0 : null,
       titleTextStyle: isIOS
           ? const CupertinoTextThemeData().navTitleTextStyle.copyWith(
-              color: theme.colorScheme.onSurface,
+              color: appColorScheme.onSurface,
             )
           : null,
     ),
     navigationBarTheme: isIOS
         ? NavigationBarThemeData(
-            backgroundColor: theme.colorScheme.surface.withValues(alpha: kCupertinoBarOpacity),
+            backgroundColor: appColorScheme.surface.withValues(alpha: kCupertinoBarOpacity),
           )
         : null,
     bottomAppBarTheme: BottomAppBarThemeData(
-      color: theme.colorScheme.surface,
+      color: appColorScheme.surface,
       elevation: isIOS ? 0 : null,
     ),
     searchBarTheme: isIOS ? _kCupertinoSearchBarTheme : null,
-    iconTheme: IconThemeData(color: theme.colorScheme.onSurface.withValues(alpha: 0.7)),
-    listTileTheme: _makeListTileTheme(theme.colorScheme, isIOS),
+    iconTheme: IconThemeData(color: appColorScheme.onSurface.withValues(alpha: 0.7)),
+    listTileTheme: _makeListTileTheme(colorScheme, isIOS),
     cardTheme: isIOS
-        ? _kCupertinoCardTheme.copyWith(color: theme.colorScheme.surfaceContainerHigh)
+        ? _kCupertinoCardTheme.copyWith(color: appColorScheme.surfaceContainerHigh)
         : null,
-    inputDecorationTheme: isIOS ? _makeCupertinoInputDecorationTheme(theme.colorScheme) : null,
+    inputDecorationTheme: isIOS ? _makeCupertinoInputDecorationTheme(colorScheme) : null,
     floatingActionButtonTheme: isIOS
         ? FloatingActionButtonThemeData(
-            backgroundColor: theme.colorScheme.secondaryFixedDim,
-            foregroundColor: theme.colorScheme.onSecondaryFixedVariant,
+            backgroundColor: appColorScheme.secondary,
+            foregroundColor: appColorScheme.onSecondary,
           )
         : null,
     dialogTheme: isIOS ? _kCupertinoDialogTheme : null,
@@ -230,7 +162,7 @@ ThemeData _makeDefaultTheme(
     menuTheme: isIOS ? _kCupertinoMenuThemeData : null,
     bottomSheetTheme: isIOS ? _kCupertinoBottomSheetTheme : null,
     sliderTheme: kSliderTheme,
-    extensions: [lichessCustomColors.harmonized(theme.colorScheme)],
+    extensions: [lichessCustomColors.harmonized(colorScheme)],
   );
 }
 
@@ -267,7 +199,7 @@ ThemeData _makeBackgroundImageTheme({
     inputDecorationTheme: isIOS ? _makeCupertinoInputDecorationTheme(baseTheme.colorScheme) : null,
     bottomSheetTheme: (isIOS ? _kCupertinoBottomSheetTheme : const BottomSheetThemeData()).copyWith(
       backgroundColor: isIOS
-          ? lighten(baseTheme.colorScheme.surface, 0.1).withValues(alpha: 0.9)
+          ? Color.lerp(baseTheme.colorScheme.surface, Colors.white, 0.1)!.withValues(alpha: 0.9)
           : baseTheme.colorScheme.surface.withValues(alpha: 0.9),
     ),
     drawerTheme: DrawerThemeData(
@@ -438,12 +370,9 @@ CupertinoThemeData _makeCupertinoThemeData(ColorScheme colorScheme, Brightness b
   );
 }
 
-// Letter spacing value taken from:
-// https://github.com/flutter/flutter/blob/ea121f8859e4b13e47a8f845e4586164519588bc/packages/flutter/lib/src/cupertino/text_theme.dart#L106
 const TextStyle _kCupertinoDefaultTextStyle = TextStyle(letterSpacing: -0.41);
 
 const TextTheme kCupertinoDefaultTextTheme = TextTheme(
-  // titleLarge: _kCupertinoDefaultTextStyle,
   titleMedium: _kCupertinoDefaultTextStyle,
   titleSmall: _kCupertinoDefaultTextStyle,
   bodyLarge: _kCupertinoDefaultTextStyle,

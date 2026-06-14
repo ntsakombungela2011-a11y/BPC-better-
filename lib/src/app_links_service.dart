@@ -10,6 +10,7 @@ import 'package:lichess_mobile/src/model/analysis/analysis_controller.dart';
 import 'package:lichess_mobile/src/model/challenge/challenge_repository.dart';
 import 'package:lichess_mobile/src/model/challenge/challenge_service.dart';
 import 'package:lichess_mobile/src/model/common/id.dart';
+import 'package:lichess_mobile/src/model/game/game.dart';
 import 'package:lichess_mobile/src/model/game/game_repository.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_angle.dart';
@@ -48,97 +49,57 @@ final appLinksServiceProvider = Provider<AppLinksService>((ref) {
 });
 
 class AppLinksService {
-  AppLinksService(this.ref);
+  AppLinksService(this.ref) : _appLinks = AppLinks();
 
   final Ref ref;
-
-  final _appLinks = AppLinks();
+  final AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
 
-  Future<void> start() async {
-    // Handle the link that cold-started the app (if any) after the first frame
-    // so the navigator is ready. Push without animation — the user launched the
-    // app via this link so the target screen should just be there.
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      try {
-        final initialUri = await _appLinks.getInitialLink();
-        if (initialUri != null) {
-          await _handleUri(initialUri, animated: false);
-        }
-      } catch (e, st) {
-        _logger.severe('Error handling initial app link: $e\n$st');
+  void start() {
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      final context = ref.read(currentNavigatorKeyProvider).currentContext;
+      if (context != null) {
+        handleAppLink(context, uri);
       }
     });
-
-    // Links received while the app is already running get a normal transition.
-    _linkSubscription = _appLinks.uriLinkStream.listen((uri) async {
-      try {
-        await _handleUri(uri, animated: true);
-      } catch (e, st) {
-        _logger.severe('Error handling app link: $e\n$st');
-      }
-    });
-  }
-
-  Future<void> _handleUri(Uri uri, {required bool animated}) async {
-    // File links are handled by the sharing intent logic, so we can ignore them here.
-    if (uri.scheme == 'file' || uri.scheme == 'content') {
-      return;
-    }
-    // Shared PGN deeplinks (from the iOS Share Extension) are handled natively by
-    // SharePlugin, which reads the PGN from the shared App Group container.
-    if (uri.scheme == kLichessCustomUriSchemeName && uri.host == 'shared-pgn') {
-      return;
-    }
-    if (uri.scheme == kLichessCustomUriSchemeName && uri.host == 'open-web') {
-      _handleOpenWebLink(uri);
-      return;
-    }
-    final context = ref.read(currentNavigatorKeyProvider).currentContext;
-    if (uri.scheme == kLichessCustomUriSchemeName &&
-        uri.host == _kDailyPuzzleDeeplinkHost &&
-        uri.pathSegments.firstOrNull == _kDailyPuzzleDeeplinkPath) {
-      if (context != null && context.mounted) {
-        await handleDailyPuzzleLink(
-          context,
-          uri.pathSegments.elementAtOrNull(1),
-          animated: animated,
-        );
-      }
-      return;
-    }
-    if (context != null && context.mounted) {
-      // For app deep links, we don't want to allow falling back to the browser as it might trigger an infinite loop if the app isn't properly handling the link
-      await handleAppLink(context, uri, animated: animated, allowBrowserFallback: false);
-    }
   }
 
   void dispose() {
     _linkSubscription?.cancel();
   }
 
-  /// Resolves an app link [Uri] to one or more corresponding [Route]s.
+  /// Resolves an app link [Uri] to a list of [Route]s.
+  ///
+  /// Returns `null` if the [Uri] is not a valid Lichess app link.
   Future<List<Route<dynamic>>?> resolveAppLinkUri(BuildContext context, Uri appLinkUri) async {
-    if (appLinkUri.pathSegments.isEmpty) return null;
-    _logger.info('Resolving app link: $appLinkUri');
-    switch (appLinkUri.pathSegments[0]) {
-      case 'study':
-        final id = appLinkUri.pathSegments[1];
-        final chapter = appLinkUri.pathSegments.getOrNull(2);
-        return [
-          StudyScreen.buildRoute((
-            id: StudyId(id),
-            initialChapter: chapter != null ? StudyChapterId(chapter) : null,
-          )),
-        ];
+    if (appLinkUri.host == 'open-web') {
+      _handleOpenWebLink(appLinkUri);
+      return [];
+    }
+
+    if (appLinkUri.host == _kDailyPuzzleDeeplinkHost &&
+        appLinkUri.pathSegments.getOrNull(0) == _kDailyPuzzleDeeplinkPath) {
+      final puzzleId = appLinkUri.pathSegments.getOrNull(1);
+      await handleDailyPuzzleLink(context, puzzleId);
+      return [];
+    }
+
+    if (appLinkUri.scheme == 'https' && appLinkUri.host != kLichessHost) {
+      return null;
+    }
+
+    final path = appLinkUri.pathSegments.getOrNull(0);
+    switch (path) {
+      case 'analysis':
+        final options = appLinkUri.queryParameters['fen'] != null
+            ? AnalysisOptions.fromFen(appLinkUri.queryParameters['fen']!)
+            : const AnalysisOptions.standard();
+        return [AnalysisScreen.buildRoute(options)];
       case 'broadcast':
-        final roundId = BroadcastRoundId(appLinkUri.pathSegments[3]);
-        if (appLinkUri.pathSegments.length > 4) {
-          final gameId = BroadcastGameId(appLinkUri.pathSegments[4]);
-          return [
-            BroadcastRoundScreenLoading.buildRoute(roundId, initialTab: BroadcastRoundTab.boards),
-            BroadcastGameScreen.buildRoute(roundId: roundId, gameId: gameId),
-          ];
+        if (appLinkUri.pathSegments.length < 2) return null;
+        final roundId = appLinkUri.pathSegments[1];
+        if (appLinkUri.pathSegments.length == 2) {
+          return [BroadcastRoundScreenLoading.buildRoute(roundId)];
         } else {
           final fragment = appLinkUri.fragment;
           final tab = BroadcastRoundTab.tabOrNullFromString(fragment.split('/').first);
@@ -155,11 +116,13 @@ class AppLinksService {
           return [BroadcastRoundScreenLoading.buildRoute(roundId, initialTab: tab)];
         }
       case 'tournament':
+        if (appLinkUri.pathSegments.length < 2) return null;
         final tournamentId = TournamentId(appLinkUri.pathSegments[1]);
         final playerName = appLinkUri.queryParameters['player'];
         final playerId = playerName != null ? UserId.fromUserName(playerName) : null;
         return [TournamentScreen.buildRoute(tournamentId, initialPlayerId: playerId)];
       case 'training':
+        if (appLinkUri.pathSegments.length < 2) return null;
         final id = appLinkUri.pathSegments[1];
         return [PuzzleScreen.buildRoute(angle: PuzzleAngle.fromKey('mix'), puzzleId: PuzzleId(id))];
       case 'tv':
@@ -177,6 +140,7 @@ class AppLinksService {
           return [];
         }
       case '@':
+        if (appLinkUri.pathSegments.length < 2) return null;
         final isTv = appLinkUri.pathSegments.getOrNull(2) == 'tv';
         if (appLinkUri.pathSegments.length > 2 && !isTv) {
           return null;
@@ -225,12 +189,6 @@ class AppLinksService {
   /// card on the puzzle tab) in response to `org.lichess.mobile://training/daily`
   /// or `org.lichess.mobile://training/daily/{id}` deeplinks emitted by the iOS
   /// home-screen widget.
-  ///
-  /// Always fetches the current daily puzzle first (cached, so no extra request
-  /// in the common case). When [puzzleId] matches today's daily, it is used
-  /// directly. When it differs (widget cached a stale id), that specific puzzle
-  /// is fetched but NOT flagged as the daily so the user isn't confused when
-  /// navigating back to the puzzle tab.
   @visibleForTesting
   Future<void> handleDailyPuzzleLink(
     BuildContext context,
@@ -243,13 +201,9 @@ class AppLinksService {
       if (puzzleId == null || dailyPuzzle.puzzle.id == PuzzleId(puzzleId)) {
         puzzle = dailyPuzzle;
       } else {
-        // Widget cached a different puzzle than today's daily — fetch it, but
-        // don't mark as daily to avoid confusing the user.
         try {
           puzzle = await ref.read(puzzleProvider(PuzzleId(puzzleId)).future);
         } catch (e, st) {
-          // Fall back to the current daily puzzle rather than leaving the tap
-          // as a no-op when the widget's cached id is stale or unreachable.
           _logger.info('Failed to load widget puzzle id $puzzleId, falling back: $e', e, st);
           puzzle = dailyPuzzle;
         }
@@ -271,6 +225,7 @@ class AppLinksService {
 
   Future<bool> _tryResolveChallengeLink(BuildContext context, Uri appLinkUri) async {
     try {
+      if (appLinkUri.pathSegments.isEmpty) return false;
       final challengeId = ChallengeId(appLinkUri.pathSegments[0]);
       if (!challengeId.isValid) return false;
       final challenge = await ref.read(challengeRepositoryProvider).show(challengeId);
@@ -287,6 +242,7 @@ class AppLinksService {
 
   Future<List<Route<dynamic>>?> _tryResolveGameLink(BuildContext context, Uri appLinkUri) async {
     try {
+      if (appLinkUri.pathSegments.isEmpty) return null;
       final gameId = GameId(appLinkUri.pathSegments[0]);
       if (!gameId.isValid) return null;
 
@@ -296,7 +252,7 @@ class AppLinksService {
 
       if (!context.mounted) return null;
 
-      if (game.finished || game.source == .import) {
+      if (game.finished || game.source == GameSource.import) {
         return [
           AnalysisScreen.buildRoute(
             AnalysisOptions.archivedGame(
@@ -346,10 +302,6 @@ class AppLinksService {
     }
   }
 
-  /// Pushes [route] onto [navigator], replacing the top route instead of
-  /// stacking when the top is already the same screen type — preventing
-  /// duplicates when the user taps a deep link while already on that screen.
-  /// Also applies [_withNoTransition] when [animated] is `false`.
   static Future<void> _pushDeepLinkRoute(
     NavigatorState navigator,
     Route<dynamic> route, {
@@ -370,9 +322,6 @@ class AppLinksService {
     return navigator.push(pushed);
   }
 
-  /// Returns a copy of [route] with [Duration.zero] transition so the screen
-  /// appears instantly — used when the app is opened via a deep link and a
-  /// transition would be jarring.
   static Route<dynamic> _withNoTransition(Route<dynamic> route) {
     if (route is ScreenRoute) {
       return MaterialScreenRoute(
@@ -389,10 +338,8 @@ class AppLinksService {
 
   static const kLichessLinkifiers = [UrlLinkifier(), EmailLinkifier(), UserTagLinkifier()];
 
-  /// Handles link clicks in Linkify widgets throughout the app.
   Future<void> onLinkifyOpen(BuildContext context, LinkableElement link) async {
     if (link is UrlElement && link.url.startsWith(RegExp('https?:\\/\\/$kLichessHost'))) {
-      // Handle Lichess links specifically
       final appLinkUri = Uri.parse(link.url);
       await handleAppLink(context, appLinkUri);
     } else if (link.originText.startsWith('@')) {
