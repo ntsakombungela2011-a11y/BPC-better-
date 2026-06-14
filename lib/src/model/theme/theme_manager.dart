@@ -57,13 +57,13 @@ class ThemeManager {
     final palette = currentTheme;
     if (palette == null) {
       return (
-        light: ColorGenerator.generateLight,
-        dark: ColorGenerator.generateDark,
+        light: AppColorGenerator.generateLight,
+        dark: AppColorGenerator.generateDark,
       );
     }
     return (
-      light: (seed) => ColorGenerator.generateLight(seed),
-      dark: (seed) => ColorGenerator.generateDark(seed),
+      light: (seed) => AppColorGenerator.generateLight(seed),
+      dark: (seed) => AppColorGenerator.generateDark(seed),
     );
   }
 
@@ -80,7 +80,7 @@ class ThemeManager {
 final currentThemeColorSchemeProvider = Provider<ColorGenerator>((ref) {
   final prefs = ref.watch(themePreferencesProvider);
   final palette = ThemePalettes.getById(prefs.currentThemeId);
-  return (seed) => ColorGenerator.generateLight(seed);
+  return (seed) => AppColorGenerator.generateLight(seed);
 });
 
 /// Provider for themes filtered by category.

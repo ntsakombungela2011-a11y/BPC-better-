@@ -132,7 +132,7 @@ class _ChessboardPreview extends StatelessWidget {
     final secondaryColor = palette.secondaryColor;
 
     // Create board colors from palette
-    final boardColors = BoardColors(
+    final boardColors = ChessboardColorScheme(
       black: primaryColor,
       white: _lighten(primaryColor, 0.3),
       lastMove: secondaryColor.withValues(alpha: 0.5),
@@ -148,10 +148,8 @@ class _ChessboardPreview extends StatelessWidget {
       lastMove: const NormalMove(from: Square.d2, to: Square.d4),
       fen: 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
       settings: StaticChessboardSettings(
-        boardSettings: BoardSettings(
-          colors: boardColors,
-          orientation: BoardOrientation.white,
-        ),
+        colorScheme: boardColors,
+        orientation: Side.white,
       ),
     );
   }

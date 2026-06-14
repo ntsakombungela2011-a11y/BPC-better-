@@ -1,5 +1,10 @@
+typedef ColorGenerator = AppColorScheme Function(Color seedColor);
+
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+
+/// Function type for generating color schemes.
+
 
 /// A complete color scheme for the app.
 class AppColorScheme {
@@ -100,7 +105,7 @@ class AppColorScheme {
 }
 
 /// Utility class for generating color schemes from seed colors.
-class ColorGenerator {
+class AppColorGenerator {
   ColorGenerator._();
 
   /// Generate a complete color scheme from a seed color.
@@ -339,7 +344,7 @@ extension ColorUtils on Color {
   }
 
   /// Get the complement of this color.
-  Color get complement => ColorGenerator.rotateHue(this, 180);
+  Color get complement => AppColorGenerator.rotateHue(this, 180);
 
   /// Blend this color with another.
   Color blend(Color other, double amount) {
