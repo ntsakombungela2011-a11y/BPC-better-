@@ -50,8 +50,8 @@ ThemeData makeAppThemeFromPalette(
   final seedColor = palette.primaryColor;
 
   final colorScheme = brightness == Brightness.dark
-      ? ColorGenerator.generateDark(seedColor).toColorScheme(brightness)
-      : ColorGenerator.generateLight(seedColor).toColorScheme(brightness);
+      ? AppColorGenerator.generateDark(seedColor).toColorScheme(brightness)
+      : AppColorGenerator.generateLight(seedColor).toColorScheme(brightness);
 
   final textTheme = isIOS ? kCupertinoDefaultTextTheme : null;
   final theme = ThemeData.from(colorScheme: colorScheme, textTheme: textTheme);
