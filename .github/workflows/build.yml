@@ -6,17 +6,13 @@ permissions: read-all
 
 jobs:
   build:
-    name: Build ${{ matrix.target }}
-    runs-on: macos-15
-    strategy:
-      fail-fast: false
-      matrix:
-        target: ["apk --debug", "ios --no-codesign"]
+    name: Build Android APK
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout mobile code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: 21
@@ -28,13 +24,17 @@ jobs:
           flutter-version-file: pubspec.yaml
       - run: flutter doctor -v
 
-      - name: Create build directory
-        run: mkdir -p build/ios/SourcePackages
-
       - name: Install dependencies
         run: flutter pub get
 
       - name: Code generation
-        run: dart run build_runner build
+        run: dart run build_runner build --delete-conflicting-outputs
 
-      - run: flutter build ${{ matrix.target }}
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: lichess-mobile-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
