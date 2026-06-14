@@ -22,7 +22,7 @@ android {
     // home_widget pulls in glance-appwidget and remote-creation-android, both of which
     // declare in their AAR metadata that all dependents (including the app) must compile
     // against SDK 37+. This cannot be suppressed — it is enforced by AGP at build time.
-    compileSdk = 35
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
