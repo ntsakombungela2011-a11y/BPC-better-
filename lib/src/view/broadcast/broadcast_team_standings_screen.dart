@@ -1,3 +1,4 @@
+import "package:lichess_mobile/src/utils/theme_context.dart";
 import 'dart:math';
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';

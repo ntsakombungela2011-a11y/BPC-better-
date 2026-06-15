@@ -1,84 +1,60 @@
 import 'dart:async';
 
-import 'package:app_links/app_links.dart';
-import 'package:dartchess/dartchess.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lichess_mobile/src/constants.dart';
 import 'package:lichess_mobile/src/model/analysis/analysis_controller.dart';
+import 'package:lichess_mobile/src/model/broadcast/broadcast.dart';
+import 'package:lichess_mobile/src/model/broadcast/broadcast_providers.dart';
 import 'package:lichess_mobile/src/model/challenge/challenge_repository.dart';
 import 'package:lichess_mobile/src/model/challenge/challenge_service.dart';
+import 'package:lichess_mobile/src/model/common/chess.dart';
 import 'package:lichess_mobile/src/model/common/id.dart';
-import 'package:lichess_mobile/src/model/game/game.dart';
 import 'package:lichess_mobile/src/model/game/game_repository.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle.dart';
-import 'package:lichess_mobile/src/model/puzzle/puzzle_angle.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_providers.dart';
-import 'package:lichess_mobile/src/model/puzzle/puzzle_theme.dart';
+import 'package:lichess_mobile/src/model/puzzle/puzzle_angle.dart';
 import 'package:lichess_mobile/src/model/tv/tv_channel.dart';
-import 'package:lichess_mobile/src/model/user/user.dart';
 import 'package:lichess_mobile/src/model/user/user_repository.dart';
-import 'package:lichess_mobile/src/tab_scaffold.dart';
-import 'package:lichess_mobile/src/utils/navigation.dart';
 import 'package:lichess_mobile/src/view/analysis/analysis_screen.dart';
-import 'package:lichess_mobile/src/view/broadcast/broadcast_game_screen.dart';
 import 'package:lichess_mobile/src/view/broadcast/broadcast_player_results_screen.dart';
 import 'package:lichess_mobile/src/view/broadcast/broadcast_round_screen.dart';
 import 'package:lichess_mobile/src/view/puzzle/puzzle_screen.dart';
-import 'package:lichess_mobile/src/view/study/study_screen.dart';
 import 'package:lichess_mobile/src/view/tournament/tournament_screen.dart';
-import 'package:lichess_mobile/src/view/user/user_or_profile_screen.dart';
-import 'package:lichess_mobile/src/view/watch/tv_screen.dart';
-import 'package:lichess_mobile/src/widgets/feedback.dart';
-import 'package:linkify/linkify.dart';
+import 'package:lichess_mobile/src/view/tv/tv_screen.dart';
+import 'package:lichess_mobile/src/view/user/user_screen.dart';
+import 'package:lichess_mobile/src/utils/l10n_context.dart';
+import 'package:lichess_mobile/src/widgets/snackbar.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final _logger = Logger('AppLinks');
-
-// Deeplink host/path for the iOS daily-puzzle widget tap.
-// Must stay in sync with Deeplinks.swift in the iOS widget extension.
-const _kDailyPuzzleDeeplinkHost = 'training';
-const _kDailyPuzzleDeeplinkPath = 'daily';
-
-final appLinksServiceProvider = Provider<AppLinksService>((ref) {
-  final service = AppLinksService(ref);
-  ref.onDispose(() => service.dispose());
-  return service;
-});
+final appLinksServiceProvider = Provider((ref) => AppLinksService(ref));
 
 class AppLinksService {
-  AppLinksService(this.ref) : _appLinks = AppLinks();
+  AppLinksService(this.ref);
 
   final Ref ref;
-  final AppLinks _appLinks;
-  StreamSubscription<Uri>? _linkSubscription;
+  final _logger = Logger('AppLinksService');
+
+  static const kLichessHost = 'lichess.org';
+  static const _kDailyPuzzleDeeplinkPath = 'training/daily';
 
   void start() {
-    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-      final context = ref.read(currentNavigatorKeyProvider).currentContext;
-      if (context != null) {
-        handleAppLink(context, uri);
-      }
-    });
+    // Initialization logic if needed
   }
 
-  void dispose() {
-    _linkSubscription?.cancel();
-  }
-
-  /// Resolves an app link [Uri] to a list of [Route]s.
+  /// Resolves an app link [Uri] into a list of [Route]s to push.
   ///
-  /// Returns `null` if the [Uri] is not a valid Lichess app link.
+  /// Returns `null` if the link cannot be resolved.
   Future<List<Route<dynamic>>?> resolveAppLinkUri(BuildContext context, Uri appLinkUri) async {
-    if (appLinkUri.host == 'open-web') {
-      _handleOpenWebLink(appLinkUri);
-      return [];
+    if (appLinkUri.scheme == 'org.lichess.mobile') {
+      if (appLinkUri.host == 'open-web') {
+        _handleOpenWebLink(appLinkUri);
+        return [];
+      }
     }
 
-    if (appLinkUri.host == _kDailyPuzzleDeeplinkHost &&
-        appLinkUri.pathSegments.getOrNull(0) == _kDailyPuzzleDeeplinkPath) {
+    if (appLinkUri.pathSegments.getOrNull(0) == _kDailyPuzzleDeeplinkPath) {
       final puzzleId = appLinkUri.pathSegments.getOrNull(1);
       await handleDailyPuzzleLink(context, puzzleId);
       return [];
@@ -91,13 +67,15 @@ class AppLinksService {
     final path = appLinkUri.pathSegments.getOrNull(0);
     switch (path) {
       case 'analysis':
-        final options = appLinkUri.queryParameters['fen'] != null
-            ? AnalysisOptions.fromFen(appLinkUri.queryParameters['fen']!)
-            : const AnalysisOptions.standard();
+        final options = AnalysisOptions.standalone(
+          variant: Variant.standard,
+          orientation: Side.white,
+          fen: appLinkUri.queryParameters['fen'],
+        );
         return [AnalysisScreen.buildRoute(options)];
       case 'broadcast':
         if (appLinkUri.pathSegments.length < 2) return null;
-        final roundId = appLinkUri.pathSegments[1];
+        final roundId = BroadcastRoundId(appLinkUri.pathSegments[1]);
         if (appLinkUri.pathSegments.length == 2) {
           return [BroadcastRoundScreenLoading.buildRoute(roundId)];
         } else {
@@ -163,8 +141,6 @@ class AppLinksService {
           );
           return [];
         }
-      // This might be a challenge or a game link. There's currently no API endpoint that resolves both games and challenges
-      // at the same time, so check if it's a game link first, and if that fails, we later check if it's a challenge link.
       case _:
         final gameRoutes = await _tryResolveGameLink(context, appLinkUri);
         if (gameRoutes != null) return gameRoutes;
@@ -173,8 +149,6 @@ class AppLinksService {
     return null;
   }
 
-  /// Handles an `org.lichess.mobile://open-web?url=...` link (e.g. from the platform widget)
-  /// by opening the encoded URL in the platform in-app browser.
   void _handleOpenWebLink(Uri uri) {
     final target = uri.queryParameters['url'];
     if (target != null) {
@@ -185,10 +159,6 @@ class AppLinksService {
     }
   }
 
-  /// Opens the native daily-puzzle screen (same path as tapping the daily-puzzle
-  /// card on the puzzle tab) in response to `org.lichess.mobile://training/daily`
-  /// or `org.lichess.mobile://training/daily/{id}` deeplinks emitted by the iOS
-  /// home-screen widget.
   @visibleForTesting
   Future<void> handleDailyPuzzleLink(
     BuildContext context,
@@ -210,7 +180,7 @@ class AppLinksService {
       }
       if (!context.mounted) return;
       final route = PuzzleScreen.buildRoute(
-        angle: const PuzzleTheme(PuzzleThemeKey.mix),
+        angle: PuzzleAngle.fromKey('mix'),
         puzzle: puzzle,
       );
       await _pushDeepLinkRoute(
@@ -275,7 +245,6 @@ class AppLinksService {
     return null;
   }
 
-  /// Handles an app link [Uri] by navigating to the corresponding screen(s).
   Future<void> handleAppLink(
     BuildContext context,
     Uri uri, {

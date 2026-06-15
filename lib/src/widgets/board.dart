@@ -10,7 +10,7 @@ import 'package:lichess_mobile/src/model/settings/board_preferences.dart';
 ///
 /// For a non-interactive board, use [StaticChessboard] instead. To disable user
 /// interaction on this board (e.g. at the end of a game), drive the [controller]
-/// with game data whose `playerSide` is [PlayerSide.none].
+/// with game data whose \`playerSide\` is [PlayerSide.none].
 class BoardWidget extends StatelessWidget {
   const BoardWidget({
     required this.size,
@@ -111,7 +111,7 @@ Map<Square, Set<Square>> computeValidMoves(
   if (position.isGameOver) {
     return result;
   }
-  for (final move in position.legalMoves) {
+  for (final move in position.legalMoves.values) {
     final from = move.from;
     final to = move.to;
     if (result.containsKey(from)) {
@@ -132,7 +132,7 @@ Map<Square, Set<Square>> computeValidMoves(
           piece.role == Role.king &&
           (from == Square.e1 || from == Square.e8) &&
           entry.key.file == 4) {
-        final dests = position.legalMoves
+        final dests = position.legalMoves.values
             .where((m) => m.from == from)
             .map((m) => m.to)
             .toSet();

@@ -1,3 +1,4 @@
+import "package:lichess_mobile/src/utils/theme_context.dart";
 import 'dart:io';
 import 'dart:math';
 

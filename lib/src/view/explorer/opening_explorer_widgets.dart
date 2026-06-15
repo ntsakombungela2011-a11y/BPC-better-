@@ -1,3 +1,4 @@
+import "package:lichess_mobile/src/utils/theme_context.dart";
 import 'package:dartchess/dartchess.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
