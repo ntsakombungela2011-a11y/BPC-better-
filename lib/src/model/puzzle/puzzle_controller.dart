@@ -1,3 +1,4 @@
+import 'package:lichess_mobile/src/utils/list_extension.dart';
 import 'dart:async';
 
 import 'package:collection/collection.dart' show IterableExtension;

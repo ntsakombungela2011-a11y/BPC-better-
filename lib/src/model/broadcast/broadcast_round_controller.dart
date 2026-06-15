@@ -1,3 +1,4 @@
+import 'package:lichess_mobile/src/model/common/chess_json.dart';
 import 'dart:async';
 
 import 'package:dartchess/dartchess.dart';

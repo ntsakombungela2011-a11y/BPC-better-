@@ -1,3 +1,4 @@
+import 'package:lichess_mobile/src/model/common/chess_json.dart';
 import 'dart:convert';
 
 import 'package:collection/collection.dart';

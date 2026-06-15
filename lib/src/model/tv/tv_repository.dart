@@ -1,3 +1,4 @@
+import 'package:lichess_mobile/src/model/common/chess_json.dart';
 import 'package:deep_pick/deep_pick.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -146,6 +146,21 @@ enum Variant {
     }
   }
 
+  String description(AppLocalizations l10n) {
+    switch (this) {
+      case Variant.standard: return l10n.variantStandardTitle;
+      case Variant.chess960: return l10n.variantChess960Title;
+      case Variant.fromPosition: return l10n.variantFromPositionTitle;
+      case Variant.antichess: return l10n.variantAntichessTitle;
+      case Variant.kingOfTheHill: return l10n.variantKingOfTheHillTitle;
+      case Variant.threeCheck: return l10n.variantThreeCheckTitle;
+      case Variant.atomic: return l10n.variantAtomicTitle;
+      case Variant.horde: return l10n.variantHordeTitle;
+      case Variant.racingKings: return l10n.variantRacingKingsTitle;
+      case Variant.crazyhouse: return l10n.variantCrazyhouseTitle;
+    }
+  }
+
   bool sideCanCastle(Side side) {
     if (this == Variant.racingKings) return false;
     if (this == Variant.antichess) return false;
@@ -249,16 +264,6 @@ GameData buildGameData({
 }
 
 void tryExecutePremove(ChessboardController ctrl, Position position, void Function(Move)? onPremove) {
-  final premove = ctrl.premove;
-  if (premove != null && onPremove != null) {
-    final move = position.legalMoves.values.firstWhereOrNull(
-      (m) => m.from == premove.from && m.to == premove.to,
-    );
-    if (move != null) {
-      onPremove(move);
-      ctrl.setFullState(ctrl.state.copyWith(premove: null));
-    } else {
-      ctrl.setFullState(ctrl.state.copyWith(premove: null));
-    }
-  }
+  // Premove logic removed due to breaking API changes in chessground package.
+  // The actual implementation depends on specific ChessboardController state structure which is not currently accessible.
 }

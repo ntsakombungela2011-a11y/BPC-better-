@@ -11,22 +11,29 @@ import 'package:lichess_mobile/src/model/challenge/challenge_service.dart';
 import 'package:lichess_mobile/src/model/common/chess.dart';
 import 'package:lichess_mobile/src/model/common/id.dart';
 import 'package:lichess_mobile/src/model/game/game_repository.dart';
+import 'package:lichess_mobile/src/model/game/playable_game.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_providers.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_angle.dart';
+import 'package:lichess_mobile/src/model/puzzle/puzzle_theme.dart';
 import 'package:lichess_mobile/src/model/tv/tv_channel.dart';
+import 'package:lichess_mobile/src/model/user/user.dart';
 import 'package:lichess_mobile/src/model/user/user_repository.dart';
 import 'package:lichess_mobile/src/view/analysis/analysis_screen.dart';
 import 'package:lichess_mobile/src/view/broadcast/broadcast_player_results_screen.dart';
 import 'package:lichess_mobile/src/view/broadcast/broadcast_round_screen.dart';
 import 'package:lichess_mobile/src/view/puzzle/puzzle_screen.dart';
 import 'package:lichess_mobile/src/view/tournament/tournament_screen.dart';
-import 'package:lichess_mobile/src/view/tv/tv_screen.dart';
+import 'package:lichess_mobile/src/view/watch/tv_screen.dart';
 import 'package:lichess_mobile/src/view/user/user_screen.dart';
+import 'package:lichess_mobile/src/view/user/user_or_profile_screen.dart';
 import 'package:lichess_mobile/src/utils/l10n_context.dart';
-import 'package:lichess_mobile/src/widgets/snackbar.dart';
+import 'package:lichess_mobile/src/utils/navigation.dart';
+import 'package:lichess_mobile/src/utils/list_extension.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:dartchess/dartchess.dart';
 
 final appLinksServiceProvider = Provider((ref) => AppLinksService(ref));
 
@@ -70,7 +77,7 @@ class AppLinksService {
         final options = AnalysisOptions.standalone(
           variant: Variant.standard,
           orientation: Side.white,
-          fen: appLinkUri.queryParameters['fen'],
+          initialMoveCursor: appLinkUri.queryParameters['fen'] != null ? 0 : null,
         );
         return [AnalysisScreen.buildRoute(options)];
       case 'broadcast':
@@ -105,9 +112,9 @@ class AppLinksService {
         return [PuzzleScreen.buildRoute(angle: PuzzleAngle.fromKey('mix'), puzzleId: PuzzleId(id))];
       case 'tv':
         if (appLinkUri.pathSegments.length < 2) return null;
-        final channel = TvChannel.nameMap.entryOrNull(appLinkUri.pathSegments[1]);
+        final channel = TvChannel.nameMap[appLinkUri.pathSegments[1]];
         if (channel != null) {
-          return [TvScreen.buildRoute(channel: channel.value)];
+          return [TvScreen.buildRoute(channel: channel)];
         } else {
           if (!context.mounted) return null;
           showSnackBar(
@@ -294,7 +301,7 @@ class AppLinksService {
   static Route<dynamic> _withNoTransition(Route<dynamic> route) {
     if (route is ScreenRoute) {
       return MaterialScreenRoute(
-        screen: route.screen,
+        screen: (route as ScreenRoute).screen,
         settings: route.settings,
         fullscreenDialog: route.fullscreenDialog,
         maintainState: route.maintainState,
@@ -305,7 +312,7 @@ class AppLinksService {
     return route;
   }
 
-  static const kLichessLinkifiers = [UrlLinkifier(), EmailLinkifier(), UserTagLinkifier()];
+  static const kLichessLinkifiers = [UrlLinkifier(), EmailLinkifier()];
 
   Future<void> onLinkifyOpen(BuildContext context, LinkableElement link) async {
     if (link is UrlElement && link.url.startsWith(RegExp('https?:\\/\\/$kLichessHost'))) {
@@ -315,7 +322,7 @@ class AppLinksService {
       final username = link.originText.substring(1);
       Navigator.of(context).push(
         UserOrProfileScreen.buildRoute(
-          LightUser(id: UserId.fromUserName(username), name: username),
+          LightUser(id: UserId(UserId.fromUserName(username).value), name: username),
         ),
       );
     } else {

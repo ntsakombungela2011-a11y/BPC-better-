@@ -111,14 +111,9 @@ Map<Square, Set<Square>> computeValidMoves(
   if (position.isGameOver) {
     return result;
   }
-  for (final move in position.legalMoves.values) {
-    final from = move.from;
-    final to = move.to;
-    if (result.containsKey(from)) {
-      result[from]!.add(to);
-    } else {
-      result[from] = {to};
-    }
+
+  for (final entry in position.legalMoves.entries) {
+    result[entry.key] = entry.value.toSet();
   }
 
   // Handle king-over-rook castling if kingTwoSquares is disabled.
@@ -131,11 +126,10 @@ Map<Square, Set<Square>> computeValidMoves(
       if (piece != null &&
           piece.role == Role.king &&
           (from == Square.e1 || from == Square.e8) &&
-          entry.key.file == 4) {
-        final dests = position.legalMoves.values
-            .where((m) => m.from == from)
-            .map((m) => m.to)
-            .toSet();
+          from.file == 4) {
+
+        final dests = position.legalMoves[from] ?? SquareSet.empty;
+
         if (dests.contains(Square.a1)) {
           destSet.add(Square.c1);
         } else if (dests.contains(Square.a8)) {
