@@ -10,6 +10,7 @@ import 'package:lichess_mobile/src/model/challenge/challenge_repository.dart';
 import 'package:lichess_mobile/src/model/challenge/challenge_service.dart';
 import 'package:lichess_mobile/src/model/common/chess.dart';
 import 'package:lichess_mobile/src/model/common/id.dart';
+import 'package:lichess_mobile/src/model/game/game.dart';
 import 'package:lichess_mobile/src/model/game/game_repository.dart';
 import 'package:lichess_mobile/src/model/game/playable_game.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle.dart';
@@ -187,7 +188,7 @@ class AppLinksService {
       }
       if (!context.mounted) return;
       final route = PuzzleScreen.buildRoute(
-        angle: PuzzleAngle.fromKey('mix'),
+        angle: const PuzzleTheme(PuzzleThemeKey.mix),
         puzzle: puzzle,
       );
       await _pushDeepLinkRoute(

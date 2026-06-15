@@ -113,7 +113,7 @@ Map<Square, Set<Square>> computeValidMoves(
   }
 
   for (final entry in position.legalMoves.entries) {
-    result[entry.key] = entry.value.toSet();
+    result[entry.key] = entry.value.squares.toSet();
   }
 
   // Handle king-over-rook castling if kingTwoSquares is disabled.
@@ -130,14 +130,14 @@ Map<Square, Set<Square>> computeValidMoves(
 
         final dests = position.legalMoves[from] ?? SquareSet.empty;
 
-        if (dests.contains(Square.a1)) {
+        if (dests.has(Square.a1)) {
           destSet.add(Square.c1);
-        } else if (dests.contains(Square.a8)) {
+        } else if (dests.has(Square.a8)) {
           destSet.add(Square.c8);
         }
-        if (dests.contains(Square.h1)) {
+        if (dests.has(Square.h1)) {
           destSet.add(Square.g1);
-        } else if (dests.contains(Square.h8)) {
+        } else if (dests.has(Square.h8)) {
           destSet.add(Square.g8);
         }
         if (castlingMethod == CastlingMethod.kingTwoSquares) {
