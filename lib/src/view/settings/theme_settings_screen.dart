@@ -8,6 +8,7 @@ import 'package:lichess_mobile/src/model/settings/board_preferences.dart';
 import 'package:lichess_mobile/src/model/settings/general_preferences.dart';
 import 'package:lichess_mobile/src/styles/lichess_icons.dart';
 import 'package:lichess_mobile/src/styles/styles.dart';
+import 'package:lichess_mobile/src/theme_system.dart';
 import 'package:lichess_mobile/src/utils/color_palette.dart';
 import 'package:lichess_mobile/src/utils/l10n_context.dart';
 import 'package:lichess_mobile/src/utils/navigation.dart';
@@ -185,6 +186,8 @@ class _BodyState extends ConsumerState<_Body> {
                     ),
                   ],
                 ),
+
+                const _ThemePickerSection(),
                 ListSection(
                   header: SettingsSectionTitle(context.l10n.advancedSettings),
                   hasLeading: true,
@@ -288,6 +291,175 @@ class _BoardPreview extends StatelessWidget {
                 borderRadius: Styles.boardBorderRadius,
                 boxShadow: boardShadows,
               ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class _ThemePickerSection extends StatefulWidget {
+  const _ThemePickerSection();
+
+  @override
+  State<_ThemePickerSection> createState() => _ThemePickerSectionState();
+}
+
+class _ThemePickerSectionState extends State<_ThemePickerSection> {
+  String _query = '';
+  ThemeCategory? _category;
+
+  @override
+  Widget build(BuildContext context) {
+    final filteredThemes = ThemeRegistry.search(_query, category: _category);
+    final categories = ThemeCategory.values;
+
+    return ListSection(
+      header: const SettingsSectionTitle('App palette'),
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: TextField(
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              labelText: 'Search themes',
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (value) => setState(() => _query = value),
+          ),
+        ),
+        SizedBox(
+          height: 48,
+          child: ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              final category = index == 0 ? null : categories[index - 1];
+              final selected = _category == category;
+              return ChoiceChip(
+                label: Text(category?.name ?? 'All'),
+                selected: selected,
+                onSelected: (_) => setState(() => _category = category),
+              );
+            },
+            separatorBuilder: (_, _) => const SizedBox(width: 8),
+            itemCount: categories.length + 1,
+          ),
+        ),
+        if (ThemeManager.instance.recentThemes.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Recent themes', style: Theme.of(context).textTheme.titleSmall),
+            ),
+          ),
+        if (ThemeManager.instance.recentThemes.isNotEmpty)
+          SizedBox(
+            height: 44,
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                final theme = ThemeManager.instance.recentThemes[index];
+                return ActionChip(
+                  avatar: CircleAvatar(backgroundColor: theme.palette.primary),
+                  label: Text(theme.name),
+                  onPressed: () => ThemeManager.instance.applyTheme(theme),
+                );
+              },
+              separatorBuilder: (_, _) => const SizedBox(width: 8),
+              itemCount: ThemeManager.instance.recentThemes.length,
+            ),
+          ),
+        ValueListenableBuilder<ThemeModel>(
+          valueListenable: ThemeManager.instance.currentTheme,
+          builder: (context, selectedTheme, _) {
+            return GridView.builder(
+              padding: const EdgeInsets.all(16),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 220,
+                mainAxisExtent: 132,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+              ),
+              itemCount: filteredThemes.length,
+              itemBuilder: (context, index) {
+                final theme = filteredThemes[index];
+                return _ThemePreviewCard(
+                  theme: theme,
+                  selected: selectedTheme.id == theme.id,
+                  favorite: ThemeManager.instance.favoriteThemeIds.contains(theme.id),
+                  onFavoriteChanged: () => setState(() {}),
+                );
+              },
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _ThemePreviewCard extends StatelessWidget {
+  const _ThemePreviewCard({required this.theme, required this.selected, required this.favorite, required this.onFavoriteChanged});
+
+  final ThemeModel theme;
+  final bool selected;
+  final bool favorite;
+  final VoidCallback onFavoriteChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = theme.colorScheme(Theme.of(context).brightness);
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      color: scheme.surfaceContainerHigh,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: selected ? scheme.primary : scheme.outlineVariant, width: selected ? 3 : 1),
+      ),
+      child: InkWell(
+        onTap: () => ThemeManager.instance.applyTheme(theme),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(theme.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color: scheme.onSurface, fontWeight: FontWeight.w700)),
+                  ),
+                  IconButton(
+                    visualDensity: VisualDensity.compact,
+                    icon: Icon(favorite ? Icons.star : Icons.star_border, color: scheme.secondary),
+                    onPressed: () async {
+                      await ThemeManager.instance.toggleFavorite(theme);
+                      onFavoriteChanged();
+                    },
+                  ),
+                ],
+              ),
+              const Spacer(),
+              Row(
+                children: [
+                  for (final color in [theme.palette.primary, theme.palette.secondary, theme.palette.tertiary, theme.palette.background])
+                    Expanded(child: Container(height: 28, color: color)),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(child: Container(height: 10, decoration: BoxDecoration(color: scheme.primaryContainer, borderRadius: BorderRadius.circular(999)))),
+                  const SizedBox(width: 8),
+                  Icon(selected ? Icons.check_circle : Icons.radio_button_unchecked, color: scheme.primary, size: 18),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
