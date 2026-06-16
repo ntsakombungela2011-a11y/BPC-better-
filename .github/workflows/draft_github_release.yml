@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Draft release with release notes
         id: create_release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.event.inputs.version }}
           draft: true
