@@ -34,7 +34,7 @@ import 'package:lichess_mobile/src/theme.dart';
 import 'package:lichess_mobile/src/theme_system.dart';
 import 'package:lichess_mobile/src/utils/screen.dart';
 
-const String _kIosAppGroupId = 'group.org.lichess.mobileV2.LichessWidgets';
+const String _kIosAppGroupId = 'group.com.boipelo.chess.LichessWidgets';
 const List<String> _kIosBlogWidgetKinds = [
   'OfficialBlogWidget',
   'CommunityBlogWidget',

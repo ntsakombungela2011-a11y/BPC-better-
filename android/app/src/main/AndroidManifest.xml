@@ -8,7 +8,7 @@
         android:largeScreens="true"
         android:xlargeScreens="true"/>
     <application
-        android:label="Lichess"
+        android:label="Boipelo Chess"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -19,7 +19,7 @@
           android:value="false" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_stat_lichess_notification" />
+            android:resource="@drawable/ic_stat_boipelo_notification" />
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
@@ -150,7 +150,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="org.lichess.mobile" android:host="login-callback" />
+                <data android:scheme="com.boipelo.chess" android:host="login-callback" />
             </intent-filter>
         </activity>
 

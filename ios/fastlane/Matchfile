@@ -4,7 +4,7 @@ storage_mode("git")
 
 type("appstore") # The default type, can be: appstore, adhoc, enterprise or development
 
-app_identifier(["org.lichess.mobileV2", "org.lichess.mobileV2.LichessWidgets", "org.lichess.mobileV2.ShareExtension"])
+app_identifier(["com.boipelo.chess", "com.boipelo.chess.LichessWidgets", "com.boipelo.chess.ShareExtension"])
 username(ENV['APPLE_ID']) # Your Apple Developer Portal username
 
 # For all available options run `fastlane match --help`

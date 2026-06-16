@@ -19,6 +19,48 @@ import 'package:lichess_mobile/src/widgets/list.dart';
 const inaccuracyColor = LichessColors.cyan;
 const mistakeColor = Color(0xFFe69f00);
 const blunderColor = Color(0xFFdf5353);
+
+enum MoveClassification {
+  brilliant('Brilliant', '!!', 0xFF26C6DA),
+  greatMove('Great Move', '!', 0xFF66BB6A),
+  bestMove('Best Move', '★', 0xFF42A5F5),
+  excellent('Excellent', '✓', 0xFF7E57C2),
+  good('Good', '•', 0xFF9E9E9E),
+  inaccuracy('Inaccuracy', '?!', 0xFFFFB300),
+  mistake('Mistake', '?', 0xFFFF7043),
+  blunder('Blunder', '??', 0xFFEF5350),
+  miss('Miss', '×', 0xFFAB47BC),
+  book('Book', '📖', 0xFF8D6E63);
+
+  const MoveClassification(this.label, this.symbol, this.colorValue);
+  final String label;
+  final String symbol;
+  final int colorValue;
+  Color color(BuildContext context) =>
+      Color(colorValue).harmonizeWith(ColorScheme.of(context).primary);
+}
+
+MoveClassification? classifyMove(ViewBranch branch) {
+  if (branch.opening != null) return MoveClassification.book;
+  final nags = branch.nags ?? IList<int>();
+  if (nags.contains(3)) return MoveClassification.brilliant;
+  if (nags.contains(1)) return MoveClassification.greatMove;
+  if (nags.contains(5)) return MoveClassification.excellent;
+  if (nags.contains(6)) return MoveClassification.inaccuracy;
+  if (nags.contains(2)) return MoveClassification.mistake;
+  if (nags.contains(4)) return MoveClassification.blunder;
+  final eval = branch.eval ?? branch.serverEval;
+  final cp = eval?.cp?.abs();
+  if (eval?.mate != null && eval!.mate!.abs() <= 2) return MoveClassification.bestMove;
+  if (cp == null) return MoveClassification.good;
+  if (cp <= 10) return MoveClassification.bestMove;
+  if (cp <= 25) return MoveClassification.excellent;
+  if (cp <= 49) return MoveClassification.good;
+  if (cp <= 99) return MoveClassification.inaccuracy;
+  if (cp <= 199) return MoveClassification.mistake;
+  return MoveClassification.blunder;
+}
+
 const kInlineMovePadding = EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0);
 const kIndexOpacity = 0.6;
 
@@ -1303,6 +1345,7 @@ class InlineMove extends ConsumerWidget {
     final eval = params.shouldShowComputerAnalysis && canShowEval
         ? branch.eval ?? branch.serverEval
         : null;
+    final classification = params.shouldShowComputerAnalysis ? classifyMove(branch) : null;
 
     final isPremove =
         params.pathToLiveMove != null &&
@@ -1357,6 +1400,32 @@ class InlineMove extends ConsumerWidget {
                 ],
               ),
             ),
+            if (classification != null)
+              Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: Tooltip(
+                  message: classification.label,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: classification.color(context).withValues(alpha: 0.18),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                      child: Text(
+                        classification.symbol,
+                        style: moveTextStyle.copyWith(
+                          fontSize: moveTextStyle.fontSize != null
+                              ? moveTextStyle.fontSize! - 2.0
+                              : null,
+                          color: classification.color(context),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             if (eval != null)
               Text(
                 eval.evalString,

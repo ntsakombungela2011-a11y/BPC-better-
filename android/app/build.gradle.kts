@@ -17,7 +17,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "org.lichess.mobileV2"
+    namespace = "com.boipelo.chess"
     // compileSdk = flutter.compileSdkVersion
     // home_widget pulls in glance-appwidget and remote-creation-android, both of which
     // declare in their AAR metadata that all dependents (including the app) must compile
@@ -39,7 +39,7 @@ android {
     defaultConfig {
         // Flag required by flutter_local_notifications package
         multiDexEnabled = true
-        applicationId = "org.lichess.mobileV2"
+        applicationId = "com.boipelo.chess"
         minSdk = 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

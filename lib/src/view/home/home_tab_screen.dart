@@ -188,26 +188,6 @@ class _HomeScreenState extends ConsumerState<HomeTabScreen> {
                 const Center(child: _SignInWidget()),
                 const SizedBox(height: 16.0),
               ],
-              if (Theme.of(context).platform != TargetPlatform.iOS &&
-                  (authUser == null || authUser.user.isPatron != true)) ...[
-                Center(
-                  child: FilledButton.tonal(
-                    onPressed: () {
-                      launchUrl(Uri.parse('https://lichess.org/patron'));
-                    },
-                    child: Text(context.l10n.patronDonate),
-                  ),
-                ),
-                const SizedBox(height: 16.0),
-              ],
-              Center(
-                child: FilledButton.tonal(
-                  onPressed: () {
-                    launchUrl(Uri.parse('https://lichess.org/about'));
-                  },
-                  child: Text(context.l10n.aboutX('Lichess...')),
-                ),
-              ),
               const _WelcomeMessageCard(),
               const _HomeCustomizationTip(),
             ],
