@@ -1,7 +1,6 @@
 import 'package:chessground/chessground.dart';
 import 'package:collection/collection.dart';
 import 'package:dartchess/dartchess.dart';
-import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,28 +15,27 @@ import 'package:lichess_mobile/src/utils/rate_limit.dart';
 import 'package:lichess_mobile/src/widgets/adaptive_bottom_sheet.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 
-const inaccuracyColor = LichessColors.cyan;
-const mistakeColor = Color(0xFFe69f00);
-const blunderColor = Color(0xFFdf5353);
+const inaccuracyColor = Color(0xFFE6A817);
+const mistakeColor = Color(0xFFD4621C);
+const blunderColor = Color(0xFFCC3232);
 
 enum MoveClassification {
-  brilliant('Brilliant', '!!', 0xFF26C6DA),
-  greatMove('Great Move', '!', 0xFF66BB6A),
-  bestMove('Best Move', '★', 0xFF42A5F5),
-  excellent('Excellent', '✓', 0xFF7E57C2),
-  good('Good', '•', 0xFF9E9E9E),
-  inaccuracy('Inaccuracy', '?!', 0xFFFFB300),
-  mistake('Mistake', '?', 0xFFFF7043),
-  blunder('Blunder', '??', 0xFFEF5350),
-  miss('Miss', '×', 0xFFAB47BC),
-  book('Book', '📖', 0xFF8D6E63);
+  brilliant('Brilliant', '✦', 0xFF00B5D8),
+  greatMove('Great Move', '!', 0xFF22A093),
+  bestMove('Best Move', '★', 0xFF5B8A3C),
+  excellent('Excellent', '✓', 0xFF5B8A3C),
+  good('Good', '+', 0xFF7DAF5A),
+  inaccuracy('Inaccuracy', '?!', 0xFFE6A817),
+  mistake('Mistake', '?', 0xFFD4621C),
+  blunder('Blunder', '??', 0xFFCC3232),
+  miss('Miss', '✕', 0xFFD44C6B),
+  book('Book', '📖', 0xFF8B5CF6);
 
   const MoveClassification(this.label, this.symbol, this.colorValue);
   final String label;
   final String symbol;
   final int colorValue;
-  Color color(BuildContext context) =>
-      Color(colorValue).harmonizeWith(ColorScheme.of(context).primary);
+  Color get color => Color(colorValue);
 }
 
 MoveClassification? classifyMove(ViewBranch branch) {
@@ -125,13 +123,34 @@ Annotation? makeAnnotation(Iterable<int>? nags) {
     return null;
   }
   return switch (nag) {
-    1 => const Annotation(symbol: '!', color: Colors.lightGreen),
-    3 => const Annotation(symbol: '!!', color: Colors.teal),
-    5 => const Annotation(symbol: '!?', color: Colors.purple),
-    6 => const Annotation(symbol: '?!', color: LichessColors.cyan),
-    2 => const Annotation(symbol: '?', color: mistakeColor),
-    4 => const Annotation(symbol: '??', color: blunderColor),
-    8 => const Annotation(symbol: '□', color: Colors.grey),
+    1 => Annotation(
+      symbol: MoveClassification.greatMove.symbol,
+      color: MoveClassification.greatMove.color,
+    ),
+    3 => Annotation(
+      symbol: MoveClassification.brilliant.symbol,
+      color: MoveClassification.brilliant.color,
+    ),
+    5 => Annotation(
+      symbol: MoveClassification.excellent.symbol,
+      color: MoveClassification.excellent.color,
+    ),
+    6 => Annotation(
+      symbol: MoveClassification.inaccuracy.symbol,
+      color: MoveClassification.inaccuracy.color,
+    ),
+    2 => Annotation(
+      symbol: MoveClassification.mistake.symbol,
+      color: MoveClassification.mistake.color,
+    ),
+    4 => Annotation(
+      symbol: MoveClassification.blunder.symbol,
+      color: MoveClassification.blunder.color,
+    ),
+    8 => Annotation(
+      symbol: MoveClassification.bestMove.symbol,
+      color: MoveClassification.bestMove.color,
+    ),
     10 => const Annotation(symbol: '=', color: Colors.grey),
     11 => const Annotation(symbol: '=', color: Colors.grey),
     13 => const Annotation(symbol: '∞', color: Colors.grey),
@@ -1407,7 +1426,7 @@ class InlineMove extends ConsumerWidget {
                   message: classification.label,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: classification.color(context).withValues(alpha: 0.18),
+                      color: classification.color.withValues(alpha: 0.18),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
@@ -1418,7 +1437,7 @@ class InlineMove extends ConsumerWidget {
                           fontSize: moveTextStyle.fontSize != null
                               ? moveTextStyle.fontSize! - 2.0
                               : null,
-                          color: classification.color(context),
+                          color: classification.color,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
