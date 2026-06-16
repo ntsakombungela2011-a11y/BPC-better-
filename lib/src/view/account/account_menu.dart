@@ -229,7 +229,9 @@ class _AccountMenuScreenState extends ConsumerState<AccountMenuScreen> with Widg
           ),
           ListSection(
             children: [
-          const SocketPingRatingListTile(),
+              const SocketPingRatingListTile(),
+            ],
+          ),
         ],
       ),
     );
