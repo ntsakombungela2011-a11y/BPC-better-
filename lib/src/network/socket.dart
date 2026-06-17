@@ -381,11 +381,7 @@ class SocketClient {
           _logger.severe(
             'Cannot solve event gap: version incoming ${event.version} vs current $version',
           );
-          debugPrint(
-            'Cannot solve event gap: version incoming ${event.version} vs current $version',
-            null,
-            information: ['socket.route: $route', 'event.topic: ${event.topic}'],
-          );
+          debugPrint('Cannot solve event gap: version incoming ${event.version} vs current $version\nInfo: socket.route: $route, event.topic: ${event.topic}');
         }
         return;
       }

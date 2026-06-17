@@ -29,6 +29,7 @@ abstract class LocalNotification {
       case 'ChallengeCreatedNotification': return ChallengeCreatedNotification.fromJson(json);
       case 'AnnounceNotification': return AnnounceNotification.fromJson(json);
       case 'ChallengeNotification': return ChallengeNotification.fromJson(json);
+      case 'PlaybanNotification': return PlaybanNotification.fromJson(json);
       default: throw Exception('Unknown notification type: $type');
     }
   }
@@ -183,4 +184,26 @@ class ChallengeNotification extends LocalNotification {
   static const darwinUnplayableVariantCategoryId = 'challenge-notification-unplayable-variant';
   static DarwinNotificationCategory darwinPlayableVariantCategory(AppLocalizations l10n) => DarwinNotificationCategory(darwinPlayableVariantCategoryId, actions: [DarwinNotificationAction.plain('accept', l10n.accept, options: {DarwinNotificationActionOption.foreground}), DarwinNotificationAction.plain('decline', l10n.decline, options: {DarwinNotificationActionOption.foreground})], options: {DarwinNotificationCategoryOption.hiddenPreviewShowTitle});
   static DarwinNotificationCategory darwinUnplayableVariantCategory(AppLocalizations l10n) => DarwinNotificationCategory(darwinUnplayableVariantCategoryId, actions: [DarwinNotificationAction.plain('decline', l10n.decline, options: {DarwinNotificationActionOption.foreground})], options: {DarwinNotificationCategoryOption.hiddenPreviewShowTitle});
+}
+
+class PlaybanNotification extends LocalNotification {
+  factory PlaybanNotification.fromJson(Map<String, dynamic> json) =>
+    PlaybanNotification(TemporaryBan.fromJson(json['playban'] as Map<String, dynamic>));
+  const PlaybanNotification(this.playban);
+  final TemporaryBan playban;
+  @override
+  String get channelId => 'playban';
+  @override
+  int get id => 'playban'.hashCode;
+  @override
+  Map<String, dynamic> get _concretePayload => {'playban': playban.toJson()};
+  @override
+  String title(AppLocalizations l10n) => 'Playban';
+  @override
+  String? body(AppLocalizations l10n) => 'You are temporarily banned from playing.';
+  @override
+  NotificationDetails details(AppLocalizations l10n) => const NotificationDetails(
+    android: AndroidNotificationDetails('playban', 'Playban', importance: Importance.high, priority: Priority.high),
+    iOS: DarwinNotificationDetails(),
+  );
 }

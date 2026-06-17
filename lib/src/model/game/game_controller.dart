@@ -194,12 +194,7 @@ class GameController extends AsyncNotifier<GameState> {
     try {
       sanResult = curState.game.lastPosition.makeSan(move);
     } on PlayException catch (e) {
-      debugPrint(
-        'Invalid user move: $e',
-        null,
-        reason: 'PlayException thrown when making SAN of user move',
-        information: ['move: $move', 'position: ${curState.game.lastPosition}'],
-      );
+      debugPrint('Invalid user move: $e\nReason: PlayException thrown when making SAN of user move\nInfo: move: $move, position: ${curState.game.lastPosition}');
       _logger.warning('Invalid user move: $e');
       return;
     }
@@ -252,7 +247,7 @@ class GameController extends AsyncNotifier<GameState> {
     final curState = state.requireValue;
     final moveToConfirm = curState.moveToConfirm;
     if (moveToConfirm == null) {
-      assert(false, 'moveToConfirm must not be null on confirm move');
+      assert(false, 'moveToConfirm must not be null on confirm move);
       return;
     }
 
@@ -260,12 +255,7 @@ class GameController extends AsyncNotifier<GameState> {
     try {
       sanResult = curState.game.lastPosition.makeSan(moveToConfirm);
     } on PlayException catch (e) {
-      debugPrint(
-        'Invalid confirm move: $e',
-        null,
-        reason: 'PlayException thrown when making SAN of confirm move',
-        information: ['move: $moveToConfirm', 'position: ${curState.game.lastPosition}'],
-      );
+      debugPrint('Invalid confirm move: $e\nReason: PlayException thrown when making SAN of confirm move\nInfo: move: $moveToConfirm, position: ${curState.game.lastPosition}');
       _logger.warning('Invalid confirm move: $e');
       state = AsyncValue.data(curState.copyWith(moveToConfirm: null));
       return;
@@ -563,12 +553,7 @@ class GameController extends AsyncNotifier<GameState> {
       if (event.version != null) {
         _logger.warning('received $event while game state not yet available');
         // not sure whether this can happen so log it
-        debugPrint(
-          'received $event while game state not yet available',
-          null,
-          reason: 'versioned socket event received before game state available',
-          information: ['event.type: ${event.topic}'],
-        );
+        debugPrint('received $event while game state not yet available\nReason: 'versioned socket event received before game state available'\nInfo: 'event.type: ${event.topic}');
       }
       return;
     }

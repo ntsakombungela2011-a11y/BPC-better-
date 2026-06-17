@@ -58,8 +58,8 @@ Future<void> initializeApp() async {
   } catch (e, st) {
     _logger.severe('Error during app initialization: $e');
     debugPrint(
-      e,
-      st,
+      "$e
+$st",
       reason: 'Error during app initialization',
     );
   } finally {

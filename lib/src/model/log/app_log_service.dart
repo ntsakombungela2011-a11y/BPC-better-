@@ -62,8 +62,8 @@ class AppLogService {
         if (record.loggerName == 'Stockfish' && record.level >= Level.SEVERE) {
           // help debugging engine in error state issues in production
           debugPrint(
-            record.message,
-            record.stackTrace,
+            "${record.message}
+${record.stackTrace}",
           );
         }
       }
