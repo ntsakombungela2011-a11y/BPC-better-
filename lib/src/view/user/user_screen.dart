@@ -49,15 +49,6 @@ class UserScreen extends ConsumerStatefulWidget {
   }
 
   static void challengeUser(User user, {required BuildContext context, required WidgetRef ref}) {
-    final authUser = ref.read(authControllerProvider);
-    if (authUser == null) {
-      showSnackBar(
-        context,
-        context.l10n.challengeRegisterToSendChallenges,
-        type: SnackBarType.error,
-      );
-      return;
-    }
     final isOddBot = oddBots.contains(user.lightUser.name.toLowerCase());
     if (isOddBot) {
       Navigator.of(context).push(ChallengeOddBotsScreen.buildRoute(user.lightUser));

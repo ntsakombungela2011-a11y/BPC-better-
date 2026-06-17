@@ -323,18 +323,10 @@ class _BottomBar extends ConsumerWidget {
                   makeLabel: (context) => const Text('Challenge from position'),
                   onPressed: () {
                     final authUser = ref.read(authControllerProvider);
-                    if (authUser == null) {
-                      showSnackBar(
-                        context,
-                        context.l10n.challengeRegisterToSendChallenges,
-                        type: SnackBarType.error,
-                      );
-                      return;
-                    }
                     Navigator.of(context).push(
                       PickPlayerScreen.buildRoute(
                         onUserTap: (user) {
-                          if (user.id == authUser.user.id) {
+                          if (authUser != null && user.id == authUser.user.id) {
                             showSnackBar(
                               context,
                               'You cannot challenge yourself',
