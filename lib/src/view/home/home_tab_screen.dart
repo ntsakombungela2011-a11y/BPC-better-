@@ -579,7 +579,7 @@ class _GreetingWidget extends ConsumerWidget {
       child: Padding(
         padding: Styles.bodyPadding,
         child: GestureDetector(
-          onTap: () {
+          onTap: user == null ? null : () {
             ref.invalidate(accountProvider);
             Navigator.of(context).push(ProfileScreen.buildRoute());
           },
