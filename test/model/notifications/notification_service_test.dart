@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:fake_async/fake_async.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
@@ -36,7 +35,6 @@ void main() {
   });
 
   final registerMockClient = MockClient((request) {
-    if (request.url.path == '/mobile/register/firebase/test-token') {
       registerDeviceCalls++;
       return mockResponse('{"ok": true}', 200);
     }
@@ -51,7 +49,6 @@ void main() {
 
       await notificationService.start();
 
-      final calls = testBinding.firebaseMessaging.verifyRequestPermissionCalls();
       expect(calls, hasLength(1));
       expect(
         calls.first,
@@ -104,7 +101,6 @@ void main() {
       final notificationService = container.read(notificationServiceProvider);
 
       FakeAsync().run((async) {
-        testBinding.firebaseMessaging.willGrantPermission = false;
 
         notificationService.start();
 
@@ -135,8 +131,6 @@ void main() {
     });
   });
 
-  group('FCM Correspondence notifications', () {
-    test('FCM message with associated notification will show it in foreground', () async {
       final container = await makeContainer(
         authUser: fakeAuthUser,
         overrides: {
@@ -168,8 +162,6 @@ void main() {
 
         async.flushMicrotasks();
 
-        testBinding.firebaseMessaging.onMessage.add(
-          const RemoteMessage(
             data: {'lichess.type': 'gameMove', 'lichess.fullId': '9wlmxmibr9gh'},
             notification: RemoteNotification(
               title: 'It is your turn!',

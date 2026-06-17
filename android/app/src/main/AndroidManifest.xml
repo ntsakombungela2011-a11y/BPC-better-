@@ -17,9 +17,9 @@
         <meta-data
           android:name="io.flutter.embedding.android.EnableImpeller"
           android:value="false" />
-        <meta-data
-        <meta-data
-        <meta-data
+
+
+
 
         <activity
             android:name=".MainActivity"

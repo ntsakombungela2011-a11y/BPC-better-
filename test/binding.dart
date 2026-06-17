@@ -85,6 +85,20 @@ class TestLichessBinding extends LichessBinding {
   }
 
 
+  @override
+
+  @override
+  }
+
+  @override
+  }
+
+  @override
+  }
+
+  @override
+
+  @override
 
   Stockfish _stockfish = FakeStockfish();
 
@@ -184,7 +198,6 @@ class FakeSharedPreferences implements SharedPreferencesWithCache {
   }
 }
 
-typedef FirebaseMessagingRequestPermissionCall = ({
   bool alert,
   bool announcement,
   bool badge,
@@ -195,18 +208,33 @@ typedef FirebaseMessagingRequestPermissionCall = ({
 });
 
   @override
+  Future<void> recordError(
+    dynamic exception,
+    StackTrace? stack, {
+    dynamic reason,
+    Iterable<Object> information = const [],
+    bool? printDetails,
+    bool fatal = false,
+  }) async {}
+
+  @override
   Future<void> setCustomKey(String key, Object value) async {}
 }
 
+  /// Whether [requestPermission] will grant permission.
+  bool _willGrantPermission = true;
 
+  /// Set whether [requestPermission] will grant permission.
+  // ignore: avoid_setters_without_getters
+  set willGrantPermission(bool value) {
+    _willGrantPermission = value;
+  }
 
-  List<FirebaseMessagingRequestPermissionCall> verifyRequestPermissionCalls() {
     final result = _requestPermissionCalls;
     _requestPermissionCalls = [];
     return result;
   }
 
-  List<FirebaseMessagingRequestPermissionCall> _requestPermissionCalls = [];
 
   NotificationSettings _notificationSettings = const NotificationSettings(
     alert: AppleNotificationSetting.disabled,
@@ -273,7 +301,6 @@ typedef FirebaseMessagingRequestPermissionCall = ({
   }
 
   @override
-  Future<RemoteMessage?> getInitialMessage() async {
     return null;
   }
 
@@ -303,19 +330,13 @@ typedef FirebaseMessagingRequestPermissionCall = ({
 
   /// Controller for [onMessage].
   ///
-  /// Call [StreamController.add] to simulate a message received from FCM while
   /// the application is in foreground.
-  StreamController<RemoteMessage> onMessage = StreamController.broadcast();
 
   /// Controller for [onMessageOpenedApp].
   ///
   /// Call [StreamController.add] to simulate a user press on a notification message
-  /// sent by FCM.
-  StreamController<RemoteMessage> onMessageOpenedApp = StreamController.broadcast();
 
   /// Controller for [onBackgroundMessage].
   ///
-  /// Call [StreamController.add] to simulate a message received from FCM while
   /// the application is in background.
-  StreamController<RemoteMessage> onBackgroundMessage = StreamController.broadcast();
 }

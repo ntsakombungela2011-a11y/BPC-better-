@@ -59,21 +59,14 @@ abstract class LichessBinding {
   /// have not yet been initialized.
   SharedPreferencesWithCache get sharedPreferences;
 
-  /// Initialize Firebase.
   ///
-  /// This wraps [Firebase.initializeApp].
   ///
   /// This should be called only once before the app starts.
 
-  /// Wraps [FirebaseMessaging.instance].
 
-  /// Wraps [FirebaseCrashlytics.instance].
 
-  /// Wraps [FirebaseMessaging.onMessage].
 
-  /// Wraps [FirebaseMessaging.onMessageOpenedApp].
 
-  /// Wraps [FirebaseMessaging.onBackgroundMessage].
 
   /// The Stockfish singleton instance.
   Stockfish get stockfish;

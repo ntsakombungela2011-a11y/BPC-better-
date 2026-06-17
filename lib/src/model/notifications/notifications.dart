@@ -11,12 +11,9 @@ import 'package:lichess_mobile/src/utils/json.dart';
 import 'package:lichess_mobile/src/utils/l10n.dart' show relativeDate;
 import 'package:meta/meta.dart';
 
-/// FCM Messages
 ///////////////
 
-/// Parsed data from an FCM message.
 ///
-/// Messages received from Firebase Cloud Messaging (FCM) service support different
 /// kind of use cases, depending on the message content:
 ///
 ///   and the application can handle it in the foreground or background; It typically
@@ -40,51 +37,41 @@ import 'package:meta/meta.dart';
             final game = round != null
                 ? PlayableGame.fromServerJson(jsonDecode(round) as Map<String, dynamic>)
                 : null;
-            return CorresGameUpdateFcmMessage(
               fullId,
               game: game,
               notification: message.notification,
             );
           } else {
-            return MalformedFcmMessage(message.data);
           }
         case 'newMessage':
           final conversationId = message.data['lichess.threadId'] as String?;
           if (conversationId != null) {
-            return NewMessageFcmMessage(UserId(conversationId), notification: message.notification);
           } else {
-            return MalformedFcmMessage(message.data);
           }
         case 'challengeCreate':
           final challengeId = message.data['lichess.challengeId'] as String?;
           if (challengeId != null) {
-            return ChallengeCreateFcmMessage(
               ChallengeId(challengeId),
               notification: message.notification,
             );
           } else {
-            return MalformedFcmMessage(message.data);
           }
         case 'challengeAccept':
           final challengeId = message.data['lichess.challengeId'] as String?;
           final fullId = message.data['lichess.fullId'] as String?;
           if (challengeId != null && fullId != null) {
-            return ChallengeAcceptFcmMessage(
               ChallengeId(challengeId),
               GameFullId(fullId),
               notification: message.notification,
             );
           } else {
-            return MalformedFcmMessage(message.data);
           }
         default:
-          return UnhandledFcmMessage(message.data);
       }
     }
   }
 }
 
-/// An [FcmMessage] that represents a new message in a private conversation.
 @immutable
 );
 
@@ -94,10 +81,8 @@ import 'package:meta/meta.dart';
   final RemoteNotification? notification;
 
   @override
-  String toString() => 'NewMessageFcmMessage(conversationId: $conversationId)';
 }
 
-/// An [FcmMessage] that represents a correspondence game update.
 @immutable
 );
 
@@ -108,7 +93,6 @@ import 'package:meta/meta.dart';
   final RemoteNotification? notification;
 }
 
-/// An [FcmMessage] sent when a challenge is created.
 @immutable
 );
 
@@ -118,7 +102,6 @@ import 'package:meta/meta.dart';
   final RemoteNotification? notification;
 }
 
-/// An [FcmMessage] sent when a challenge is accepted.
 @immutable
 );
 
@@ -129,11 +112,9 @@ import 'package:meta/meta.dart';
   final RemoteNotification? notification;
 }
 
-/// An [FcmMessage] that could not be parsed.
 @immutable
 
 
-/// An [FcmMessage] that is not handled by the application.
 @immutable
 
 
@@ -216,7 +197,6 @@ sealed class LocalNotification {
 /// A notification for a correspondence game update.
 ///
 /// This notification is shown when a correspondence game is updated on the server
-/// and a FCM message is received and contains itself a notification.
 ///
 /// Fields [title] and [body] are dynamic and part of the payload because they
 class CorresGameUpdateNotification extends LocalNotification {

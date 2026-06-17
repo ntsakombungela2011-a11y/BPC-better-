@@ -40,15 +40,9 @@ class CorrespondenceService {
   final Logger _log;
 
   StreamSubscription<ParsedLocalNotification>? _notificationResponseSubscription;
-  StreamSubscription<ReceivedFcmMessage>? _fcmSubscription;
 
   void start() {
-    _fcmSubscription = NotificationService.fcmMessageStream.listen((data) {
-      final (message: fcmMessage, fromBackground: fromBackground) = data;
-      switch (fcmMessage) {
-        case CorresGameUpdateFcmMessage(fullId: final fullId, game: final game):
           if (game != null) {
-            _onServerUpdateEvent(fullId, game, fromBackground: fromBackground);
           }
 
         case _:
@@ -68,7 +62,6 @@ class CorrespondenceService {
   }
 
   void dispose() {
-    _fcmSubscription?.cancel();
     _notificationResponseSubscription?.cancel();
   }
 
@@ -219,7 +212,6 @@ class CorrespondenceService {
   Future<void> _onServerUpdateEvent(
     GameFullId fullId,
     PlayableGame game, {
-    required bool fromBackground,
   }) async {
     await updateStoredGame(fullId, game);
   }

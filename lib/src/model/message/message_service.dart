@@ -23,13 +23,8 @@ class MessageService {
   final Ref ref;
 
   StreamSubscription<ParsedLocalNotification>? _notificationResponseSubscription;
-  StreamSubscription<ReceivedFcmMessage>? _fcmSubscription;
 
   void start() {
-    _fcmSubscription = NotificationService.fcmMessageStream.listen((data) {
-      final (message: fcmMessage, fromBackground: fromBackground) = data;
-      switch (fcmMessage) {
-        case NewMessageFcmMessage():
           ref.invalidate(contactsProvider);
           ref.invalidate(unreadMessagesProvider);
         case _:
@@ -72,7 +67,6 @@ class MessageService {
   }
 
   void dispose() {
-    _fcmSubscription?.cancel();
     _notificationResponseSubscription?.cancel();
   }
 }
