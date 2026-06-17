@@ -190,7 +190,7 @@ sealed class PvData with _$PvData {
       final move = Move.parse(uciMove);
       final movesString = moves.join(' ');
       if (move == null) {
-        LichessBinding.instance.firebaseCrashlytics.recordError(
+        debugPrint(
           'Invalid UCI move: "$uciMove" in PV: $movesString for position: ${pos.fen} rule: ${pos.rule}',
           null,
           reason: 'Failed to parse UCI move from PV',

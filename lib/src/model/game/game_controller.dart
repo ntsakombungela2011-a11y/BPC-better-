@@ -194,7 +194,7 @@ class GameController extends AsyncNotifier<GameState> {
     try {
       sanResult = curState.game.lastPosition.makeSan(move);
     } on PlayException catch (e) {
-      LichessBinding.instance.firebaseCrashlytics.recordError(
+      debugPrint(
         'Invalid user move: $e',
         null,
         reason: 'PlayException thrown when making SAN of user move',
@@ -260,7 +260,7 @@ class GameController extends AsyncNotifier<GameState> {
     try {
       sanResult = curState.game.lastPosition.makeSan(moveToConfirm);
     } on PlayException catch (e) {
-      LichessBinding.instance.firebaseCrashlytics.recordError(
+      debugPrint(
         'Invalid confirm move: $e',
         null,
         reason: 'PlayException thrown when making SAN of confirm move',
@@ -563,7 +563,7 @@ class GameController extends AsyncNotifier<GameState> {
       if (event.version != null) {
         _logger.warning('received $event while game state not yet available');
         // not sure whether this can happen so log it
-        LichessBinding.instance.firebaseCrashlytics.recordError(
+        debugPrint(
           'received $event while game state not yet available',
           null,
           reason: 'versioned socket event received before game state available',

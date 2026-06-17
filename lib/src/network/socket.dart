@@ -381,7 +381,7 @@ class SocketClient {
           _logger.severe(
             'Cannot solve event gap: version incoming ${event.version} vs current $version',
           );
-          LichessBinding.instance.firebaseCrashlytics.recordError(
+          debugPrint(
             'Cannot solve event gap: version incoming ${event.version} vs current $version',
             null,
             information: ['socket.route: $route', 'event.topic: ${event.topic}'],

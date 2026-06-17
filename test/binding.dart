@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lichess_mobile/src/binding.dart';
 import 'package:multistockfish/multistockfish.dart';
@@ -82,38 +80,11 @@ class TestLichessBinding extends LichessBinding {
   ///
   /// Should be called using [addTearDown] in tests.
   void reset() {
-    _firebaseMessaging = null;
     _sharedPreferences = null;
     numAppStarts = 1;
   }
 
-  FirebaseCrashlytics? _firebaseCrashlytics;
-  FakeFirebaseMessaging? _firebaseMessaging;
 
-  @override
-  Future<void> initializeFirebase() async {}
-
-  @override
-  FirebaseCrashlytics get firebaseCrashlytics {
-    return _firebaseCrashlytics ??= FakeFirebaseCrashlytics();
-  }
-
-  @override
-  FakeFirebaseMessaging get firebaseMessaging {
-    return _firebaseMessaging ??= FakeFirebaseMessaging();
-  }
-
-  @override
-  void firebaseMessagingOnBackgroundMessage(BackgroundMessageHandler handler) {
-    firebaseMessaging.onBackgroundMessage.stream.listen(handler);
-  }
-
-  @override
-  Stream<RemoteMessage> get firebaseMessagingOnMessage => firebaseMessaging.onMessage.stream;
-
-  @override
-  Stream<RemoteMessage> get firebaseMessagingOnMessageOpenedApp =>
-      firebaseMessaging.onMessageOpenedApp.stream;
 
   Stockfish _stockfish = FakeStockfish();
 
@@ -223,30 +194,11 @@ typedef FirebaseMessagingRequestPermissionCall = ({
   bool sound,
 });
 
-class FakeFirebaseCrashlytics extends Fake implements FirebaseCrashlytics {
-  @override
-  Future<void> recordError(
-    dynamic exception,
-    StackTrace? stack, {
-    dynamic reason,
-    Iterable<Object> information = const [],
-    bool? printDetails,
-    bool fatal = false,
-  }) async {}
-
   @override
   Future<void> setCustomKey(String key, Object value) async {}
 }
 
-class FakeFirebaseMessaging extends Fake implements FirebaseMessaging {
-  /// Whether [requestPermission] will grant permission.
-  bool _willGrantPermission = true;
 
-  /// Set whether [requestPermission] will grant permission.
-  // ignore: avoid_setters_without_getters
-  set willGrantPermission(bool value) {
-    _willGrantPermission = value;
-  }
 
   List<FirebaseMessagingRequestPermissionCall> verifyRequestPermissionCalls() {
     final result = _requestPermissionCalls;

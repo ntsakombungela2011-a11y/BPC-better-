@@ -4,7 +4,6 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lichess_mobile/src/binding.dart';
 import 'package:lichess_mobile/src/model/common/preloaded_data.dart';
 import 'package:lichess_mobile/src/utils/system.dart';
 
@@ -17,21 +16,7 @@ import 'package:lichess_mobile/src/utils/system.dart';
 /// too — tagged with the `auth_cancelled` key so they can be filtered in/out in the console.
 ///
 /// This never throws: telemetry must not interfere with the sign-in flow.
-Future<void> reportSignInFailure(
-  Ref ref,
-  Object error,
-  StackTrace stack, {
-  required bool cancelled,
-}) async {
-  try {
-    final crashlytics = LichessBinding.instance.firebaseCrashlytics;
-
-    // AppAuth's own error classification (type/code/oauth-error). See FlutterAppAuthPlatformErrorDetails.
-    final details = switch (error) {
-      FlutterAppAuthUserCancelledException(:final platformErrorDetails) => platformErrorDetails,
-      FlutterAppAuthPlatformException(:final platformErrorDetails) => platformErrorDetails,
-      _ => null,
-    };
+Future<void> reportSignInFailure(Ref ref, Object error, StackTrace stack, {required bool cancelled}) async { if (!cancelled) debugPrint('Sign-in failed: '); };
 
     final browser = await System.instance.getDefaultBrowser();
     final preloadedData = ref.read(preloadedDataProvider).value;
