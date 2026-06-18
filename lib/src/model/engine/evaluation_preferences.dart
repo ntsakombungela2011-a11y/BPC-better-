@@ -105,11 +105,11 @@ sealed class EngineEvaluationPrefState with _$EngineEvaluationPrefState implemen
     required ChessEnginePref enginePref,
   }) = _EngineEvaluationPrefState;
 
-  static const defaults = EngineEvaluationPrefState(
+  static EngineEvaluationPrefState get defaults => EngineEvaluationPrefState(
     isEnabled: true,
     numEvalLines: 2,
-    numEngineCores: 1,
-    engineSearchTime: Duration(seconds: 4),
+    numEngineCores: maxEngineCores,
+    engineSearchTime: const Duration(seconds: 4),
     enginePref: ChessEnginePref.sf16,
   );
 

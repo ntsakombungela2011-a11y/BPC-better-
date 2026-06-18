@@ -15,6 +15,7 @@ const gameTTL = Duration(days: 90);
 const chatReadMessagesTTL = Duration(days: 180);
 const httpLogTTL = Duration(days: 7);
 const appLogTTL = Duration(days: 7);
+const openingExplorerCacheTTL = Duration(days: 180);
 
 const kStorageAnonId = '**anonymous**';
 
@@ -63,7 +64,7 @@ Future<Database> openAppDatabase(DatabaseFactory dbFactory, String path) {
   return dbFactory.openDatabase(
     path,
     options: OpenDatabaseOptions(
-      version: 5,
+      version: 6,
       onConfigure: (db) async {
         final version = await _getDatabaseVersion(db);
         _logger.info('SQLite version: $version');
@@ -81,6 +82,7 @@ Future<Database> openAppDatabase(DatabaseFactory dbFactory, String path) {
             _deleteOldEntries(txn, 'chat_read_messages', chatReadMessagesTTL),
             _deleteOldEntries(txn, 'http_log', httpLogTTL),
             _deleteOldEntries(txn, 'app_log', appLogTTL),
+            _deleteOldEntries(txn, 'opening_explorer_cache', openingExplorerCacheTTL),
           ]);
         });
       },
@@ -93,6 +95,7 @@ Future<Database> openAppDatabase(DatabaseFactory dbFactory, String path) {
         _createGameTableV2(batch);
         _createHttpLogTableV4(batch);
         _createAppLogTableV5(batch);
+        _createOpeningExplorerCacheTableV6(batch);
         await batch.commit();
       },
       onUpgrade: (db, oldVersion, newVersion) async {
@@ -108,6 +111,9 @@ Future<Database> openAppDatabase(DatabaseFactory dbFactory, String path) {
         }
         if (oldVersion < 5) {
           _createAppLogTableV5(batch);
+        }
+        if (oldVersion < 6) {
+          _createOpeningExplorerCacheTableV6(batch);
         }
         await batch.commit();
       },
@@ -227,6 +233,17 @@ void _createAppLogTableV5(Batch batch) {
     error TEXT,
     stackTrace TEXT,
     lastModified TEXT NOT NULL
+  )
+    ''');
+}
+
+void _createOpeningExplorerCacheTableV6(Batch batch) {
+  batch.execute('''
+    CREATE TABLE IF NOT EXISTS opening_explorer_cache(
+    cacheKey TEXT NOT NULL,
+    lastModified TEXT NOT NULL,
+    data TEXT NOT NULL,
+    PRIMARY KEY (cacheKey)
   )
     ''');
 }

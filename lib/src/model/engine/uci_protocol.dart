@@ -12,7 +12,7 @@ import 'package:logging/logging.dart';
 const minDepth = 6;
 
 class UCIProtocol {
-  UCIProtocol() : _options = {'Threads': '1', 'Hash': '16', 'MultiPV': '1'};
+  UCIProtocol() : _options = {'Threads': maxEngineCores.toString(), 'Hash': '32', 'MultiPV': '1'};
 
   final _log = Logger('UCIProtocol');
   final Map<String, String> _options;
@@ -46,8 +46,8 @@ class UCIProtocol {
     _expectedPvs = 1;
 
     _options.clear();
-    _options['Threads'] = '1';
-    _options['Hash'] = '16';
+    _options['Threads'] = maxEngineCores.toString();
+    _options['Hash'] = '32';
     _options['MultiPV'] = '1';
 
     _engineName.value = null;
@@ -229,7 +229,7 @@ class UCIProtocol {
       _expectedPvs = 1;
 
       setOption('Threads', math.min(_work!.threads, maxEngineCores).toString());
-      setOption('Hash', (_work!.hashSize ?? 16).toString());
+      setOption('Hash', (_work!.hashSize ?? 32).toString());
       setOption('MultiPV', math.max(1, _work!.multiPv).toString());
 
       // Configure strength limitation for MoveWork

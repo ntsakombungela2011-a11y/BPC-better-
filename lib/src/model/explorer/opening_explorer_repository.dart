@@ -8,6 +8,7 @@ import 'package:lichess_mobile/src/constants.dart';
 import 'package:lichess_mobile/src/model/common/chess.dart' show Variant;
 import 'package:lichess_mobile/src/model/common/speed.dart';
 import 'package:lichess_mobile/src/model/explorer/opening_explorer.dart';
+import 'package:lichess_mobile/src/model/explorer/opening_explorer_cache_storage.dart';
 import 'package:lichess_mobile/src/model/explorer/opening_explorer_preferences.dart';
 import 'package:lichess_mobile/src/network/http.dart';
 import 'package:lichess_mobile/src/utils/riverpod.dart';
@@ -82,7 +83,7 @@ class OpeningExplorer extends AsyncNotifier<({OpeningExplorerEntry entry, bool i
 
 /// A provider for [OpeningExplorerRepository].
 final openingExplorerRepositoryProvider = Provider<OpeningExplorerRepository>((Ref ref) {
-  return OpeningExplorerRepository(ref.watch(lichessClientProvider));
+  return OpeningExplorerRepository(ref.watch(lichessClientProvider), ref);
 }, name: 'OpeningExplorerRepositoryProvider');
 
 Uri _explorerUri(String path, [Map<String, dynamic>? queryParameters]) =>
@@ -93,19 +94,18 @@ Uri _explorerUri(String path, [Map<String, dynamic>? queryParameters]) =>
     : Uri.https(kLichessOpeningExplorerHost, path, queryParameters);
 
 class OpeningExplorerRepository {
-  const OpeningExplorerRepository(this.client);
+  const OpeningExplorerRepository(this.client, this.ref);
 
   final Client client;
+  final Ref ref;
 
   Future<OpeningExplorerEntry> getMasterDatabase(String fen, {int? since}) {
-    return client.readJson(
-      _explorerUri('/masters', {
-        'source': 'mobile',
-        'fen': fen,
-        if (since != null) 'since': since.toString(),
-      }),
-      mapper: OpeningExplorerEntry.fromJson,
-    );
+    final uri = _explorerUri('/masters', {
+      'source': 'mobile',
+      'fen': fen,
+      if (since != null) 'since': since.toString(),
+    });
+    return _readCachedJson(uri);
   }
 
   Future<OpeningExplorerEntry> getLichessDatabase(
@@ -115,17 +115,15 @@ class OpeningExplorerRepository {
     required ISet<int> ratings,
     DateTime? since,
   }) {
-    return client.readJson(
-      _explorerUri('/lichess', {
-        'source': 'mobile',
-        'variant': _openingExplorerVariantKey(variant),
-        'fen': fen,
-        if (speeds.isNotEmpty) 'speeds': speeds.map((speed) => speed.name).join(','),
-        if (ratings.isNotEmpty) 'ratings': ratings.join(','),
-        if (since != null) 'since': '${since.year}-${since.month}',
-      }),
-      mapper: OpeningExplorerEntry.fromJson,
-    );
+    final uri = _explorerUri('/lichess', {
+      'source': 'mobile',
+      'variant': _openingExplorerVariantKey(variant),
+      'fen': fen,
+      if (speeds.isNotEmpty) 'speeds': speeds.map((speed) => speed.name).join(','),
+      if (ratings.isNotEmpty) 'ratings': ratings.join(','),
+      if (since != null) 'since': '${since.year}-${since.month}',
+    });
+    return _readCachedJson(uri);
   }
 
   Future<Stream<OpeningExplorerEntry>> getPlayerDatabase(
@@ -148,8 +146,28 @@ class OpeningExplorerRepository {
         if (gameModes.isNotEmpty) 'modes': gameModes.map((gameMode) => gameMode.name).join(','),
         if (since != null) 'since': '${since.year}-${since.month}',
       }),
+      headers: {'Accept': 'application/x-ndjson'},
       mapper: OpeningExplorerEntry.fromJson,
     );
+  }
+
+  Future<OpeningExplorerEntry> _readCachedJson(Uri uri) async {
+    final cacheKey = uri.toString();
+    try {
+      final entry = await client.readJson(
+        uri,
+        headers: {'Accept': 'application/json'},
+        mapper: OpeningExplorerEntry.fromJson,
+      );
+      final storage = await ref.read(openingExplorerCacheStorageProvider.future);
+      unawaited(storage.save(cacheKey, entry));
+      return entry;
+    } catch (_) {
+      final storage = await ref.read(openingExplorerCacheStorageProvider.future);
+      final cached = await storage.fetch(cacheKey);
+      if (cached != null) return cached.copyWith(queuePosition: -2);
+      return OpeningExplorerEntry.empty().copyWith(queuePosition: -1);
+    }
   }
 }
 
