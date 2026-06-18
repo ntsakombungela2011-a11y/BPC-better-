@@ -991,7 +991,6 @@ class GameController extends AsyncNotifier<GameState> {
       evals: data.evals,
     );
   }
-}
 
 typedef LiveGameClock = ({ValueListenable<Duration> white, ValueListenable<Duration> black});
 
