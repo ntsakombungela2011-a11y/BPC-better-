@@ -57,11 +57,7 @@ Future<void> initializeApp() async {
     }
   } catch (e, st) {
     _logger.severe('Error during app initialization: $e');
-    debugPrint(
-      "$e
-$st",
-      reason: 'Error during app initialization',
-    );
+    debugPrint('Error during app initialization: $e\n$st');
   } finally {
     await prefs.setBool('first_run', false);
   }

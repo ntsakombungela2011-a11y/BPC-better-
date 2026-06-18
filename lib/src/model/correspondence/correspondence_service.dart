@@ -119,7 +119,7 @@ class CorrespondenceService {
           await movePlayedCompleter.future.timeout(const Duration(seconds: 3));
           (await ref.read(correspondenceGameStorageProvider.future)).save(gameToSync.copyWith(registeredMoveAtPgn: null));
         } else {
-          updateStoredGame({gameToSync.fullId}, playableGame);
+          updateStoredGame(gameToSync.fullId, playableGame);
         }
       } catch (e, s) {
         _log.severe('Failed to sync correspondence game ${{gameToSync.id}}', e, s);

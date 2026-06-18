@@ -247,7 +247,7 @@ class GameController extends AsyncNotifier<GameState> {
     final curState = state.requireValue;
     final moveToConfirm = curState.moveToConfirm;
     if (moveToConfirm == null) {
-      assert(false, 'moveToConfirm must not be null on confirm move);
+      assert(false, 'moveToConfirm must not be null on confirm move');
       return;
     }
 
@@ -553,7 +553,7 @@ class GameController extends AsyncNotifier<GameState> {
       if (event.version != null) {
         _logger.warning('received $event while game state not yet available');
         // not sure whether this can happen so log it
-        debugPrint('received $event while game state not yet available\nReason: 'versioned socket event received before game state available'\nInfo: 'event.type: ${event.topic}');
+        debugPrint('received $event while game state not yet available\nReason: versioned socket event received before game state available\nInfo: event.type: ${event.topic}');
       }
       return;
     }
