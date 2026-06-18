@@ -1,3 +1,4 @@
+import 'package:lichess_mobile/src/model/common/perf.dart';
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';

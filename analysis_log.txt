@@ -1,0 +1,457 @@
+Analyzing analysis_controller.dart...
+
+  error - analysis_controller.dart:3:8 - Target of URI doesn't exist: 'package:collection/collection.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:4:8 - Target of URI doesn't exist: 'package:dartchess/dartchess.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:5:8 - Target of URI doesn't exist: 'package:fast_immutable_collections/fast_immutable_collections.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:6:8 - Target of URI doesn't exist: 'package:flutter/foundation.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:7:8 - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:8:8 - Target of URI doesn't exist: 'package:freezed_annotation/freezed_annotation.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:9:8 - Target of URI doesn't exist: 'package:intl/intl.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:10:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/account/account_service.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:11:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/analysis/analysis_player.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:12:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/analysis/analysis_preferences.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:13:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/analysis/common_analysis_state.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:14:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/analysis/forecast.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:15:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/analysis/opening_service.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:16:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/analysis/server_analysis_mixin.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:17:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/analysis/server_analysis_service.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:18:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/common/chess.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:19:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/common/eval.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:20:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/common/id.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:21:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/common/node.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:22:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/common/service/move_feedback.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:23:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/common/service/sound_service.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:24:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/common/socket.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:25:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/common/uci.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:26:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/engine/evaluation_mixin.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:27:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/engine/evaluation_preferences.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:28:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/game/exported_game.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:29:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/game/game_repository.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:30:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/game/game_repository_providers.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:31:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/game/game_socket_events.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:32:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/game/player.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:33:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/game/game.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:34:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/game/playable_game.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:35:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/model/tv/tv_socket_events.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:36:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/network/connectivity.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:37:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/network/http.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:38:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/network/socket.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:39:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/view/engine/engine_gauge.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:40:8 - Target of URI doesn't exist: 'package:lichess_mobile/src/widgets/pgn.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:42:6 - Target of URI doesn't exist: 'file:///app/lib/src/model/analysis/analysis_controller.freezed.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - analysis_controller.dart:44:21 - The function 'DateFormat' isn't defined. Try importing the library that defines 'DateFormat', correcting the name to the name of an existing function, or defining a function named 'DateFormat'. - undefined_function
+  error - analysis_controller.dart:46:1 - Undefined name 'freezed' used as an annotation. Try defining the name or importing it from another library. - undefined_annotation
+  error - analysis_controller.dart:47:35 - Classes can only mix in mixins and classes. - mixin_of_non_class
+  error - analysis_controller.dart:51:14 - Undefined class 'Variant'. Try changing the name to the name of an existing class, or creating a class with the name 'Variant'. - undefined_class
+  error - analysis_controller.dart:52:5 - Undefined name 'Default' used as an annotation. Try defining the name or importing it from another library. - undefined_annotation
+  error - analysis_controller.dart:53:5 - Undefined name 'Default' used as an annotation. Try defining the name or importing it from another library. - undefined_annotation
+  error - analysis_controller.dart:53:14 - Undefined name 'Side'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:53:26 - Undefined class 'Side'. Try changing the name to the name of an existing class, or creating a class with the name 'Side'. - undefined_class
+  error - analysis_controller.dart:54:8 - The name 'Standalone' isn't a type and can't be used in a redirected constructor. Try redirecting to a different constructor. - redirect_to_non_class
+  error - analysis_controller.dart:57:14 - Undefined class 'StringId'. Try changing the name to the name of an existing class, or creating a class with the name 'StringId'. - undefined_class
+  error - analysis_controller.dart:58:14 - Undefined class 'Side'. Try changing the name to the name of an existing class, or creating a class with the name 'Side'. - undefined_class
+  error - analysis_controller.dart:61:14 - Undefined class 'Variant'. Try changing the name to the name of an existing class, or creating a class with the name 'Variant'. - undefined_class
+  error - analysis_controller.dart:63:8 - The name 'Pgn' isn't a type and can't be used in a redirected constructor. Try redirecting to a different constructor. - redirect_to_non_class
+  error - analysis_controller.dart:66:14 - Undefined class 'Side'. Try changing the name to the name of an existing class, or creating a class with the name 'Side'. - undefined_class
+  error - analysis_controller.dart:68:14 - Undefined class 'GameId'. Try changing the name to the name of an existing class, or creating a class with the name 'GameId'. - undefined_class
+  error - analysis_controller.dart:69:8 - The name 'ArchivedGame' isn't a type and can't be used in a redirected constructor. Try redirecting to a different constructor. - redirect_to_non_class
+  error - analysis_controller.dart:72:14 - Undefined class 'Side'. Try changing the name to the name of an existing class, or creating a class with the name 'Side'. - undefined_class
+  error - analysis_controller.dart:74:14 - Undefined class 'GameFullId'. Try changing the name to the name of an existing class, or creating a class with the name 'GameFullId'. - undefined_class
+  error - analysis_controller.dart:75:8 - The name 'ActiveCorrespondenceGame' isn't a type and can't be used in a redirected constructor. Try redirecting to a different constructor. - redirect_to_non_class
+  error - analysis_controller.dart:77:45 - The name 'ArchivedGame' isn't defined, so it can't be used in an 'is' expression. Try changing the name to the name of an existing type, or creating a type with the name 'ArchivedGame'. - type_test_with_undefined_name
+  error - analysis_controller.dart:79:3 - Undefined class 'GameId'. Try changing the name to the name of an existing class, or creating a class with the name 'GameId'. - undefined_class
+  error - analysis_controller.dart:80:5 - Undefined class 'ArchivedGame'. Try changing the name to the name of an existing class, or creating a class with the name 'ArchivedGame'. - undefined_class
+  error - analysis_controller.dart:81:5 - Undefined class 'Pgn'. Try changing the name to the name of an existing class, or creating a class with the name 'Pgn'. - undefined_class
+  error - analysis_controller.dart:81:14 - Undefined class 'Standalone'. Try changing the name to the name of an existing class, or creating a class with the name 'Standalone'. - undefined_class
+  error - analysis_controller.dart:82:5 - Undefined class 'ActiveCorrespondenceGame'. Try changing the name to the name of an existing class, or creating a class with the name 'ActiveCorrespondenceGame'. - undefined_class
+  error - analysis_controller.dart:85:3 - Undefined class 'StringId'. Try changing the name to the name of an existing class, or creating a class with the name 'StringId'. - undefined_class
+  error - analysis_controller.dart:86:5 - Undefined class 'ArchivedGame'. Try changing the name to the name of an existing class, or creating a class with the name 'ArchivedGame'. - undefined_class
+  error - analysis_controller.dart:87:5 - Undefined class 'Pgn'. Try changing the name to the name of an existing class, or creating a class with the name 'Pgn'. - undefined_class
+  error - analysis_controller.dart:88:5 - Undefined class 'Standalone'. Try changing the name to the name of an existing class, or creating a class with the name 'Standalone'. - undefined_class
+  error - analysis_controller.dart:88:27 - The name 'StringId' isn't a class. Try correcting the name to match an existing class. - creation_with_non_type
+  error - analysis_controller.dart:89:5 - Undefined class 'ActiveCorrespondenceGame'. Try changing the name to the name of an existing class, or creating a class with the name 'ActiveCorrespondenceGame'. - undefined_class
+  error - analysis_controller.dart:109:26 - Undefined class 'Side'. Try changing the name to the name of an existing class, or creating a class with the name 'Side'. - undefined_class
+  error - analysis_controller.dart:110:26 - Undefined name 'Side'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:111:26 - Undefined name 'Side'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:118:36 - Undefined name 'AsyncNotifierProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:124:3 - Undefined class 'Root'. Try changing the name to the name of an existing class, or creating a class with the name 'Root'. - undefined_class
+  error - analysis_controller.dart:124:14 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:124:28 - Undefined class 'Variant'. Try changing the name to the name of an existing class, or creating a class with the name 'Variant'. - undefined_class
+  error - analysis_controller.dart:130:34 - Mixin can only be applied to class. - mixin_with_non_class_superclass
+  error - analysis_controller.dart:131:10 - Classes can only mix in mixins and classes. - mixin_of_non_class
+  error - analysis_controller.dart:131:33 - Classes can only mix in mixins and classes. - mixin_of_non_class
+  error - analysis_controller.dart:132:16 - Classes and mixins can only implement other classes and mixins. Try specifying a class or mixin, or remove the name from the list. - implements_non_class
+  error - analysis_controller.dart:139:22 - The name 'SocketEvent' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'SocketEvent'. - non_type_as_type_argument
+  error - analysis_controller.dart:141:8 - Undefined class 'Root'. Try changing the name to the name of an existing class, or creating a class with the name 'Root'. - undefined_class
+  error - analysis_controller.dart:142:8 - Undefined class 'Variant'. Try changing the name to the name of an existing class, or creating a class with the name 'Variant'. - undefined_class
+  error - analysis_controller.dart:143:8 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:146:3 - Undefined name 'protected' used as an annotation. Try defining the name or importing it from another library. - undefined_annotation
+  error - analysis_controller.dart:147:8 - Undefined class 'SocketClient'. Try changing the name to the name of an existing class, or creating a class with the name 'SocketClient'. - undefined_class
+  error - analysis_controller.dart:150:3 - Undefined name 'protected' used as an annotation. Try defining the name or importing it from another library. - undefined_annotation
+  error - analysis_controller.dart:151:3 - Undefined class 'Root'. Try changing the name to the name of an existing class, or creating a class with the name 'Root'. - undefined_class
+  error - analysis_controller.dart:153:3 - Undefined class 'GameRepository'. Try changing the name to the name of an existing class, or creating a class with the name 'GameRepository'. - undefined_class
+  error - analysis_controller.dart:153:41 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:153:50 - Undefined name 'gameRepositoryProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:157:5 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:161:20 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:161:30 - Undefined name 'socketPoolProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:165:5 - The method 'isOnline' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'isOnline'. - undefined_method
+  error - analysis_controller.dart:165:14 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:165:23 - Undefined name 'defaultClientProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:166:12 - A negation operand must have a static type of 'bool'. Try changing the operand to the '!' operator. - non_bool_negation_expression
+  error - analysis_controller.dart:172:16 - Undefined class 'LightOpening'. Try changing the name to the name of an existing class, or creating a class with the name 'LightOpening'. - undefined_class
+  error - analysis_controller.dart:173:16 - Undefined class 'PlayersAnalysis'. Try changing the name to the name of an existing class, or creating a class with the name 'PlayersAnalysis'. - undefined_class
+  error - analysis_controller.dart:174:16 - Undefined class 'Division'. Try changing the name to the name of an existing class, or creating a class with the name 'Division'. - undefined_class
+  error - analysis_controller.dart:175:16 - Undefined class 'PlayableGame'. Try changing the name to the name of an existing class, or creating a class with the name 'PlayableGame'. - undefined_class
+  error - analysis_controller.dart:177:5 - Undefined class 'ExportedGame'. Try changing the name to the name of an existing class, or creating a class with the name 'ExportedGame'. - undefined_class
+  error - analysis_controller.dart:180:12 - Undefined class 'ArchivedGame'. Try changing the name to the name of an existing class, or creating a class with the name 'ArchivedGame'. - undefined_class
+  error - analysis_controller.dart:182:32 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:182:42 - The method 'archivedGameProvider' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'archivedGameProvider'. - undefined_method
+  error - analysis_controller.dart:190:12 - Undefined class 'Pgn'. Try changing the name to the name of an existing class, or creating a class with the name 'Pgn'. - undefined_class
+  error - analysis_controller.dart:199:12 - Undefined class 'Standalone'. Try changing the name to the name of an existing class, or creating a class with the name 'Standalone'. - undefined_class
+  error - analysis_controller.dart:209:11 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:215:12 - Undefined class 'ActiveCorrespondenceGame'. Try changing the name to the name of an existing class, or creating a class with the name 'ActiveCorrespondenceGame'. - undefined_class
+  error - analysis_controller.dart:227:5 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:227:20 - Undefined name 'UciPath'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:228:5 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:228:28 - Undefined name 'UciPath'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:229:5 - Undefined class 'Move'. Try changing the name to the name of an existing class, or creating a class with the name 'Move'. - undefined_class
+  error - analysis_controller.dart:231:18 - Undefined name 'PgnGame'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:249:24 - The method 'IMap' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'IMap'. - undefined_method
+  error - analysis_controller.dart:250:26 - The method 'IList' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'IList'. - undefined_method
+  error - analysis_controller.dart:250:57 - Undefined name 'PgnComment'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:255:7 - Undefined class 'Pgn'. Try changing the name to the name of an existing class, or creating a class with the name 'Pgn'. - undefined_class
+  error - analysis_controller.dart:256:7 - Undefined class 'ArchivedGame'. Try changing the name to the name of an existing class, or creating a class with the name 'ArchivedGame'. - undefined_class
+  error - analysis_controller.dart:256:67 - Undefined name 'GameSource'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:257:7 - Undefined class 'Standalone'. Try changing the name to the name of an existing class, or creating a class with the name 'Standalone'. - undefined_class
+  error - analysis_controller.dart:258:7 - Undefined class 'ActiveCorrespondenceGame'. Try changing the name to the name of an existing class, or creating a class with the name 'ActiveCorrespondenceGame'. - undefined_class
+  error - analysis_controller.dart:261:24 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:261:33 - Undefined class 'FullOpening'. Try changing the name to the name of an existing class, or creating a class with the name 'FullOpening'. - undefined_class
+  error - analysis_controller.dart:264:7 - Undefined class 'Standalone'. Try changing the name to the name of an existing class, or creating a class with the name 'Standalone'. - undefined_class
+  error - analysis_controller.dart:265:12 - Undefined name 'Root'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:269:15 - The operands of the operator '&&' must be assignable to 'bool'. - non_bool_operand
+  error - analysis_controller.dart:270:23 - The getter 'initialMoveCursor' isn't defined for the type 'AnalysisOptions'. Try importing the library that defines 'initialMoveCursor', correcting the name to the name of an existing getter, or defining a getter or field named 'initialMoveCursor'. - undefined_getter
+  error - analysis_controller.dart:271:15 - The operands of the operator '&&' must be assignable to 'bool'. - non_bool_operand
+  error - analysis_controller.dart:271:66 - The getter 'initialMoveCursor' isn't defined for the type 'AnalysisOptions'. Try importing the library that defines 'initialMoveCursor', correcting the name to the name of an existing getter, or defining a getter or field named 'initialMoveCursor'. - undefined_getter
+  error - analysis_controller.dart:275:15 - Conditions must have a static type of 'bool'. Try changing the condition. - non_bool_condition
+  error - analysis_controller.dart:277:17 - Conditions must have a static type of 'bool'. Try changing the condition. - non_bool_condition
+  error - analysis_controller.dart:278:48 - The argument type 'dynamic' can't be assigned to the parameter type 'String'.  - argument_type_not_assignable
+  error - analysis_controller.dart:301:24 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:307:7 - Undefined class 'Standalone'. Try changing the name to the name of an existing class, or creating a class with the name 'Standalone'. - undefined_class
+  error - analysis_controller.dart:308:20 - The getter 'initialMoveCursor' isn't defined for the type 'AnalysisOptions'. Try importing the library that defines 'initialMoveCursor', correcting the name to the name of an existing getter, or defining a getter or field named 'initialMoveCursor'. - undefined_getter
+  error - analysis_controller.dart:312:16 - Undefined class 'Forecast'. Try changing the name to the name of an existing class, or creating a class with the name 'Forecast'. - undefined_class
+  error - analysis_controller.dart:321:22 - The name 'UciPath' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'UciPath'. - non_type_as_type_argument
+  error - analysis_controller.dart:324:21 - The name 'IList' isn't a class. Try correcting the name to match an existing class. - creation_with_non_type
+  error - analysis_controller.dart:324:27 - The name 'IList' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'IList'. - non_type_as_type_argument
+  error - analysis_controller.dart:324:33 - The name 'SanMove' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'SanMove'. - non_type_as_type_argument
+  error - analysis_controller.dart:326:24 - The name 'Branch' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'Branch'. - non_type_as_type_argument
+  error - analysis_controller.dart:329:21 - The method 'Branch' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'Branch'. - undefined_method
+  error - analysis_controller.dart:333:19 - Undefined name 'UciPath'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:336:18 - The method 'Forecast' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'Forecast'. - undefined_method
+  error - analysis_controller.dart:336:85 - The getter 'lock' isn't defined for the type 'List<InvalidType>'. Try importing the library that defines 'lock', correcting the name to the name of an existing getter, or defining a getter or field named 'lock'. - undefined_getter
+  error - analysis_controller.dart:343:19 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:343:28 - Undefined name 'analysisPreferencesProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:350:52 - The name 'Standalone' isn't defined, so it can't be used in an 'is' expression. Try changing the name to the name of an existing type, or creating a type with the name 'Standalone'. - type_test_with_undefined_name
+  error - analysis_controller.dart:350:77 - The name 'Pgn' isn't defined, so it can't be used in an 'is' expression. Try changing the name to the name of an existing type, or creating a type with the name 'Pgn'. - type_test_with_undefined_name
+  error - analysis_controller.dart:360:24 - Undefined name 'Variant'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:360:46 - Undefined name 'Side'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:360:67 - The getter 'orientation' isn't defined for the type 'AnalysisOptions'. Try importing the library that defines 'orientation', correcting the name to the name of an existing getter, or defining a getter or field named 'orientation'. - undefined_getter
+  error - analysis_controller.dart:364:26 - The method 'EvaluationContext' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'EvaluationContext'. - undefined_method
+  error - analysis_controller.dart:370:48 - The method 'makeAcplChartData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'makeAcplChartData'. - undefined_method
+  error - analysis_controller.dart:376:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:376:13 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:377:34 - The getter 'currentPath' isn't defined for the type 'AnalysisState'. Try importing the library that defines 'currentPath', correcting the name to the name of an existing getter, or defining a getter or field named 'currentPath'. - undefined_getter
+  error - analysis_controller.dart:383:15 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:383:52 - Undefined name 'evaluationPrefs'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:384:13 - The method 'requestEval' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'requestEval'. - undefined_method
+  error - analysis_controller.dart:385:35 - Undefined class 'ActiveCorrespondenceGame'. Try changing the name to the name of an existing class, or creating a class with the name 'ActiveCorrespondenceGame'. - undefined_class
+  error - analysis_controller.dart:395:5 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:399:22 - Undefined class 'ActiveCorrespondenceGame'. Try changing the name to the name of an existing class, or creating a class with the name 'ActiveCorrespondenceGame'. - undefined_class
+  error - analysis_controller.dart:404:23 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:410:34 - The name 'Move' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'Move'. - non_type_as_type_argument
+  error - analysis_controller.dart:411:46 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:417:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:417:44 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:419:13 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:424:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:424:13 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:425:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:427:11 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:428:41 - The method 'playMove' isn't defined for the type 'Object'. Try correcting the name to the name of an existing method, or defining a method named 'playMove'. - undefined_method
+  error - analysis_controller.dart:435:27 - Undefined class 'SocketEvent'. Try changing the name to the name of an existing class, or creating a class with the name 'SocketEvent'. - undefined_class
+  error - analysis_controller.dart:436:10 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:442:25 - Undefined name 'FenSocketEvent'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:446:24 - Undefined class 'FenSocketEvent'. Try changing the name to the name of an existing class, or creating a class with the name 'FenSocketEvent'. - undefined_class
+  error - analysis_controller.dart:449:9 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:451:10 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:466:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:466:13 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:467:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:468:48 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:469:64 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:474:19 - Undefined class 'Move'. Try changing the name to the name of an existing class, or creating a class with the name 'Move'. - undefined_class
+  error - analysis_controller.dart:475:10 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:478:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:489:14 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:493:22 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:502:5 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:506:5 - Undefined class 'Node'. Try changing the name to the name of an existing class, or creating a class with the name 'Node'. - undefined_class
+  error - analysis_controller.dart:525:22 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:526:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:526:13 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:530:17 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:535:25 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:546:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:546:13 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:546:23 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:550:27 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:557:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:557:13 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:557:23 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:561:25 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:563:22 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:564:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:564:13 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:570:23 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:576:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:576:13 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:577:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:578:19 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:579:11 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:579:54 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:584:10 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:590:10 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:590:28 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:592:24 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:594:25 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:596:29 - Undefined name 'UciPath'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:597:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:598:7 - Undefined name 'UciPath'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:598:22 - Undefined name 'UciCharPair'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:602:27 - The name 'ActiveCorrespondenceGame' isn't a type, so it can't be used in an 'as' expression. Try changing the name to the name of an existing type, or creating a type with the name 'ActiveCorrespondenceGame'. - cast_to_non_type
+  error - analysis_controller.dart:607:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:607:13 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:608:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:609:19 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:615:26 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:616:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:616:13 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:617:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:617:45 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:624:28 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:627:27 - The name 'ActiveCorrespondenceGame' isn't a type, so it can't be used in an 'as' expression. Try changing the name to the name of an existing type, or creating a type with the name 'ActiveCorrespondenceGame'. - cast_to_non_type
+  error - analysis_controller.dart:628:17 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:635:21 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:636:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:636:13 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:636:23 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:640:4 - Undefined class 'Node'. Try changing the name to the name of an existing class, or creating a class with the name 'Node'. - undefined_class
+  error - analysis_controller.dart:640:10 - Undefined class 'Opening'. Try changing the name to the name of an existing class, or creating a class with the name 'Opening'. - undefined_class
+  error - analysis_controller.dart:640:35 - Undefined class 'Node'. Try changing the name to the name of an existing class, or creating a class with the name 'Node'. - undefined_class
+  error - analysis_controller.dart:640:46 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:640:61 - Undefined class 'Opening'. Try changing the name to the name of an existing class, or creating a class with the name 'Opening'. - undefined_class
+  error - analysis_controller.dart:652:22 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:658:36 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:663:9 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:664:20 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:667:13 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:667:22 - Undefined name 'accountServiceProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:668:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:668:15 - Undefined name 'AsyncValue'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:669:9 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:670:25 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:679:5 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:687:22 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:692:52 - The name 'Branch' isn't defined, so it can't be used in an 'is' expression. Try changing the name to the name of an existing type, or creating a type with the name 'Branch'. - type_test_with_undefined_name
+  error - analysis_controller.dart:694:21 - The name 'Branch' isn't defined, so it can't be used in an 'is' expression. Try changing the name to the name of an existing type, or creating a type with the name 'Branch'. - type_test_with_undefined_name
+  error - analysis_controller.dart:706:24 - The name 'Branch' isn't defined, so it can't be used in an 'is' expression. Try changing the name to the name of an existing type, or creating a type with the name 'Branch'. - type_test_with_undefined_name
+  error - analysis_controller.dart:711:11 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:711:20 - Undefined name 'moveFeedbackServiceProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:713:11 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:713:20 - Undefined name 'moveFeedbackServiceProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:718:30 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:718:39 - Undefined name 'soundServiceProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:722:29 - Undefined name 'Sound'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:735:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:735:15 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:746:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:746:15 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:759:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:759:15 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:759:25 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:760:7 - The method 'requestEval' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'requestEval'. - undefined_method
+  error - analysis_controller.dart:765:39 - Undefined class 'Side'. Try changing the name to the name of an existing class, or creating a class with the name 'Side'. - undefined_class
+  error - analysis_controller.dart:766:11 - The method 'requestServerAnalysis' isn't defined in a superclass of 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'requestServerAnalysis' in a superclass. - undefined_super_member
+  error - analysis_controller.dart:766:49 - The getter 'orientation' isn't defined for the type 'AnalysisOptions'. Try importing the library that defines 'orientation', correcting the name to the name of an existing getter, or defining a getter or field named 'orientation'. - undefined_getter
+  error - analysis_controller.dart:769:11 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:769:20 - Undefined class 'FullOpening'. Try changing the name to the name of an existing class, or creating a class with the name 'FullOpening'. - undefined_class
+  error - analysis_controller.dart:769:61 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:770:10 - Undefined name 'kOpeningAllowedVariants'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:772:27 - Undefined name 'ref'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:772:36 - Undefined name 'openingServiceProvider'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:779:23 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:779:37 - Undefined class 'FullOpening'. Try changing the name to the name of an existing class, or creating a class with the name 'FullOpening'. - undefined_class
+  error - analysis_controller.dart:782:22 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:788:9 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:788:17 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:794:38 - Undefined class 'ServerEvalEvent'. Try changing the name to the name of an existing class, or creating a class with the name 'ServerEvalEvent'. - undefined_class
+  error - analysis_controller.dart:795:5 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:795:13 - The method 'AsyncData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'AsyncData'. - undefined_method
+  error - analysis_controller.dart:796:7 - Undefined name 'state'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:797:24 - The method 'makeAcplChartData' isn't defined for the type 'AnalysisController'. Try correcting the name to the name of an existing method, or defining a method named 'makeAcplChartData'. - undefined_method
+  error - analysis_controller.dart:807:1 - Undefined name 'freezed' used as an annotation. Try defining the name or importing it from another library. - undefined_annotation
+  error - analysis_controller.dart:810:9 - Classes can only mix in mixins and classes. - mixin_of_non_class
+  error - analysis_controller.dart:811:9 - Classes can only mix in mixins and classes. - mixin_of_non_class
+  error - analysis_controller.dart:812:9 - Classes can only mix in mixins and classes. - mixin_of_non_class
+  error - analysis_controller.dart:813:9 - Classes can only mix in mixins and classes. - mixin_of_non_class
+  error - analysis_controller.dart:814:16 - Classes and mixins can only implement other classes and mixins. Try specifying a class or mixin, or remove the name from the list. - implements_non_class
+  error - analysis_controller.dart:818:3 - Undefined class 'ViewRoot'. Try changing the name to the name of an existing class, or creating a class with the name 'ViewRoot'. - undefined_class
+  error - analysis_controller.dart:818:32 - Undefined name 'root'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:822:7 - The method 'copyWith' isn't defined for the type 'AnalysisState'. Try correcting the name to the name of an existing method, or defining a method named 'copyWith'. - undefined_method
+  error - analysis_controller.dart:826:14 - Undefined class 'GameId'. Try changing the name to the name of an existing class, or creating a class with the name 'GameId'. - undefined_class
+  error - analysis_controller.dart:829:5 - Undefined class 'ExportedGame'. Try changing the name to the name of an existing class, or creating a class with the name 'ExportedGame'. - undefined_class
+  error - analysis_controller.dart:832:14 - Undefined class 'Variant'. Try changing the name to the name of an existing class, or creating a class with the name 'Variant'. - undefined_class
+  error - analysis_controller.dart:835:14 - Undefined class 'ViewRoot'. Try changing the name to the name of an existing class, or creating a class with the name 'ViewRoot'. - undefined_class
+  error - analysis_controller.dart:845:14 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:848:14 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:851:14 - Undefined class 'Forecast'. Try changing the name to the name of an existing class, or creating a class with the name 'Forecast'. - undefined_class
+  error - analysis_controller.dart:857:14 - Undefined class 'Side'. Try changing the name to the name of an existing class, or creating a class with the name 'Side'. - undefined_class
+  error - analysis_controller.dart:868:14 - Undefined class 'EvaluationContext'. Try changing the name to the name of an existing class, or creating a class with the name 'EvaluationContext'. - undefined_class
+  error - analysis_controller.dart:871:5 - Undefined class 'Move'. Try changing the name to the name of an existing class, or creating a class with the name 'Move'. - undefined_class
+  error - analysis_controller.dart:874:5 - Undefined class 'Opening'. Try changing the name to the name of an existing class, or creating a class with the name 'Opening'. - undefined_class
+  error - analysis_controller.dart:877:5 - Undefined class 'Opening'. Try changing the name to the name of an existing class, or creating a class with the name 'Opening'. - undefined_class
+  error - analysis_controller.dart:880:5 - Undefined class 'PlayersAnalysis'. Try changing the name to the name of an existing class, or creating a class with the name 'PlayersAnalysis'. - undefined_class
+  error - analysis_controller.dart:883:5 - Undefined class 'Division'. Try changing the name to the name of an existing class, or creating a class with the name 'Division'. - undefined_class
+  error - analysis_controller.dart:886:5 - Undefined class 'IList'. Try changing the name to the name of an existing class, or creating a class with the name 'IList'. - undefined_class
+  error - analysis_controller.dart:886:11 - The name 'ExternalEval' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'ExternalEval'. - non_type_as_type_argument
+  error - analysis_controller.dart:889:14 - Undefined class 'IMap'. Try changing the name to the name of an existing class, or creating a class with the name 'IMap'. - undefined_class
+  error - analysis_controller.dart:894:5 - Undefined class 'IList'. Try changing the name to the name of an existing class, or creating a class with the name 'IList'. - undefined_class
+  error - analysis_controller.dart:894:11 - The name 'PgnComment' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'PgnComment'. - non_type_as_type_argument
+  error - analysis_controller.dart:896:5 - Undefined name 'Default' used as an annotation. Try defining the name or importing it from another library. - undefined_annotation
+  error - analysis_controller.dart:897:8 - The name '_AnalysisState' isn't a type and can't be used in a redirected constructor. Try redirecting to a different constructor. - redirect_to_non_class
+  error - analysis_controller.dart:903:37 - Undefined name 'gameId'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:909:3 - Undefined class 'ServerAnalysisSource'. Try changing the name to the name of an existing class, or creating a class with the name 'ServerAnalysisSource'. - undefined_class
+  error - analysis_controller.dart:910:7 - Undefined name 'gameId'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:910:26 - Undefined name 'pgnHeaders'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:910:57 - Undefined name 'archivedGame'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:910:81 - Undefined name 'GameSource'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:911:9 - Undefined name 'ServerAnalysisSource'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:911:43 - Undefined name 'gameId'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:918:33 - Undefined name 'playersAnalysis'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:921:25 - Undefined class 'EngineEvaluationPrefState'. Try changing the name to the name of an existing class, or creating a class with the name 'EngineEvaluationPrefState'. - undefined_class
+  error - analysis_controller.dart:923:8 - Undefined name 'isComputerAnalysisAllowed'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:923:37 - Undefined name 'isServerAnalysisEnabled'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:926:31 - Undefined name 'isComputerAnalysisAllowed'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:928:3 - Undefined class 'ViewNode'. Try changing the name to the name of an existing class, or creating a class with the name 'ViewNode'. - undefined_class
+  error - analysis_controller.dart:928:33 - Undefined name 'pathToLiveMove'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:929:9 - Undefined name 'pathToLiveMove'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:930:15 - Undefined name 'root'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:931:15 - Undefined name 'root'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:931:31 - Undefined name 'pathToLiveMove'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:935:7 - Undefined name 'forecast'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:936:7 - Undefined name 'pathToLiveMove'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:937:7 - Undefined name 'currentPath'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:937:22 - Undefined name 'pathToLiveMove'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:938:7 - Undefined name 'currentPath'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:938:28 - Undefined name 'pathToLiveMove'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:942:3 - Undefined class 'UciPath'. Try changing the name to the name of an existing class, or creating a class with the name 'UciPath'. - undefined_class
+  error - analysis_controller.dart:947:23 - Undefined name 'currentPath'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:947:47 - Undefined name 'pathToLiveMove'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:948:12 - Undefined name 'forecast'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:951:3 - Undefined class 'IList'. Try changing the name to the name of an existing class, or creating a class with the name 'IList'. - undefined_class
+  error - analysis_controller.dart:951:9 - The name 'PgnCommentShape' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'PgnCommentShape'. - non_type_as_type_argument
+  error - analysis_controller.dart:951:43 - The method 'IList' isn't defined for the type 'AnalysisState'. Try correcting the name to the name of an existing method, or defining a method named 'IList'. - undefined_method
+  error - analysis_controller.dart:952:6 - Undefined name 'currentNode'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:952:27 - Undefined name 'pgnRootComments'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:952:45 - Undefined name 'currentNode'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:959:3 - Undefined class 'SanMove'. Try changing the name to the name of an existing class, or creating a class with the name 'SanMove'. - undefined_class
+  error - analysis_controller.dart:959:31 - Undefined name 'forecast'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:960:33 - Undefined name 'currentPath'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:960:57 - Undefined name 'pathToLiveMove'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:963:3 - Undefined class 'IList'. Try changing the name to the name of an existing class, or creating a class with the name 'IList'. - undefined_class
+  error - analysis_controller.dart:963:9 - The name 'UciPath' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'UciPath'. - non_type_as_type_argument
+  error - analysis_controller.dart:964:29 - Undefined name 'forecast'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:967:26 - Undefined class 'EngineEvaluationPrefState'. Try changing the name to the name of an existing class, or creating a class with the name 'EngineEvaluationPrefState'. - undefined_class
+  error - analysis_controller.dart:970:3 - Undefined class 'Position'. Try changing the name to the name of an existing class, or creating a class with the name 'Position'. - undefined_class
+  error - analysis_controller.dart:970:35 - Undefined name 'currentNode'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:972:25 - Undefined name 'currentNode'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:973:25 - Undefined name 'currentPath'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:973:44 - Undefined name 'UciPath'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:975:3 - Undefined class 'EngineGaugeParams'. Try changing the name to the name of an existing class, or creating a class with the name 'EngineGaugeParams'. - undefined_class
+  error - analysis_controller.dart:975:39 - Undefined class 'EngineEvaluationPrefState'. Try changing the name to the name of an existing class, or creating a class with the name 'EngineEvaluationPrefState'. - undefined_class
+  error - analysis_controller.dart:977:18 - Undefined name 'pov'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:979:16 - Undefined name 'currentNode'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:980:17 - Undefined name 'currentNode'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:981:19 - Undefined name 'evaluationContext'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:981:47 - Undefined name 'currentPath'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:987:3 - Undefined class 'AnalysisPlayer'. Try changing the name to the name of an existing class, or creating a class with the name 'AnalysisPlayer'. - undefined_class
+  error - analysis_controller.dart:987:40 - Undefined class 'Side'. Try changing the name to the name of an existing class, or creating a class with the name 'Side'. - undefined_class
+  error - analysis_controller.dart:988:9 - Undefined name 'archivedGame'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:989:12 - Undefined name 'AnalysisPlayer'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:989:42 - Undefined name 'pgnHeaders'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:993:1 - Undefined name 'freezed' used as an annotation. Try defining the name or importing it from another library. - undefined_annotation
+  error - analysis_controller.dart:995:10 - Classes can only mix in mixins and classes. - mixin_of_non_class
+  error - analysis_controller.dart:996:16 - Classes and mixins can only implement other classes and mixins. Try specifying a class or mixin, or remove the name from the list. - implements_non_class
+  error - analysis_controller.dart:1000:14 - Undefined class 'Position'. Try changing the name to the name of an existing class, or creating a class with the name 'Position'. - undefined_class
+  error - analysis_controller.dart:1003:5 - Undefined class 'SanMove'. Try changing the name to the name of an existing class, or creating a class with the name 'SanMove'. - undefined_class
+  error - analysis_controller.dart:1004:5 - Undefined class 'Opening'. Try changing the name to the name of an existing class, or creating a class with the name 'Opening'. - undefined_class
+  error - analysis_controller.dart:1005:5 - Undefined class 'ClientEval'. Try changing the name to the name of an existing class, or creating a class with the name 'ClientEval'. - undefined_class
+  error - analysis_controller.dart:1006:5 - Undefined class 'IList'. Try changing the name to the name of an existing class, or creating a class with the name 'IList'. - undefined_class
+  error - analysis_controller.dart:1006:11 - The name 'PgnComment' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'PgnComment'. - non_type_as_type_argument
+  error - analysis_controller.dart:1007:5 - Undefined class 'IList'. Try changing the name to the name of an existing class, or creating a class with the name 'IList'. - undefined_class
+  error - analysis_controller.dart:1007:11 - The name 'PgnComment' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'PgnComment'. - non_type_as_type_argument
+  error - analysis_controller.dart:1008:5 - Undefined class 'IList'. Try changing the name to the name of an existing class, or creating a class with the name 'IList'. - undefined_class
+  error - analysis_controller.dart:1008:11 - The name 'PgnComment' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'PgnComment'. - non_type_as_type_argument
+  error - analysis_controller.dart:1009:5 - Undefined class 'IList'. Try changing the name to the name of an existing class, or creating a class with the name 'IList'. - undefined_class
+  error - analysis_controller.dart:1010:8 - The name '_AnalysisCurrentNode' isn't a type and can't be used in a redirected constructor. Try redirecting to a different constructor. - redirect_to_non_class
+  error - analysis_controller.dart:1012:40 - Undefined class 'Node'. Try changing the name to the name of an existing class, or creating a class with the name 'Node'. - undefined_class
+  error - analysis_controller.dart:1013:17 - The name 'Branch' isn't defined, so it can't be used in an 'is' expression. Try changing the name to the name of an existing type, or creating a type with the name 'Branch'. - type_test_with_undefined_name
+  error - analysis_controller.dart:1021:34 - The method 'IList' isn't defined for the type 'AnalysisCurrentNode'. Try correcting the name to the name of an existing method, or defining a method named 'IList'. - undefined_method
+  error - analysis_controller.dart:1022:27 - The method 'IList' isn't defined for the type 'AnalysisCurrentNode'. Try correcting the name to the name of an existing method, or defining a method named 'IList'. - undefined_method
+  error - analysis_controller.dart:1023:19 - The method 'IList' isn't defined for the type 'AnalysisCurrentNode'. Try correcting the name to the name of an existing method, or defining a method named 'IList'. - undefined_method
+  error - analysis_controller.dart:1024:15 - The method 'IList' isn't defined for the type 'AnalysisCurrentNode'. Try correcting the name to the name of an existing method, or defining a method named 'IList'. - undefined_method
+  error - analysis_controller.dart:1030:25 - The name 'Root' isn't defined, so it can't be used in an 'is' expression. Try changing the name to the name of an existing type, or creating a type with the name 'Root'. - type_test_with_undefined_name
+  error - analysis_controller.dart:1040:3 - Undefined class 'ExternalEval'. Try changing the name to the name of an existing class, or creating a class with the name 'ExternalEval'. - undefined_class
+  error - analysis_controller.dart:1041:21 - Undefined name 'lichessAnalysisComments'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - analysis_controller.dart:1043:11 - The method 'ExternalEval' isn't defined for the type 'AnalysisCurrentNode'. Try correcting the name to the name of an existing method, or defining a method named 'ExternalEval'. - undefined_method
+  error - analysis_controller.dart:1044:41 - The method 'cpFromPawns' isn't defined for the type 'AnalysisCurrentNode'. Try correcting the name to the name of an existing method, or defining a method named 'cpFromPawns'. - undefined_method
+warning - analysis_controller.dart:48:25 - The declaration 'AnalysisOptions._' isn't referenced. Try removing the declaration of 'AnalysisOptions._'. - unused_element
+warning - analysis_controller.dart:147:21 - The field doesn't override an inherited getter or setter. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:151:12 - The getter doesn't override an inherited getter. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:156:25 - The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:165:53 - The type of 'online' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - analysis_controller.dart:234:13 - The type argument(s) of 'Map' can't be inferred. Use explicit type argument(s) for 'Map'. - inference_failure_on_collection_literal
+warning - analysis_controller.dart:250:51 - The type of 'c' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - analysis_controller.dart:268:23 - The type of 'root' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - analysis_controller.dart:268:29 - The type of 'branch' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - analysis_controller.dart:268:37 - The type of 'isMainline' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - analysis_controller.dart:293:37 - The type of 'node' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - analysis_controller.dart:333:50 - The type of 'sanMove' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - analysis_controller.dart:350:63 - Dead code. Try removing the code, or fixing the code before it so that it can be reached. - dead_code
+warning - analysis_controller.dart:352:13 - Dead code. Try removing the code, or fixing the code before it so that it can be reached. - dead_code
+warning - analysis_controller.dart:405:19 - The type of 'step' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - analysis_controller.dart:461:8 - The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:530:8 - The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:535:8 - The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:550:8 - The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:561:8 - The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:570:8 - The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:659:23 - The type of 'node' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - analysis_controller.dart:693:29 - The type of 'node' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - analysis_controller.dart:745:12 - Dead code. Try removing the code, or fixing the code before it so that it can be reached. - dead_code
+warning - analysis_controller.dart:765:16 - The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:780:27 - The type of 'node' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - analysis_controller.dart:794:16 - The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:815:23 - The declaration 'AnalysisState._' isn't referenced. Try removing the declaration of 'AnalysisState._'. - unused_element
+warning - analysis_controller.dart:818:16 - The getter doesn't override an inherited getter. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:821:17 - The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:900:12 - The getter doesn't override an inherited getter. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:909:29 - The getter doesn't override an inherited getter. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:953:16 - The type of 'comment' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - analysis_controller.dart:967:8 - The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:970:16 - The getter doesn't override an inherited getter. Try updating this class to match the superclass, or removing the override annotation. - override_on_non_overriding_member
+warning - analysis_controller.dart:997:29 - The declaration 'AnalysisCurrentNode._' isn't referenced. Try removing the declaration of 'AnalysisCurrentNode._'. - unused_element
+warning - analysis_controller.dart:1026:12 - Dead code. Try removing the code, or fixing the code before it so that it can be reached. - dead_code
+warning - analysis_controller.dart:1041:64 - The type of 'c' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+
+453 issues found.
