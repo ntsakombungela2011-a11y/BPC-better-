@@ -74,7 +74,7 @@ Map<String, dynamic> _gameToJson(OpeningExplorerGame game) => {
   'black': {'name': game.black.name, 'rating': game.black.rating},
   if (game.uci != null) 'uci': game.uci,
   if (game.winner != null) 'winner': game.winner,
-  if (game.speed != null) 'speed': game.speed!.key,
+  if (game.speed != null) 'speed': game.speed!.name,
   if (game.mode != null) 'mode': game.mode!.name,
   if (game.year != null) 'year': game.year,
   if (game.month != null) 'month': game.month,

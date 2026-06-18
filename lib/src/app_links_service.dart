@@ -1,4 +1,4 @@
-import 'package:lichess_mobile/src/model/game/playable_game.dart';
+import 'package:lichess_mobile/src/model/game/game.dart';
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';

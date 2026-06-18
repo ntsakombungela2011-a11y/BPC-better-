@@ -183,7 +183,7 @@ class _BroadcastTeamStandingsListState extends ConsumerState<BroadcastTeamStandi
                             maxLines: 2,
                           ),
                           onTap: () => toggleSort(.elo),
-                          sortIcon: currentSort == BroadcastSort.elo ? sortIcon : null,
+                          sortIcon: currentSort == _SortingTypes.elo ? sortIcon : null,
                         ),
                       )
                     else
@@ -203,7 +203,7 @@ class _BroadcastTeamStandingsListState extends ConsumerState<BroadcastTeamStandi
                           textAlign: .right,
                         ),
                         onTap: () => toggleSort(.score),
-                        sortIcon: currentSort == BroadcastSort.score ? sortIcon : null,
+                        sortIcon: currentSort == _SortingTypes.score ? sortIcon : null,
                         mainAxisAlignment: .end,
                       ),
                     ),

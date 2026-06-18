@@ -281,7 +281,7 @@ class _TeamPlayersListState extends State<_TeamPlayersList> {
               child: _TableTitleCell(
                 title: Text('${context.l10n.players} (Elo)', style: _kHeaderTextStyle),
                 onTap: () => toggleSort(.elo),
-                sortIcon: currentSort == BroadcastSort.elo ? sortIcon : null,
+                sortIcon: currentSort == _SortingTypes.elo ? sortIcon : null,
               ),
             ),
             _TableTitleCell(
@@ -290,7 +290,7 @@ class _TeamPlayersListState extends State<_TeamPlayersList> {
                 style: _kHeaderTextStyle,
               ),
               onTap: () => toggleSort(.score),
-              sortIcon: currentSort == BroadcastSort.score ? sortIcon : null,
+              sortIcon: currentSort == _SortingTypes.score ? sortIcon : null,
             ),
           ],
         ),
