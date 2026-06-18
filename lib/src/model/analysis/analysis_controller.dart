@@ -252,7 +252,7 @@ class AnalysisController extends AsyncNotifier<AnalysisState>
 
     final isComputerAnalysisAllowed = switch (options) {
       Pgn(:final isComputerAnalysisAllowed) => isComputerAnalysisAllowed,
-      ArchivedGame() => isGameFinished || archivedGame?.source == .import,
+      ArchivedGame() => isGameFinished || archivedGame?.source == GameSource.import,
       Standalone() => true,
       ActiveCorrespondenceGame() => false,
     };
@@ -906,7 +906,7 @@ sealed class AnalysisState
   /// It must be a finished lichess game or an imported game.
   @override
   ServerAnalysisSource? get serverAnalysisSource =>
-      gameId != null && (pgnHeaders['Result'] != '*' || archivedGame?.source == .import)
+      gameId != null && (pgnHeaders['Result'] != '*' || archivedGame?.source == GameSource.import)
       ? ServerAnalysisSource.game(gameId: gameId!)
       : null;
 

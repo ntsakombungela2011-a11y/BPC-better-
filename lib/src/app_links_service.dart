@@ -1,3 +1,4 @@
+import 'package:lichess_mobile/src/model/game/playable_game.dart';
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
@@ -296,7 +297,7 @@ class AppLinksService {
 
       if (!context.mounted) return null;
 
-      if (game.finished || game.source == .import) {
+      if (game.finished || game.source == GameSource.import) {
         return [
           AnalysisScreen.buildRoute(
             AnalysisOptions.archivedGame(

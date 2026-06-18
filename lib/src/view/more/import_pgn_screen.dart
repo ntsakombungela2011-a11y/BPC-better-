@@ -49,7 +49,7 @@ class ImportPgnScreen extends StatelessWidget {
               pgn: text,
               isComputerAnalysisAllowed: true,
               initialMoveCursor: 1,
-              variant: rule != null ? Variant.fromRule(rule) : .standard,
+              variant: rule != null ? Variant.fromRule(rule) : Variant.standard,
             ),
           ),
         );

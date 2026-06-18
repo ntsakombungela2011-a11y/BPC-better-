@@ -19,9 +19,9 @@ sealed class AnalysisPlayer with _$AnalysisPlayer {
   ///
   /// Returns null if the player name is not available or is just a placeholder.
   static AnalysisPlayer? fromPgnHeaders(IMap<String, String> pgnHeaders, Side side) {
-    final nameKey = side == .white ? 'White' : 'Black';
-    final titleKey = side == .white ? 'WhiteTitle' : 'BlackTitle';
-    final eloKey = side == .white ? 'WhiteElo' : 'BlackElo';
+    final nameKey = side == Side.white ? 'White' : 'Black';
+    final titleKey = side == Side.white ? 'WhiteTitle' : 'BlackTitle';
+    final eloKey = side == Side.white ? 'WhiteElo' : 'BlackElo';
 
     final name = pgnHeaders.get(nameKey);
     if (name == null || name == '?') return null;
