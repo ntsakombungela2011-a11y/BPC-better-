@@ -1,9 +1,10 @@
 import 'package:chessground/chessground.dart';
 import 'package:collection/collection.dart';
 import 'package:dartchess/dartchess.dart';
-import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
+import 'package:dynamic_system_colors/dynamic_system_colors.dart';
+import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lichess_mobile/src/model/account/account_preferences.dart';
 import 'package:lichess_mobile/src/model/common/node.dart';
@@ -16,9 +17,50 @@ import 'package:lichess_mobile/src/utils/rate_limit.dart';
 import 'package:lichess_mobile/src/widgets/adaptive_bottom_sheet.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 
-const inaccuracyColor = LichessColors.cyan;
-const mistakeColor = Color(0xFFe69f00);
-const blunderColor = Color(0xFFdf5353);
+const inaccuracyColor = Color(0xFFE6A817);
+const mistakeColor = Color(0xFFD4621C);
+const blunderColor = Color(0xFFCC3232);
+
+enum MoveClassification {
+  brilliant('Brilliant', '✦', 0xFF00B5D8),
+  greatMove('Great Move', '!', 0xFF22A093),
+  bestMove('Best Move', '★', 0xFF5B8A3C),
+  excellent('Excellent', '✓', 0xFF5B8A3C),
+  good('Good', '+', 0xFF7DAF5A),
+  inaccuracy('Inaccuracy', '?!', 0xFFE6A817),
+  mistake('Mistake', '?', 0xFFD4621C),
+  blunder('Blunder', '??', 0xFFCC3232),
+  miss('Miss', '✕', 0xFFD44C6B),
+  book('Book', '📖', 0xFF8B5CF6);
+
+  const MoveClassification(this.label, this.symbol, this.colorValue);
+  final String label;
+  final String symbol;
+  final int colorValue;
+  Color get color => Color(colorValue);
+}
+
+MoveClassification? classifyMove(ViewBranch branch) {
+  if (branch.opening != null) return MoveClassification.book;
+  final nags = branch.nags ?? IList<int>();
+  if (nags.contains(3)) return MoveClassification.brilliant;
+  if (nags.contains(1)) return MoveClassification.greatMove;
+  if (nags.contains(5)) return MoveClassification.excellent;
+  if (nags.contains(6)) return MoveClassification.inaccuracy;
+  if (nags.contains(2)) return MoveClassification.mistake;
+  if (nags.contains(4)) return MoveClassification.blunder;
+  final eval = branch.eval ?? branch.serverEval;
+  final cp = eval?.cp?.abs();
+  if (eval?.mate != null && eval!.mate!.abs() <= 2) return MoveClassification.bestMove;
+  if (cp == null) return MoveClassification.good;
+  if (cp <= 10) return MoveClassification.bestMove;
+  if (cp <= 25) return MoveClassification.excellent;
+  if (cp <= 49) return MoveClassification.good;
+  if (cp <= 99) return MoveClassification.inaccuracy;
+  if (cp <= 199) return MoveClassification.mistake;
+  return MoveClassification.blunder;
+}
+
 const kInlineMovePadding = EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0);
 const kIndexOpacity = 0.6;
 
@@ -83,13 +125,34 @@ Annotation? makeAnnotation(Iterable<int>? nags) {
     return null;
   }
   return switch (nag) {
-    1 => const Annotation(symbol: '!', color: Colors.lightGreen),
-    3 => const Annotation(symbol: '!!', color: Colors.teal),
-    5 => const Annotation(symbol: '!?', color: Colors.purple),
-    6 => const Annotation(symbol: '?!', color: LichessColors.cyan),
-    2 => const Annotation(symbol: '?', color: mistakeColor),
-    4 => const Annotation(symbol: '??', color: blunderColor),
-    8 => const Annotation(symbol: '□', color: Colors.grey),
+    1 => Annotation(
+      symbol: MoveClassification.greatMove.symbol,
+      color: MoveClassification.greatMove.color,
+    ),
+    3 => Annotation(
+      symbol: MoveClassification.brilliant.symbol,
+      color: MoveClassification.brilliant.color,
+    ),
+    5 => Annotation(
+      symbol: MoveClassification.excellent.symbol,
+      color: MoveClassification.excellent.color,
+    ),
+    6 => Annotation(
+      symbol: MoveClassification.inaccuracy.symbol,
+      color: MoveClassification.inaccuracy.color,
+    ),
+    2 => Annotation(
+      symbol: MoveClassification.mistake.symbol,
+      color: MoveClassification.mistake.color,
+    ),
+    4 => Annotation(
+      symbol: MoveClassification.blunder.symbol,
+      color: MoveClassification.blunder.color,
+    ),
+    8 => Annotation(
+      symbol: MoveClassification.bestMove.symbol,
+      color: MoveClassification.bestMove.color,
+    ),
     10 => const Annotation(symbol: '=', color: Colors.grey),
     11 => const Annotation(symbol: '=', color: Colors.grey),
     13 => const Annotation(symbol: '∞', color: Colors.grey),
@@ -1303,6 +1366,7 @@ class InlineMove extends ConsumerWidget {
     final eval = params.shouldShowComputerAnalysis && canShowEval
         ? branch.eval ?? branch.serverEval
         : null;
+    final classification = params.shouldShowComputerAnalysis ? classifyMove(branch) : null;
 
     final isPremove =
         params.pathToLiveMove != null &&
@@ -1357,6 +1421,32 @@ class InlineMove extends ConsumerWidget {
                 ],
               ),
             ),
+            if (classification != null)
+              Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: Tooltip(
+                  message: classification.label,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: classification.color.withValues(alpha: 0.18),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                      child: Text(
+                        classification.symbol,
+                        style: moveTextStyle.copyWith(
+                          fontSize: moveTextStyle.fontSize != null
+                              ? moveTextStyle.fontSize! - 2.0
+                              : null,
+                          color: classification.color,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             if (eval != null)
               Text(
                 eval.evalString,

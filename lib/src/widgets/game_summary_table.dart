@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lichess_mobile/src/model/game/player.dart';
 import 'package:lichess_mobile/src/styles/styles.dart';
+import 'package:lichess_mobile/src/widgets/pgn.dart';
 import 'package:lichess_mobile/src/utils/l10n_context.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -90,21 +91,27 @@ class GameSummaryTable extends StatelessWidget {
                   ],
                 ),
               for (final item in [
+                ('0', MoveClassification.brilliant.label, '0'),
+                ('0', MoveClassification.greatMove.label, '0'),
+                ('0', MoveClassification.bestMove.label, '0'),
+                ('0', MoveClassification.excellent.label, '0'),
+                ('0', MoveClassification.good.label, '0'),
                 (
                   whiteAnalysis.inaccuracies.toString(),
-                  context.l10n.numberInaccuracies(2).replaceAll('2', '').trim(),
+                  MoveClassification.inaccuracy.label,
                   blackAnalysis.inaccuracies.toString(),
                 ),
                 (
                   whiteAnalysis.mistakes.toString(),
-                  context.l10n.numberMistakes(2).replaceAll('2', '').trim(),
+                  MoveClassification.mistake.label,
                   blackAnalysis.mistakes.toString(),
                 ),
                 (
                   whiteAnalysis.blunders.toString(),
-                  context.l10n.numberBlunders(2).replaceAll('2', '').trim(),
+                  MoveClassification.blunder.label,
                   blackAnalysis.blunders.toString(),
                 ),
+                ('0', MoveClassification.miss.label, '0'),
               ])
                 TableRow(
                   children: [

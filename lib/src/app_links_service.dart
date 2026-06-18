@@ -209,7 +209,7 @@ class AppLinksService {
     return null;
   }
 
-  /// Handles an `org.lichess.mobile://open-web?url=...` link (e.g. from the platform widget)
+  /// Handles an `com.boipelo.chess://open-web?url=...` link (e.g. from the platform widget)
   /// by opening the encoded URL in the platform in-app browser.
   void _handleOpenWebLink(Uri uri) {
     final target = uri.queryParameters['url'];
@@ -222,8 +222,8 @@ class AppLinksService {
   }
 
   /// Opens the native daily-puzzle screen (same path as tapping the daily-puzzle
-  /// card on the puzzle tab) in response to `org.lichess.mobile://training/daily`
-  /// or `org.lichess.mobile://training/daily/{id}` deeplinks emitted by the iOS
+  /// card on the puzzle tab) in response to `com.boipelo.chess://training/daily`
+  /// or `com.boipelo.chess://training/daily/{id}` deeplinks emitted by the iOS
   /// home-screen widget.
   ///
   /// Always fetches the current daily puzzle first (cached, so no extra request

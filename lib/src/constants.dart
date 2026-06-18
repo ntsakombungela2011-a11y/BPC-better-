@@ -28,7 +28,7 @@ const kLichessTablebaseHost = String.fromEnvironment(
   defaultValue: 'tablebase.lichess.org',
 );
 
-const kLichessCustomUriSchemeName = 'org.lichess.mobile';
+const kLichessCustomUriSchemeName = 'com.boipelo.chess';
 
 const kLichessClientId = 'lichess_mobile';
 

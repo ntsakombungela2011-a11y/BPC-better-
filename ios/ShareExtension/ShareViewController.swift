@@ -2,13 +2,13 @@ import UIKit
 import UniformTypeIdentifiers
 
 /// Silent Share Extension: extracts a shared PGN, writes it to the shared App
-/// Group container, and opens the host app via the `org.lichess.mobile://shared-pgn`
+/// Group container, and opens the host app via the `com.boipelo.chess://shared-pgn`
 /// deeplink. The main app (`SharePlugin`) reads the file back and routes it to the
 /// PGN import screen. No UI is presented.
 class ShareViewController: UIViewController {
-  private let appGroupId = "group.org.lichess.mobileV2.share"
+  private let appGroupId = "group.com.boipelo.chess.share"
   private let sharedFileName = "shared.pgn"
-  private let hostAppURL = "org.lichess.mobile://shared-pgn"
+  private let hostAppURL = "com.boipelo.chess://shared-pgn"
   private let pgnTypeIdentifier = "org.lichess.pgn"
 
   override func viewDidLoad() {
