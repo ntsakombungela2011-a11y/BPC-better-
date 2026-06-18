@@ -26,10 +26,11 @@ import 'package:lichess_mobile/src/model/common/uci.dart';
 import 'package:lichess_mobile/src/model/engine/evaluation_mixin.dart';
 import 'package:lichess_mobile/src/model/engine/evaluation_preferences.dart';
 import 'package:lichess_mobile/src/model/game/exported_game.dart';
+import 'package:lichess_mobile/src/model/game/game.dart';
+import 'package:lichess_mobile/src/model/game/playable_game.dart';
 import 'package:lichess_mobile/src/model/game/game_repository.dart';
 import 'package:lichess_mobile/src/model/game/game_repository_providers.dart';
 import 'package:lichess_mobile/src/model/game/game_socket_events.dart';
-import 'package:lichess_mobile/src/model/game/playable_game.dart';
 import 'package:lichess_mobile/src/model/game/player.dart';
 import 'package:lichess_mobile/src/model/tv/tv_socket_events.dart';
 import 'package:lichess_mobile/src/network/connectivity.dart';
@@ -252,7 +253,7 @@ class AnalysisController extends AsyncNotifier<AnalysisState>
 
     final isComputerAnalysisAllowed = switch (options) {
       Pgn(:final isComputerAnalysisAllowed) => isComputerAnalysisAllowed,
-      ArchivedGame() => isGameFinished || archivedGame?.source == .import,
+      ArchivedGame() => isGameFinished || archivedGame?.source == GameSource.import,
       Standalone() => true,
       ActiveCorrespondenceGame() => false,
     };
@@ -906,7 +907,7 @@ sealed class AnalysisState
   /// It must be a finished lichess game or an imported game.
   @override
   ServerAnalysisSource? get serverAnalysisSource =>
-      gameId != null && (pgnHeaders['Result'] != '*' || archivedGame?.source == .import)
+      gameId != null && (pgnHeaders['Result'] != '*' || archivedGame?.source == GameSource.import)
       ? ServerAnalysisSource.game(gameId: gameId!)
       : null;
 

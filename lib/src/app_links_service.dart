@@ -11,6 +11,8 @@ import 'package:lichess_mobile/src/model/challenge/challenge_repository.dart';
 import 'package:lichess_mobile/src/model/challenge/challenge_service.dart';
 import 'package:lichess_mobile/src/model/common/id.dart';
 import 'package:lichess_mobile/src/model/game/game_repository.dart';
+import 'package:lichess_mobile/src/model/game/game.dart';
+import 'package:lichess_mobile/src/model/game/playable_game.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_angle.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_providers.dart';
@@ -296,7 +298,7 @@ class AppLinksService {
 
       if (!context.mounted) return null;
 
-      if (game.finished || game.source == .import) {
+      if (game.finished || game.source == GameSource.import) {
         return [
           AnalysisScreen.buildRoute(
             AnalysisOptions.archivedGame(

@@ -12,7 +12,7 @@ class SideIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final isLight = Theme.of(context).brightness == Brightness.light;
     return isLight
-        ? Icon(side == .white ? Icons.circle_outlined : Icons.circle, size: size)
-        : Icon(side == .white ? Icons.circle : Icons.circle_outlined, size: size);
+        ? Icon(side == Side.white ? Icons.circle_outlined : Icons.circle, size: size)
+        : Icon(side == Side.white ? Icons.circle : Icons.circle_outlined, size: size);
   }
 }

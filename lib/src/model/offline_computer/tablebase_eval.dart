@@ -15,11 +15,11 @@ CloudEval? tablebaseEntryToCloudEval(TablebaseEntry entry, Position position) {
   switch (entry.category) {
     case .win || .syzygyWin:
       final mateN = entry.dtm != null ? (entry.dtm!.abs() + 1) ~/ 2 : 10;
-      mate = turn == .white ? mateN : -mateN;
+      mate = turn == Side.white ? mateN : -mateN;
       cp = null;
     case .loss || .syzygyLoss:
       final mateN = entry.dtm != null ? (entry.dtm!.abs() + 1) ~/ 2 : 10;
-      mate = turn == .white ? -mateN : mateN;
+      mate = turn == Side.white ? -mateN : mateN;
       cp = null;
     case .draw || .cursedWin || .blessedLoss:
       mate = null;

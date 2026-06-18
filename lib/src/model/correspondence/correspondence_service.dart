@@ -93,7 +93,7 @@ class CorrespondenceService {
     int movesPlayed = 0;
     for (final gameToSync in games) {
       if (gameToSync.registeredMoveAtPgn == null) continue;
-      final uri = lichessWSUri('/play/${{gameToSync.fullId}}/v6');
+      final uri = lichessWSUri('/play/${gameToSync.fullId}/v6');
       WebSocket? socket;
       StreamSubscription<SocketEvent>? streamSubscription;
       try {

@@ -160,10 +160,10 @@ class _SummaryPlayerName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final playerTitle = side == .white
+    final playerTitle = side == Side.white
         ? pgnHeaders.get('WhiteTitle')
         : pgnHeaders.get('BlackTitle');
-    final playerName = side == .white
+    final playerName = side == Side.white
         ? pgnHeaders.get('White') ?? context.l10n.white
         : pgnHeaders.get('Black') ?? context.l10n.black;
 
@@ -177,11 +177,11 @@ class _SummaryPlayerName extends StatelessWidget {
           child: Column(
             children: [
               Icon(
-                side == .white
-                    ? brightness == .light
+                side == Side.white
+                    ? brightness == Brightness.light
                           ? CupertinoIcons.circle
                           : CupertinoIcons.circle_filled
-                    : brightness == .light
+                    : brightness == Brightness.light
                     ? CupertinoIcons.circle_filled
                     : CupertinoIcons.circle,
                 size: 14,

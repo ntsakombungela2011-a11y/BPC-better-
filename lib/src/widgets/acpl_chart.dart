@@ -43,8 +43,8 @@ class AcplChart extends StatelessWidget {
     final white = Theme.of(context).colorScheme.surfaceContainerHighest;
     final black = Theme.of(context).colorScheme.outline;
     // Note: below/above are inverted in fl_chart
-    final belowLineColor = brightness == .light ? white : black;
-    final aboveLineColor = brightness == .light ? black : white;
+    final belowLineColor = brightness == Brightness.light ? white : black;
+    final aboveLineColor = brightness == Brightness.light ? black : white;
 
     final spots = params.acplChartData
         .mapIndexed((i, e) => FlSpot(i.toDouble(), e.winningChances(Side.white)))
