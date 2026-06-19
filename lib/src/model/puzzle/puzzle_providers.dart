@@ -1,5 +1,8 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lichess_mobile/src/features/puzzle/data/local_streak_service.dart';
+import 'package:lichess_mobile/src/features/puzzle/data/offline_puzzle_repository.dart';
+import 'package:lichess_mobile/src/features/puzzle/data/opening_trie.dart';
 import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
 import 'package:lichess_mobile/src/model/common/id.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle.dart';
@@ -7,12 +10,33 @@ import 'package:lichess_mobile/src/model/puzzle/puzzle_angle.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_batch_storage.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_opening.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_repository.dart';
-import 'package:lichess_mobile/src/model/puzzle/puzzle_service.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_storage.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_theme.dart';
 import 'package:lichess_mobile/src/model/puzzle/storm.dart';
 import 'package:lichess_mobile/src/network/http.dart';
 import 'package:lichess_mobile/src/utils/riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+final offlinePuzzleRepoProvider = Provider<OfflinePuzzleRepository>((ref) {
+  return OfflinePuzzleRepository();
+}, name: 'OfflinePuzzleRepoProvider');
+
+final localStreakServiceProvider = FutureProvider<LocalStreakService>((ref) async {
+  final prefs = await SharedPreferences.getInstance();
+  return LocalStreakService(prefs, ref.watch(offlinePuzzleRepoProvider));
+}, name: 'LocalStreakServiceProvider');
+
+final openingTrieProvider = FutureProvider<OpeningTrie>((ref) async {
+  return OpeningTrie().load();
+}, name: 'OpeningTrieProvider');
+
+final openingForMovesProvider = FutureProvider.family<OpeningMatch?, List<String>>((
+  ref,
+  moves,
+) async {
+  final trie = await ref.watch(openingTrieProvider.future);
+  return trie.lookup(moves);
+}, name: 'OpeningForMovesProvider');
 
 /// Fetches the next puzzle for the given [PuzzleAngle].
 final nextPuzzleProvider = FutureProvider.autoDispose.family<PuzzleContext?, PuzzleAngle>((
@@ -20,14 +44,19 @@ final nextPuzzleProvider = FutureProvider.autoDispose.family<PuzzleContext?, Puz
   PuzzleAngle angle,
 ) async {
   final authUser = ref.watch(authControllerProvider);
-  final puzzleService = await ref.read(puzzleServiceFactoryProvider)(
-    queueLength: kPuzzleLocalQueueLength,
-  );
   // useful for for preview puzzle list in puzzle tab (providers in a list can
   // be invalidated multiple times when the user scrolls the list)
   ref.cacheFor(const Duration(minutes: 1));
 
-  return puzzleService.nextPuzzle(userId: authUser?.user.id, angle: angle);
+  final theme = switch (angle) {
+    PuzzleTheme(:final key) => key.name,
+    _ => null,
+  };
+  final puzzle = await ref.read(offlinePuzzleRepoProvider).nextPuzzle(
+    theme: theme,
+    targetRating: 1200,
+  );
+  return PuzzleContext(puzzle: puzzle, angle: angle, userId: authUser?.user.id, casual: true);
 }, name: 'NextPuzzleProvider');
 
 /// Fetches the list of puzzles to replay for the given number of [days] and [theme].

@@ -1,11 +1,13 @@
 import 'package:dartchess/dartchess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lichess_mobile/src/features/opening_explorer/data/engine_explorer_service.dart';
+import 'package:lichess_mobile/src/features/opening_explorer/data/opening_trie_reader.dart' as offline_book;
+import 'package:lichess_mobile/src/features/opening_explorer/opening_explorer_providers.dart';
 import 'package:lichess_mobile/src/model/common/chess.dart';
 import 'package:lichess_mobile/src/model/explorer/opening_explorer.dart';
 import 'package:lichess_mobile/src/model/explorer/opening_explorer_preferences.dart';
 import 'package:lichess_mobile/src/model/explorer/opening_explorer_repository.dart';
-import 'package:lichess_mobile/src/network/connectivity.dart';
 import 'package:lichess_mobile/src/theme.dart';
 import 'package:lichess_mobile/src/utils/l10n_context.dart';
 import 'package:lichess_mobile/src/view/explorer/opening_explorer_widgets.dart';
@@ -27,6 +29,7 @@ class OpeningExplorerView extends ConsumerStatefulWidget {
     this.opening,
     this.scrollable = true,
     this.shouldDisplayGames = true,
+    this.uciMoves = const [],
   });
 
   final Side pov;
@@ -37,6 +40,7 @@ class OpeningExplorerView extends ConsumerStatefulWidget {
 
   /// Whether to display recent and top games in the explorer.
   final bool shouldDisplayGames;
+  final List<String> uciMoves;
 
   @override
   ConsumerState<OpeningExplorerView> createState() => _OpeningExplorerState();
@@ -65,6 +69,16 @@ class _OpeningExplorerState extends ConsumerState<OpeningExplorerView> {
       return const Center(
         // TODO: l10n
         child: Text('Select a Lichess player in the settings.'),
+      );
+    }
+
+    final offlineRequest = ExplorerRequest(moves: widget.uciMoves, fen: widget.position.fen);
+    final explorerSource = ref.watch(explorerSourceProvider(offlineRequest));
+    if (explorerSource case AsyncData(value: ExplorerSourceOffline(:final state))) {
+      return _OfflineExplorerPanel(
+        state: state,
+        scrollable: widget.scrollable,
+        onMoveSelected: widget.onMoveSelected,
       );
     }
 
@@ -170,13 +184,16 @@ class _OpeningExplorerState extends ConsumerState<OpeningExplorerView> {
         );
       case AsyncError(:final error):
         debugPrint('SEVERE: [OpeningExplorerView] could not load opening explorer data; $error');
-        final connectivity = ref.watch(connectivityChangesProvider);
-        final message = connectivity.whenIs(
-          online: () => 'Could not load opening explorer data.',
-          offline: () => context.l10n.mobileOpeningExplorerNotAvailableOffline,
-        );
-        return Center(
-          child: Padding(padding: const EdgeInsets.all(16.0), child: Text(message)),
+        return _ExplorerListView(
+          scrollable: widget.scrollable,
+          isLoading: true,
+          children:
+              lastExplorerWidgets ??
+              [
+                const Shimmer(
+                  child: ShimmerLoading(isLoading: true, child: OpeningExplorerMoveTable.loading()),
+                ),
+              ],
         );
       case _:
         return _ExplorerListView(
@@ -228,6 +245,128 @@ class _ExplorerListView extends StatelessWidget {
           ListBody(children: children),
         loadingOverlay,
       ],
+    );
+  }
+}
+
+class _OfflineExplorerPanel extends StatelessWidget {
+  const _OfflineExplorerPanel({
+    required this.state,
+    required this.scrollable,
+    required this.onMoveSelected,
+  });
+
+  final OfflineExplorerState state;
+  final bool scrollable;
+  final void Function(Move) onMoveSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final children = <Widget>[
+      const OpeningExplorerHeaderTile(child: _OfflineModeChip()),
+      switch (state) {
+        OfflineExplorerStateBook(:final result) => _OfflineBookTable(
+          result: result,
+          onMoveSelected: onMoveSelected,
+        ),
+        OfflineExplorerStateEngine(:final suggestions) => _OfflineEngineTable(
+          suggestions: suggestions,
+          onMoveSelected: onMoveSelected,
+        ),
+      },
+    ];
+
+    return _ExplorerListView(scrollable: scrollable, isLoading: false, children: children);
+  }
+}
+
+class _OfflineModeChip extends StatelessWidget {
+  const _OfflineModeChip();
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Chip(
+        label: const Text('Offline mode'),
+        visualDensity: VisualDensity.compact,
+        avatar: Icon(Icons.cloud_off, size: 16.0, color: ColorScheme.of(context).primary),
+      ),
+    );
+  }
+}
+
+class _OfflineBookTable extends StatelessWidget {
+  const _OfflineBookTable({required this.result, required this.onMoveSelected});
+
+  final offline_book.OpeningExplorerResult result;
+  final void Function(Move) onMoveSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        OpeningExplorerHeaderTile(child: Text(result.name ?? 'Opening book')),
+        ...result.moves.map((move) {
+          return _OfflineMoveTile(
+            move: move.uci,
+            label: move.name ?? move.uci,
+            onMoveSelected: onMoveSelected,
+          );
+        }),
+      ],
+    );
+  }
+}
+
+class _OfflineEngineTable extends StatelessWidget {
+  const _OfflineEngineTable({required this.suggestions, required this.onMoveSelected});
+
+  final List<EngineSuggestion> suggestions;
+  final void Function(Move) onMoveSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const OpeningExplorerHeaderTile(child: Text('Engine suggestions')),
+        ...suggestions.map((suggestion) {
+          final score = suggestion.isMate
+              ? 'M${suggestion.centipawns}'
+              : '${suggestion.centipawns} cp';
+          return _OfflineMoveTile(
+            move: suggestion.uci,
+            label: '${suggestion.uci} · $score · d${suggestion.depth}',
+            onMoveSelected: onMoveSelected,
+          );
+        }),
+      ],
+    );
+  }
+}
+
+class _OfflineMoveTile extends StatelessWidget {
+  const _OfflineMoveTile({
+    required this.move,
+    required this.label,
+    required this.onMoveSelected,
+  });
+
+  final String move;
+  final String label;
+  final void Function(Move) onMoveSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      dense: true,
+      title: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
+      onTap: () {
+        final parsed = Move.parse(move);
+        if (parsed != null) onMoveSelected(parsed);
+      },
     );
   }
 }
