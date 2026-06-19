@@ -10,6 +10,7 @@ import 'package:lichess_mobile/src/model/puzzle/puzzle_angle.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_batch_storage.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_opening.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_repository.dart';
+import 'package:lichess_mobile/src/model/puzzle/puzzle_service.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_storage.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_theme.dart';
 import 'package:lichess_mobile/src/model/puzzle/storm.dart';
@@ -49,7 +50,7 @@ final nextPuzzleProvider = FutureProvider.autoDispose.family<PuzzleContext?, Puz
   ref.cacheFor(const Duration(minutes: 1));
 
   final theme = switch (angle) {
-    PuzzleTheme(:final key) => key.name,
+    PuzzleTheme(:final themeKey) => themeKey.name,
     _ => null,
   };
   final puzzle = await ref.read(offlinePuzzleRepoProvider).nextPuzzle(
