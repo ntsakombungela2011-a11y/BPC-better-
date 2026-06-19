@@ -106,6 +106,7 @@ flutter:
     - assets/chess_openings.db
     - assets/puzzles.db
     - assets/openings.json
+    - assets/openings/openings.db
     - assets/images/
     - assets/images/stockfish/
     - assets/images/fide-fed/
