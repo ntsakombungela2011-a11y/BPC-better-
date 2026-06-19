@@ -5,7 +5,7 @@ publish_to: "none"
 version: 0.24.6+002406 # See README.md for details about versioning
 
 environment:
-  sdk: ^3.11.0
+  sdk: ^3.11.5
   # this should be updated with every new flutter stable release
   flutter: ">=3.41.2 <4.0.0"
 
@@ -55,7 +55,7 @@ dependencies:
   logging: ^1.3.0
   material_color_utilities: ^0.13.0
   material_symbols_icons: ^4.2928.1
-  meta: ^1.17.0
+  meta: ^1.18.0
   multistockfish: ^0.5.0
   package_info_plus: ^10.1.0
   path: ^1.9.1
@@ -70,7 +70,7 @@ dependencies:
   signal_strength_indicator: ^0.5.0
   sound_effect: ^0.1.3
   sqflite: ^2.4.3
-  sqflite_common_ffi: 2.3.3
+  sqflite_common_ffi: ^2.4.2
   stream_transform: ^2.1.1
   url_launcher: ^6.3.2
   visibility_detector: ^0.4.0+2
