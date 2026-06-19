@@ -1,4 +1,5 @@
 import 'package:dartchess/dartchess.dart';
+import 'package:lichess_mobile/src/model/common/chess.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:lichess_mobile/src/model/common/id.dart';
 import 'package:lichess_mobile/src/model/engine/evaluation_service.dart';

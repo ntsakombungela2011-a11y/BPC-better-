@@ -31,6 +31,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Cache puzzles database
+        id: cache-puzzles
+        uses: actions/cache@v3
+        with:
+          path: assets/puzzles.db
+          key: puzzles-db-${{ hashFiles('scripts/generate_puzzles_db.py', 'scripts/download_and_extract_puzzles.sh') }}
+
+      - name: Generate puzzles database
+        if: steps.cache-puzzles.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update && sudo apt-get install -y zstd
+          pip3 install zstandard
+          mkdir -p assets
+          ./scripts/download_and_extract_puzzles.sh
+
+      - name: Generate openings database
+        run: |
+          mkdir -p assets/openings
+          python3 scripts/generate_openings_db.py assets/openings.json assets/openings/openings.db
+
       - name: 🐦 Install flutter
         uses: subosito/flutter-action@v2
         with:
