@@ -501,9 +501,18 @@ class Root extends Node {
   /// Assumes that the PGN string is valid and that the moves are legal.
   factory Root.fromPgnMoves(String pgn) {
     Position position = Chess.initial;
+    String movesText = pgn;
+    if (pgn.startsWith('__fen__ ')) {
+      final marker = ' __moves__ ';
+      final markerIndex = pgn.indexOf(marker);
+      if (markerIndex >= 0) {
+        position = Chess.fromSetup(Setup.parseFen(pgn.substring('__fen__ '.length, markerIndex)));
+        movesText = pgn.substring(markerIndex + marker.length);
+      }
+    }
     final root = Root(position: position);
     Node current = root;
-    final moves = pgn.split(' ');
+    final moves = movesText.split(' ').where((move) => move.isNotEmpty);
     for (final san in moves) {
       final move = position.parseSan(san);
       position = position.playUnchecked(move!);
