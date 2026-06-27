@@ -1,6 +1,6 @@
-# Lichess Mobile better for boipelo type shii
+# Boipelo Chess: The Last Dance
 
-Second iteration of the [Lichess mobile app](https://lichess.org/mobile).
+A mobile chess app for lichess.org - "Boipelo Chess: The Last Dance"
 
 ## How to contribute
 
