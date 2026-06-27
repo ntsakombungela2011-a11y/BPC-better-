@@ -1,6 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:multistockfish/multistockfish.dart';
@@ -62,24 +59,14 @@ abstract class LichessBinding {
   /// have not yet been initialized.
   SharedPreferencesWithCache get sharedPreferences;
 
-  /// Initialize Firebase.
   ///
-  /// This wraps [Firebase.initializeApp].
   ///
   /// This should be called only once before the app starts.
-  Future<void> initializeFirebase();
 
-  /// Wraps [FirebaseMessaging.instance].
-  FirebaseMessaging get messaging;
 
-  /// Wraps [FirebaseCrashlytics.instance].
-  FirebaseCrashlytics get crashlytics;
 
-  /// Wraps [FirebaseMessaging.onMessage].
-  Stream<RemoteMessage> get onMessage;
 
-  /// Wraps [FirebaseMessaging.onMessageOpenedApp].
-  Stream<RemoteMessage> get onMessageOpenedApp;
+
 
   /// The Stockfish singleton instance.
   Stockfish get stockfish;
@@ -138,24 +125,6 @@ class AppLichessBinding extends LichessBinding {
 
     final appStarts = sharedPreferences.getInt(_kNumAppStartsKey) ?? 0;
     sharedPreferences.setInt(_kNumAppStartsKey, appStarts + 1);
-  }
-
-  @override
-  FirebaseMessaging get messaging => FirebaseMessaging.instance;
-
-  @override
-  FirebaseCrashlytics get crashlytics => FirebaseCrashlytics.instance;
-
-  @override
-  Stream<RemoteMessage> get onMessage => FirebaseMessaging.onMessage;
-
-  @override
-  Stream<RemoteMessage> get onMessageOpenedApp => FirebaseMessaging.onMessageOpenedApp;
-
-  @override
-  Future<void> initializeFirebase() async {
-    await Firebase.initializeApp();
-    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
   }
 
   @override

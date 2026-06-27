@@ -8,7 +8,6 @@ import 'package:lichess_mobile/src/model/user/user.dart' show TemporaryBan;
 import 'package:lichess_mobile/src/utils/json.dart';
 import 'package:lichess_mobile/src/utils/l10n.dart' show relativeDate;
 import 'package:meta/meta.dart';
-import 'package:lichess_mobile/src/model/notifications/bpc_notifications.dart';
 
 @immutable
 abstract class LocalNotification {
@@ -31,7 +30,6 @@ abstract class LocalNotification {
       case 'AnnounceNotification': return AnnounceNotification.fromJson(json);
       case 'ChallengeNotification': return ChallengeNotification.fromJson(json);
       case 'PlaybanNotification': return PlaybanNotification.fromJson(json);
-      case 'BpcPrivateChatNotification': return BpcPrivateChatNotification.fromJson(json);
       default: throw Exception('Unknown notification type: $type');
     }
   }
