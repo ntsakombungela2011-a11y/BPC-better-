@@ -73,8 +73,8 @@ class PuzzleRepository {
   Future<PuzzleStreakResponse> streak() {
     return client.readJson(
       Uri(path: '/api/streak'),
+      headers: {'Accept': 'application/json'},
       mapper: (Map<String, dynamic> json) {
-        return PuzzleStreakResponse(
           puzzle: _puzzleFromPick(pick(json).required()),
           streak: IList(pick(json['streak']).asStringOrThrow().split(' ').map((e) => PuzzleId(e))),
           timestamp: DateTime.now(),

@@ -31,7 +31,7 @@ This project is currently using FVM 3.x.
 
 ## Lila Server
 
-By default, the app will target the [Lichess dev server](https://lichess.dev/),
+By default, the app will target the [Lichess dev server](https://lichess.org/),
 so you can start developing without setting up a local server.
 
 During development, you may need a local [lila](https://github.com/lichess-org/lila) (lichess server scala app)
