@@ -33,6 +33,7 @@ import 'package:lichess_mobile/src/widgets/feedback.dart';
 import 'package:linkify/linkify.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:lichess_mobile/src/view/message/private_chat_screen.dart';
 
 final _logger = Logger('AppLinks');
 
@@ -201,6 +202,32 @@ class AppLinksService {
         }
       // This might be a challenge or a game link. There's currently no API endpoint that resolves both games and challenges
       // at the same time, so check if it's a game link first, and if that fails, we later check if it's a challenge link.
+      case 'chat':
+        if (appLinkUri.pathSegments.length < 2) return null;
+        final conversationId = appLinkUri.pathSegments[1];
+        final otherUserId = conversationId.split('_').firstWhere(
+          (id) => id != ref.read(authControllerProvider)?.user.id,
+          orElse: () => '',
+        );
+        if (otherUserId.isEmpty) return null;
+
+        try {
+          final user = await ref
+              .read(userRepositoryProvider)
+              .getUser(UserId.fromUserName(otherUserId));
+          if (!context.mounted) return null;
+
+          return [
+            PrivateChatScreen.buildRoute(
+              conversationId: conversationId,
+              otherUser: user.lightUser,
+            )
+          ];
+        } catch (e) {
+          _logger.warning('Could not resolve chat user for ID: $otherUserId');
+          return null;
+        }
+
       case _:
         final gameRoutes = await _tryResolveGameLink(context, appLinkUri);
         if (gameRoutes != null) return gameRoutes;

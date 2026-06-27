@@ -1,11 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lichess_mobile/l10n/l10n.dart';
 import 'package:lichess_mobile/src/localizations.dart';
+import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
+import 'package:lichess_mobile/src/model/chat/private_chat.dart';
+import 'package:lichess_mobile/src/model/notifications/bpc_notifications.dart';
 import 'package:logging/logging.dart';
 import 'notifications.dart';
 
@@ -39,6 +44,41 @@ class NotificationService {
       _ref.read(notificationDisplayProvider);
 
   Future<void> start() async {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      _logger.info('Received foreground message: ${message.notification?.title}');
+
+      final data = message.data;
+      if (data['type'] == 'BpcPrivateChatNotification') {
+        final notification = BpcPrivateChatNotification.fromJson(data);
+        show(notification);
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      _logger.info('Opened app from background message: ${message.data}');
+      _handleRemoteMessage(message);
+    });
+
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        _logger.info('App opened from terminated state via message: ${message.data}');
+        _handleRemoteMessage(message);
+      }
+    });
+  }
+
+  void _handleRemoteMessage(RemoteMessage message) {
+    final data = message.data;
+    if (data['type'] == 'BpcPrivateChatNotification') {
+      final notification = BpcPrivateChatNotification.fromJson(data);
+      _responseStreamController.add((
+        NotificationResponse(
+          notificationResponseType: NotificationResponseType.selectedNotification,
+          payload: jsonEncode(notification.payload),
+        ),
+        notification,
+      ));
+    }
   }
 
   Future<int> show(LocalNotification notification) async {
@@ -70,6 +110,53 @@ class NotificationService {
     _responseStreamController.add((response, notification));
   }
 
-  Future<bool> registerDevice() async => false;
-  Future<void> unregister() async {}
+  Future<bool> registerDevice() async {
+    try {
+      final auth = _ref.read(authControllerProvider);
+      if (auth == null) return false;
+
+      final messaging = FirebaseMessaging.instance;
+
+      final settings = await messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        final token = await messaging.getToken();
+        if (token != null) {
+          final db = _ref.read(firestoreProvider);
+          await db.collection('users').doc(auth.user.id.toString()).set({
+            'fcmTokens': FieldValue.arrayUnion([token]),
+            'updatedAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+          _logger.info('FCM token registered successfully');
+          return true;
+        }
+      }
+    } catch (e, st) {
+      _logger.severe('Failed to register device for notifications: $e', e, st);
+    }
+    return false;
+  }
+
+  Future<void> unregister() async {
+    try {
+      final auth = _ref.read(authControllerProvider);
+      if (auth == null) return;
+
+      final messaging = FirebaseMessaging.instance;
+      final token = await messaging.getToken();
+      if (token != null) {
+        final db = _ref.read(firestoreProvider);
+        await db.collection('users').doc(auth.user.id.toString()).update({
+          'fcmTokens': FieldValue.arrayRemove([token]),
+        });
+      }
+      await messaging.deleteToken();
+    } catch (e, st) {
+      _logger.severe('Failed to unregister device for notifications: $e', e, st);
+    }
+  }
 }
