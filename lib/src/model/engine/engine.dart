@@ -6,7 +6,7 @@ import 'package:lichess_mobile/src/constants.dart';
 import 'package:multistockfish/multistockfish.dart';
 
 /// Maximum number of CPU cores available for engine use.
-final maxEngineCores = max(Platform.numberOfProcessors - 1, 1);
+final maxEngineCores = max((Platform.numberOfProcessors / 2).floor(), 1);
 
 const _nnueDownloadUrl = '$kLichessCDNHost/assets/lifat/nnue/';
 

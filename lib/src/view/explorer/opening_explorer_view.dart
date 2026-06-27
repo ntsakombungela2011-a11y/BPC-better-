@@ -109,7 +109,17 @@ class _OpeningExplorerState extends ConsumerState<OpeningExplorerView> {
 
         final ply = widget.position.ply;
 
+        final offlineMessage = switch (value.entry.queuePosition) {
+          -2 => 'Offline — showing cached opening explorer data.',
+          -1 => 'No offline opening explorer data available for this position.',
+          _ => null,
+        };
+
         final children = [
+          if (offlineMessage != null)
+            OpeningExplorerHeaderTile(
+              child: Text(offlineMessage),
+            ),
           if (widget.opening != null) OpeningNameHeader(opening: widget.opening!),
           OpeningExplorerMoveTable(
             moves: value.entry.moves,

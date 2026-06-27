@@ -43,6 +43,7 @@ class PuzzleRepository {
         path: '/api/puzzle/batch/${angle.key}',
         queryParameters: {'nb': nb.toString(), 'difficulty': difficulty.name},
       ),
+      headers: {'Accept': 'application/json'},
       mapper: _decodeBatchResponse,
     );
   }
@@ -58,7 +59,7 @@ class PuzzleRepository {
         path: '/api/puzzle/batch/${angle.key}',
         queryParameters: {'nb': nb.toString(), 'difficulty': difficulty.name},
       ),
-      headers: {'Content-type': 'application/json'},
+      headers: {'Content-type': 'application/json', 'Accept': 'application/json'},
       body: jsonEncode({
         'solutions': solved.map((e) => {'id': e.id, 'win': e.win, 'rated': e.rated}).toList(),
       }),
@@ -67,12 +68,17 @@ class PuzzleRepository {
   }
 
   Future<Puzzle> fetch(PuzzleId id) {
-    return client.readJson(Uri(path: '/api/puzzle/$id'), mapper: _puzzleFromJson);
+    return client.readJson(
+      Uri(path: '/api/puzzle/$id'),
+      headers: {'Accept': 'application/json'},
+      mapper: _puzzleFromJson,
+    );
   }
 
   Future<PuzzleStreakResponse> streak() {
     return client.readJson(
       Uri(path: '/api/streak'),
+      headers: {'Accept': 'application/json'},
       mapper: (Map<String, dynamic> json) {
         return PuzzleStreakResponse(
           puzzle: _puzzleFromPick(pick(json).required()),
@@ -85,12 +91,13 @@ class PuzzleRepository {
 
   Future<void> postStreakRun(int run) async {
     final uri = Uri(path: '/api/streak/$run');
-    await client.postRead(uri);
+    await client.postRead(uri, headers: {'Accept': 'application/json'});
   }
 
   Future<PuzzleStormResponse> storm() {
     return client.readJson(
       Uri(path: '/api/storm'),
+      headers: {'Accept': 'application/json'},
       mapper: (Map<String, dynamic> json) {
         return PuzzleStormResponse(
           puzzles: IList(pick(json['puzzles']).asListOrThrow(_litePuzzleFromPick)),
@@ -117,6 +124,7 @@ class PuzzleRepository {
 
     return client.postReadJson(
       Uri(path: '/storm'),
+      headers: {'Accept': 'application/json'},
       body: body,
       mapper: (Map<String, dynamic> json) {
         return pick(json['newHigh']).letOrNull(
@@ -131,13 +139,18 @@ class PuzzleRepository {
 
   Future<Puzzle> daily() {
     return client
-        .readJson(Uri(path: '/api/puzzle/daily'), mapper: _puzzleFromJson)
+        .readJson(
+          Uri(path: '/api/puzzle/daily'),
+          headers: {'Accept': 'application/json'},
+          mapper: _puzzleFromJson,
+        )
         .then((puzzle) => puzzle.copyWith(isDailyPuzzle: true));
   }
 
   Future<PuzzleDashboard> puzzleDashboard(int days) {
     return client.readJson(
       Uri(path: '/api/puzzle/dashboard/$days'),
+      headers: {'Accept': 'application/json'},
       mapper: _puzzleDashboardFromJson,
     );
   }
@@ -151,6 +164,7 @@ class PuzzleRepository {
           if (before != null) 'before': before.millisecondsSinceEpoch.toString(),
         },
       ),
+      headers: {'Accept': 'application/x-ndjson'},
       mapper: _puzzleActivityFromJson,
     );
   }
@@ -158,6 +172,7 @@ class PuzzleRepository {
   Future<StormDashboard> stormDashboard(UserId userId) {
     return client.readJson(
       Uri(path: '/api/storm/dashboard/$userId'),
+      headers: {'Accept': 'application/json'},
       mapper: _stormDashboardFromJson,
     );
   }
@@ -183,6 +198,7 @@ class PuzzleRepository {
   Future<IList<PuzzleId>> puzzleReplay(int days, String theme) {
     return client.readJson(
       Uri(path: '/api/puzzle/replay/$days/$theme'),
+      headers: {'Accept': 'application/json'},
       mapper: _puzzleReplayFromJson,
     );
   }
