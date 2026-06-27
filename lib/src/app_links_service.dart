@@ -224,7 +224,7 @@ class AppLinksService {
             )
           ];
         } catch (e) {
-          _logger.warning(f'Could not resolve chat user for ID: {otherUserId}');
+          _logger.warning('Could not resolve chat user for ID: $otherUserId');
           return null;
         }
 

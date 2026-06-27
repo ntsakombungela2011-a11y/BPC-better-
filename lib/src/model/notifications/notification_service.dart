@@ -136,7 +136,7 @@ class NotificationService {
         }
       }
     } catch (e, st) {
-      _logger.severe('Failed to register device for notifications: {e}', e, st);
+      _logger.severe('Failed to register device for notifications: $e', e, st);
     }
     return false;
   }
@@ -156,7 +156,7 @@ class NotificationService {
       }
       await messaging.deleteToken();
     } catch (e, st) {
-      _logger.severe('Failed to unregister device for notifications: {e}', e, st);
+      _logger.severe('Failed to unregister device for notifications: $e', e, st);
     }
   }
 }
