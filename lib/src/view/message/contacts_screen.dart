@@ -159,7 +159,7 @@ class ContactsListView extends ConsumerWidget {
           },
         );
       case AsyncError(:final error, :final stackTrace):
-        debugPrint('Error loading contacts: $error\n$stackTrace');
+        debugPrint('Error loading contacts: $error, $stackTrace');
         return Center(child: Text('Could not load contacts: $error'));
       case _:
         return const Center(child: CircularProgressIndicator());

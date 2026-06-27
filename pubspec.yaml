@@ -1,11 +1,11 @@
-name: boipelo_chess
-description: "Boipelo Chess: The Last Dance - A mobile chess app for lichess.org"
+name: lichess_mobile
+description: Lichess mobile app V2
 publish_to: "none"
 
 version: 0.24.6+002406 # See README.md for details about versioning
 
 environment:
-  sdk: ^3.11.5
+  sdk: ">=3.11.0 <4.0.0"
   # this should be updated with every new flutter stable release
   flutter: ">=3.41.2 <4.0.0"
 
@@ -28,10 +28,9 @@ dependencies:
   dynamic_system_colors: ^1.9.0
   fast_immutable_collections: ^11.2.0
   file_picker: ^12.0.0-beta.5
-  firebase_core: ^4.11.0
-  firebase_crashlytics: ^5.2.4
-  firebase_messaging: ^16.4.1
-  cloud_firestore: ^6.5.0
+  firebase_core: ^4.10.0
+  firebase_crashlytics: ^5.2.3
+  firebase_messaging: ^16.3.0
   fl_chart: ^1.2.0
   flutter:
     sdk: flutter
@@ -59,7 +58,7 @@ dependencies:
   logging: ^1.3.0
   material_color_utilities: ^0.13.0
   material_symbols_icons: ^4.2928.1
-  meta: ^1.18.0
+  meta: 1.17.0
   multistockfish: ^0.5.0
   package_info_plus: ^10.1.0
   path: ^1.9.1

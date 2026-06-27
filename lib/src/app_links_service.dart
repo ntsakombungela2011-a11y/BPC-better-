@@ -33,7 +33,6 @@ import 'package:lichess_mobile/src/widgets/feedback.dart';
 import 'package:linkify/linkify.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:lichess_mobile/src/view/message/private_chat_screen.dart';
 
 final _logger = Logger('AppLinks');
 
@@ -202,32 +201,6 @@ class AppLinksService {
         }
       // This might be a challenge or a game link. There's currently no API endpoint that resolves both games and challenges
       // at the same time, so check if it's a game link first, and if that fails, we later check if it's a challenge link.
-      case 'chat':
-        if (appLinkUri.pathSegments.length < 2) return null;
-        final conversationId = appLinkUri.pathSegments[1];
-        final otherUserId = conversationId.split('_').firstWhere(
-          (id) => id != ref.read(authControllerProvider)?.user.id,
-          orElse: () => '',
-        );
-        if (otherUserId.isEmpty) return null;
-
-        try {
-          final user = await ref
-              .read(userRepositoryProvider)
-              .getUser(UserId.fromUserName(otherUserId));
-          if (!context.mounted) return null;
-
-          return [
-            PrivateChatScreen.buildRoute(
-              conversationId: conversationId,
-              otherUser: user.lightUser,
-            )
-          ];
-        } catch (e) {
-          _logger.warning('Could not resolve chat user for ID: $otherUserId');
-          return null;
-        }
-
       case _:
         final gameRoutes = await _tryResolveGameLink(context, appLinkUri);
         if (gameRoutes != null) return gameRoutes;
@@ -236,7 +209,7 @@ class AppLinksService {
     return null;
   }
 
-  /// Handles an `com.boipelo.chess://open-web?url=...` link (e.g. from the platform widget)
+  /// Handles an `org.lichess.mobile://open-web?url=...` link (e.g. from the platform widget)
   /// by opening the encoded URL in the platform in-app browser.
   void _handleOpenWebLink(Uri uri) {
     final target = uri.queryParameters['url'];
@@ -249,8 +222,8 @@ class AppLinksService {
   }
 
   /// Opens the native daily-puzzle screen (same path as tapping the daily-puzzle
-  /// card on the puzzle tab) in response to `com.boipelo.chess://training/daily`
-  /// or `com.boipelo.chess://training/daily/{id}` deeplinks emitted by the iOS
+  /// card on the puzzle tab) in response to `org.lichess.mobile://training/daily`
+  /// or `org.lichess.mobile://training/daily/{id}` deeplinks emitted by the iOS
   /// home-screen widget.
   ///
   /// Always fetches the current daily puzzle first (cached, so no extra request

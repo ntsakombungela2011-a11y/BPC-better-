@@ -70,6 +70,16 @@ class _WatchScreenState extends ConsumerState<WatchTabScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<BottomTab>(currentBottomTabProvider, (prev, current) {
+      if (prev != BottomTab.watch && current == BottomTab.watch) {
+        ref.invalidate(broadcastsPaginatorProvider);
+        ref.invalidate(featuredChannelsProvider);
+        if (!(ref.read(kidModeProvider).value ?? false)) {
+          ref.invalidate(liveStreamersProvider);
+        }
+      }
+    });
+
     final isOnline = ref.watch(onlineStatusProvider).value ?? true;
     return PopScope(
       canPop: false,
@@ -170,7 +180,7 @@ class _BodyState extends ConsumerState<_Body> {
       ],
     ];
 
-    return ListView(primary: true, children: content);
+    return ListView(controller: watchScrollController, children: content);
   }
 }
 

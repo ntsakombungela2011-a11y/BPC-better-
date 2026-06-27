@@ -80,7 +80,7 @@ void main() {
       await container.read(authRepositoryProvider).signIn();
 
       expect(redirectUrl, kOAuthRedirectUri);
-      expect(redirectUrl, startsWith('com.boipelo.chess://'));
+      expect(redirectUrl, startsWith('org.lichess.mobile://'));
     });
 
     test('throws SignInCancelledException when the user cancels the auth session', () async {

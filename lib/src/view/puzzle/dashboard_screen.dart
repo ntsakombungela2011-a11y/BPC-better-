@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:http/http.dart' show ClientException;
 import 'package:lichess_mobile/l10n/l10n.dart';
+import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_angle.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_providers.dart';
@@ -293,19 +294,22 @@ class DaysSelector extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final authUser = ref.watch(authControllerProvider);
     final day = ref.watch(daysProvider);
-    return TextButton(
-      onPressed: () => showChoicePicker(
-        context,
-        choices: Days.values,
-        selectedItem: day,
-        labelBuilder: (t) => Text(_daysL10n(context, t)),
-        onSelectedItemChanged: (newDay) {
-          ref.read(daysProvider.notifier).state = newDay;
-        },
-      ),
-      child: Text(_daysL10n(context, day)),
-    );
+    return authUser != null
+        ? TextButton(
+            onPressed: () => showChoicePicker(
+              context,
+              choices: Days.values,
+              selectedItem: day,
+              labelBuilder: (t) => Text(_daysL10n(context, t)),
+              onSelectedItemChanged: (newDay) {
+                ref.read(daysProvider.notifier).state = newDay;
+              },
+            ),
+            child: Text(_daysL10n(context, day)),
+          )
+        : const SizedBox.shrink();
   }
 }
 

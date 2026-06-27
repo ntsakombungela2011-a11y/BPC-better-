@@ -31,10 +31,9 @@ import 'package:lichess_mobile/src/quick_actions.dart';
 import 'package:lichess_mobile/src/shared_pgn_service.dart';
 import 'package:lichess_mobile/src/tab_scaffold.dart';
 import 'package:lichess_mobile/src/theme.dart';
-import 'package:lichess_mobile/src/theme_system.dart';
 import 'package:lichess_mobile/src/utils/screen.dart';
 
-const String _kIosAppGroupId = 'group.com.boipelo.chess.LichessWidgets';
+const String _kIosAppGroupId = 'group.org.lichess.mobileV2.LichessWidgets';
 const List<String> _kIosBlogWidgetKinds = [
   'OfficialBlogWidget',
   'CommunityBlogWidget',
@@ -209,16 +208,11 @@ class _AppState extends ConsumerState<Application> {
   Widget build(BuildContext context) {
     final generalPrefs = ref.watch(generalPreferencesProvider);
     final boardPrefs = ref.watch(boardPreferencesProvider);
-    final selectedTheme = ref.watch(selectedThemeProvider);
-    final theme = makeAppTheme(context, generalPrefs, boardPrefs, selectedTheme);
+    final theme = makeAppTheme(context, generalPrefs, boardPrefs);
 
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
-    return AnimatedTheme(
-      data: theme,
-      duration: const Duration(milliseconds: 220),
-      curve: Curves.easeOutCubic,
-      child: MaterialApp(
+    return MaterialApp(
       navigatorKey: _navigatorKey,
       localizationsDelegates: const [
         ...AppLocalizations.localizationsDelegates,
@@ -237,12 +231,6 @@ class _AppState extends ConsumerState<Application> {
       ),
       home: const MainTabScaffold(),
       navigatorObservers: [rootNavPageRouteObserver],
-      ),
     );
   }
 }
-
-final selectedThemeProvider = StreamProvider<ThemeModel>((ref) async* {
-  yield ThemeManager.instance.currentTheme.value;
-  yield* ThemeManager.instance.themeStream;
-}).select((value) => value.value ?? ThemeManager.instance.currentTheme.value);

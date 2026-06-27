@@ -36,6 +36,7 @@ import 'package:lichess_mobile/src/utils/navigation.dart';
 import 'package:lichess_mobile/src/utils/screen.dart';
 import 'package:lichess_mobile/src/view/account/account_menu.dart';
 import 'package:lichess_mobile/src/view/account/profile_screen.dart';
+import 'package:lichess_mobile/src/view/auth/sign_in_error.dart';
 import 'package:lichess_mobile/src/view/correspondence/offline_correspondence_game_screen.dart';
 import 'package:lichess_mobile/src/view/game/game_screen.dart';
 import 'package:lichess_mobile/src/view/game/game_screen_providers.dart';
@@ -183,6 +184,30 @@ class _HomeScreenState extends ConsumerState<HomeTabScreen> {
                 child: LichessMessage(style: TextTheme.of(context).bodyLarge),
               ),
               const SizedBox(height: 8.0),
+              if (authUser == null) ...[
+                const Center(child: _SignInWidget()),
+                const SizedBox(height: 16.0),
+              ],
+              if (Theme.of(context).platform != TargetPlatform.iOS &&
+                  (authUser == null || authUser.user.isPatron != true)) ...[
+                Center(
+                  child: FilledButton.tonal(
+                    onPressed: () {
+                      launchUrl(Uri.parse('https://lichess.org/patron'));
+                    },
+                    child: Text(context.l10n.patronDonate),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+              ],
+              Center(
+                child: FilledButton.tonal(
+                  onPressed: () {
+                    launchUrl(Uri.parse('https://lichess.org/about'));
+                  },
+                  child: Text(context.l10n.aboutX('Lichess...')),
+                ),
+              ),
               const _WelcomeMessageCard(),
               const _HomeCustomizationTip(),
             ],
@@ -471,6 +496,31 @@ class _LichessMessageBanner extends ConsumerWidget {
   }
 }
 
+class _SignInWidget extends ConsumerWidget {
+  const _SignInWidget();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final signInState = ref.watch(signInMutation);
+
+    ref.listen(signInMutation, (_, next) => showSignInErrorSnackBar(context, next));
+
+    return FilledButton(
+      onPressed: switch (signInState) {
+        MutationPending() => null,
+        _ => () {
+          // The error is surfaced via the [ref.listen] above; ignore the
+          // rethrown future so it does not become an unhandled exception.
+          signInMutation.run(ref, (tsx) async {
+            await tsx.get(authControllerProvider.notifier).signIn();
+          }).ignore();
+        },
+      },
+      child: Text(context.l10n.signIn),
+    );
+  }
+}
+
 /// A widget that can be enabled or disabled by the user.
 ///
 /// This widget is used to show or hide certain sections of the home screen.
@@ -579,7 +629,7 @@ class _GreetingWidget extends ConsumerWidget {
       child: Padding(
         padding: Styles.bodyPadding,
         child: GestureDetector(
-          onTap: user == null ? null : () {
+          onTap: () {
             ref.invalidate(accountProvider);
             Navigator.of(context).push(ProfileScreen.buildRoute());
           },

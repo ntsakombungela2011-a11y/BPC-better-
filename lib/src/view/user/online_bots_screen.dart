@@ -2,6 +2,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
 import 'package:lichess_mobile/src/model/common/perf.dart';
 import 'package:lichess_mobile/src/model/user/user.dart';
 import 'package:lichess_mobile/src/model/user/user_repository_providers.dart';
@@ -12,11 +13,10 @@ import 'package:lichess_mobile/src/view/account/rating_pref_aware.dart';
 import 'package:lichess_mobile/src/view/play/challenge_odd_bots_screen.dart';
 import 'package:lichess_mobile/src/view/play/create_challenge_bottom_sheet.dart';
 import 'package:lichess_mobile/src/view/user/user_context_menu.dart';
-import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/feedback.dart';
+import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/platform.dart';
 import 'package:lichess_mobile/src/widgets/user.dart';
-import 'package:lichess_mobile/src/widgets/feedback.dart';
 
 class OnlineBotsScreen extends StatelessWidget {
   const OnlineBotsScreen();
@@ -147,6 +147,11 @@ class _Body extends ConsumerWidget {
 }
 
 void _challengeBot(User bot, {required BuildContext context, required WidgetRef ref}) {
+  final authUser = ref.read(authControllerProvider);
+  if (authUser == null) {
+    showSnackBar(context, context.l10n.challengeRegisterToSendChallenges, type: SnackBarType.error);
+    return;
+  }
   final isOddBot = oddBots.contains(bot.lightUser.name.toLowerCase());
   if (isOddBot) {
     Navigator.of(context).push(ChallengeOddBotsScreen.buildRoute(bot.lightUser));

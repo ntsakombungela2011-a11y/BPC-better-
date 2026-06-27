@@ -24,7 +24,7 @@ Future<void> reportSignInFailure(
   required bool cancelled,
 }) async {
   try {
-    final crashlytics = LichessBinding.instance.crashlytics;
+    final crashlytics = LichessBinding.instance.firebaseCrashlytics;
 
     // AppAuth's own error classification (type/code/oauth-error). See FlutterAppAuthPlatformErrorDetails.
     final details = switch (error) {

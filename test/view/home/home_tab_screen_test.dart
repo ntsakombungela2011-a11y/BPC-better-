@@ -98,6 +98,7 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('Sign in'), findsOneWidget);
+      expect(find.text('About Lichess...'), findsOneWidget);
     });
 
     testWidgets('authUser, no played game: do not show welcome screen', (tester) async {
@@ -129,6 +130,7 @@ void main() {
 
       expect(nbUserGamesRequests, 1);
       expect(find.text('Sign in'), findsNothing);
+      expect(find.text('About Lichess...'), findsNothing);
     });
 
     testWidgets('no authUser, with stored games: shows list of recent games', (tester) async {
@@ -159,6 +161,7 @@ void main() {
       // wait for connectivity
       await tester.pumpAndSettle();
 
+      expect(find.text('About Lichess...'), findsNothing);
       expect(find.text('Recent games'), findsOneWidget);
       expect(find.byType(GameListTile), findsNWidgets(3));
       expect(find.text('Anonymous'), findsNWidgets(3));
@@ -192,6 +195,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(nbUserGamesRequests, 1);
+      expect(find.text('About Lichess...'), findsNothing);
       expect(find.text('Recent games'), findsOneWidget);
       expect(find.byType(GameListTile), findsNWidgets(3));
       expect(find.text('MightyNanook'), findsOneWidget);
@@ -225,6 +229,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(nbOngoingGamesRequests, 1);
+      expect(find.text('About Lichess...'), findsNothing);
       expect(find.text('Recent games'), findsNothing);
       expect(find.text('1 game in play'), findsOneWidget);
       expect(find.byType(OngoingGameCarouselItem), findsOneWidget);
@@ -267,6 +272,7 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('Sign in'), findsOneWidget);
+      expect(find.text('About Lichess...'), findsOneWidget);
     });
 
     testWidgets('no authUser, with stored games: shows list of recent games', (tester) async {
@@ -283,6 +289,7 @@ void main() {
       // wait for connectivity
       await tester.pumpAndSettle();
 
+      expect(find.text('About Lichess...'), findsNothing);
       expect(find.text('Recent games'), findsOneWidget);
       expect(find.byType(GameListTile), findsNWidgets(3));
       expect(find.text('Anonymous'), findsNWidgets(3));
@@ -306,6 +313,7 @@ void main() {
       // wait for connectivity
       await tester.pumpAndSettle();
 
+      expect(find.text('About Lichess...'), findsNothing);
       expect(find.text('Recent games'), findsOneWidget);
       expect(find.byType(GameListTile), findsNWidgets(3));
     });

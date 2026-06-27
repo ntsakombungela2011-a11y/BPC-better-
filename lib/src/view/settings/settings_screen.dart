@@ -191,14 +191,14 @@ class SettingsScreen extends ConsumerWidget {
                   final isAndroid = Theme.of(context).platform == TargetPlatform.android;
                   final launched = await launchUrl(
                     isAndroid
-                        ? Uri.parse('market://details?id=com.boipelo.chess')
+                        ? Uri.parse('market://details?id=org.lichess.mobileV2')
                         : Uri.parse('https://apps.apple.com/us/app/lichess/id1662361230'),
                     mode: LaunchMode.externalApplication,
                   );
                   if (!launched && isAndroid) {
                     launchUrl(
                       Uri.parse(
-                        'https://play.google.com/store/apps/details?id=com.boipelo.chess',
+                        'https://play.google.com/store/apps/details?id=org.lichess.mobileV2',
                       ),
                       mode: LaunchMode.externalApplication,
                     );

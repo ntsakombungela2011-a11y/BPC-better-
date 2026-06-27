@@ -1,4 +1,5 @@
 import 'package:fake_async/fake_async.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lichess_mobile/src/model/common/id.dart';
@@ -34,6 +35,7 @@ void main() {
 
   const fullId = GameFullId('Fn9UvVKFsopx');
 
+  test('FCM game data message will update the game', () async {
     when(
       () => notificationDisplayMock.show(
         id: any(named: 'id'),
@@ -66,6 +68,8 @@ void main() {
       correspondenceService.start();
       async.flushMicrotasks();
 
+      testBinding.firebaseMessaging.onMessage.add(
+        const RemoteMessage(
           data: {
             'lichess.type': 'gameMove',
             'lichess.fullId': 'Fn9UvVKFsopx',
@@ -99,6 +103,7 @@ void main() {
     });
   });
 
+  test('FCM game data message without notification', () async {
     when(() => correspondenceGameStorageMock.save(any())).thenAnswer((_) => Future.value());
 
     final container = await makeContainer(
@@ -122,6 +127,8 @@ void main() {
 
       async.flushMicrotasks();
 
+      testBinding.firebaseMessaging.onMessage.add(
+        const RemoteMessage(
           data: {
             'lichess.type': 'gameMove',
             'lichess.fullId': 'Fn9UvVKFsopx',

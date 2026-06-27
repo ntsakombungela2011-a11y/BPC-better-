@@ -426,7 +426,7 @@ The app includes a native iOS WidgetKit extension (`ios/LichessWidgets/`) provid
 ### Architecture
 
 - **`LichessWidgetsBundle.swift`** — `@main` entry point registering all 4 widgets.
-- **`LichessAppGroup.swift`** — Reads shared `UserDefaults` from App Group `group.com.boipelo.chess.LichessWidgets`:
+- **`LichessAppGroup.swift`** — Reads shared `UserDefaults` from App Group `group.org.lichess.mobileV2.LichessWidgets`:
   - `lichessHost`, `boardTheme`, `pieceSet`, `isKidMode`
 - **`Deeplinks.swift`** — Custom URI scheme encoding for opening URLs in the in-app browser.
 - **Dependencies**: WidgetKit, ChessgroundAssets (Swift Package, shared with Dart), FeedKit, XMLKit.
@@ -444,7 +444,7 @@ Widget UI strings are translated via `ios/LichessWidgets/Localizable.xcstrings` 
 
 ### Code Signing
 
-The extension has its own bundle ID (`com.boipelo.chess.LichessWidgets`) and App Group entitlement. fastlane `sync_code_signing` handles provisioning for both targets (see `ios/fastlane/Matchfile`).
+The extension has its own bundle ID (`org.lichess.mobileV2.LichessWidgets`) and App Group entitlement. fastlane `sync_code_signing` handles provisioning for both targets (see `ios/fastlane/Matchfile`).
 
 ## Debugging
 

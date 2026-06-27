@@ -770,7 +770,7 @@ void main() {
 
     // 4. Rg1!!
     expectAnnotations([
-      containsPair(Square.g1, predicate<Annotation>((annotation) => annotation.symbol == '✦')),
+      containsPair(Square.g1, predicate<Annotation>((annotation) => annotation.symbol == '!!')),
     ]);
 
     await tester.tap(find.byTooltip('Next'));
@@ -842,7 +842,7 @@ void main() {
     expect(board.annotations.length, 1);
     expect(
       board.annotations,
-      containsPair(Square.c1, predicate<Annotation>((annotation) => annotation.symbol == '✦')),
+      containsPair(Square.c1, predicate<Annotation>((annotation) => annotation.symbol == '!!')),
     );
   });
 

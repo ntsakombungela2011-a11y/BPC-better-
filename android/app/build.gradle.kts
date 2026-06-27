@@ -7,6 +7,7 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 val keystoreProperties = Properties()
@@ -16,7 +17,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.boipelo.chess"
+    namespace = "org.lichess.mobileV2"
     // compileSdk = flutter.compileSdkVersion
     // home_widget pulls in glance-appwidget and remote-creation-android, both of which
     // declare in their AAR metadata that all dependents (including the app) must compile
@@ -38,7 +39,7 @@ android {
     defaultConfig {
         // Flag required by flutter_local_notifications package
         multiDexEnabled = true
-        applicationId = "com.boipelo.chess"
+        applicationId = "org.lichess.mobileV2"
         minSdk = 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -71,6 +72,7 @@ android {
             }
         }
         debug {
+            applicationIdSuffix = ".debug"
         }
     }
 

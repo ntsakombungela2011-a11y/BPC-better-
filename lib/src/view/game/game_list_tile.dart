@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:lichess_mobile/src/model/analysis/analysis_controller.dart';
+import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
 import 'package:lichess_mobile/src/model/game/exported_game.dart';
 import 'package:lichess_mobile/src/model/game/game_share_service.dart';
 import 'package:lichess_mobile/src/model/game/game_status.dart';
@@ -116,6 +117,8 @@ class GameContextMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final orientation = mySide;
+
+    final isLoggedIn = ref.watch(isLoggedInProvider);
 
     return BottomSheetScrollableContainer(
       children: [
@@ -231,7 +234,7 @@ class GameContextMenu extends ConsumerWidget {
                     },
               child: Text(context.l10n.analysis),
             ),
-            if (onPressedBookmark != null)
+            if (isLoggedIn && onPressedBookmark != null)
               BottomSheetContextMenuAction(
                 onPressed: () => onPressedBookmark?.call(context),
                 icon: game.isBookmarked

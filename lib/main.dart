@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lichess_mobile/src/app.dart';
 import 'package:lichess_mobile/src/binding.dart';
 import 'package:lichess_mobile/src/init.dart';
-import 'package:lichess_mobile/src/theme_system.dart';
 import 'package:lichess_mobile/src/intl.dart';
 import 'package:lichess_mobile/src/model/common/service/sound_service.dart';
 import 'package:lichess_mobile/src/model/log/app_log_service.dart';
@@ -20,7 +19,6 @@ Future<void> main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await lichessBinding.preloadSharedPreferences();
-  await ThemeManager.instance.initialize();
 
   await preloadPieceImages();
 
@@ -31,6 +29,10 @@ Future<void> main() async {
   final locale = await setupIntl(widgetsBinding);
 
   await initializeLocalNotifications(locale);
+
+  if (defaultTargetPlatform != TargetPlatform.linux) {
+    await lichessBinding.initializeFirebase();
+  }
 
   if (defaultTargetPlatform == TargetPlatform.android) {
     await androidDisplayInitialization(widgetsBinding);

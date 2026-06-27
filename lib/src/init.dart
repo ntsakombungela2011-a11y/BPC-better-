@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'dart:convert';
 
 import 'package:dynamic_system_colors/dynamic_system_colors.dart';
@@ -57,7 +56,11 @@ Future<void> initializeApp() async {
     }
   } catch (e, st) {
     _logger.severe('Error during app initialization: $e');
-    debugPrint('Error during app initialization: $e\n$st');
+    LichessBinding.instance.firebaseCrashlytics.recordError(
+      e,
+      st,
+      reason: 'Error during app initialization',
+    );
   } finally {
     await prefs.setBool('first_run', false);
   }

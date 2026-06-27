@@ -33,8 +33,6 @@ import 'package:lichess_mobile/src/widgets/text_badge.dart';
 import 'package:lichess_mobile/src/widgets/user.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:lichess_mobile/src/model/chat/private_chat.dart';
-import 'package:lichess_mobile/src/view/message/private_chat_screen.dart';
 
 final _userScreenDataProvider = FutureProvider.autoDispose.family<UserScreenData, UserId>(
   (ref, id) => ref.read(userRepositoryProvider).getUserScreenData(id),
@@ -51,6 +49,15 @@ class UserScreen extends ConsumerStatefulWidget {
   }
 
   static void challengeUser(User user, {required BuildContext context, required WidgetRef ref}) {
+    final authUser = ref.read(authControllerProvider);
+    if (authUser == null) {
+      showSnackBar(
+        context,
+        context.l10n.challengeRegisterToSendChallenges,
+        type: SnackBarType.error,
+      );
+      return;
+    }
     final isOddBot = oddBots.contains(user.lightUser.name.toLowerCase());
     if (isOddBot) {
       Navigator.of(context).push(ChallengeOddBotsScreen.buildRoute(user.lightUser));
@@ -241,7 +248,7 @@ class _UserProfileListView extends ConsumerWidget {
                           ),
                   ),
 
-                if (user.blocking != true && !user.isBot && kidMode.value == false) ...[
+                if (user.blocking != true && !user.isBot && kidMode.value == false)
                   ListTile(
                     leading: const Icon(Icons.chat_bubble_outline),
                     title: Text(context.l10n.composeMessage),
@@ -252,29 +259,6 @@ class _UserProfileListView extends ConsumerWidget {
                       ).push(ConversationScreen.buildRoute(user: user.lightUser));
                     },
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.mark_as_unread),
-                    title: const Text('BPC Private Chat'),
-                    onTap: () async {
-                      final conversationId = await ref.read(
-                        getOrCreateConversationProvider((
-                          otherUserId: user.id.toString(),
-                          otherUserName: user.username,
-                        )).future,
-                      );
-                      if (!context.mounted) return;
-                      Navigator.of(
-                        context,
-                        rootNavigator: true,
-                      ).push(
-                        PrivateChatScreen.buildRoute(
-                          conversationId: conversationId,
-                          otherUser: user.lightUser,
-                        ),
-                      );
-                    },
-                  ),
-                ],
                 if (user.followable == true && user.following != true)
                   ListTile(
                     leading: const Icon(Icons.person_add_outlined),

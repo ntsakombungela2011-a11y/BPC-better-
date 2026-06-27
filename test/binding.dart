@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lichess_mobile/src/binding.dart';
 import 'package:multistockfish/multistockfish.dart';
@@ -80,25 +82,38 @@ class TestLichessBinding extends LichessBinding {
   ///
   /// Should be called using [addTearDown] in tests.
   void reset() {
+    _firebaseMessaging = null;
     _sharedPreferences = null;
     numAppStarts = 1;
   }
 
+  FirebaseCrashlytics? _firebaseCrashlytics;
+  FakeFirebaseMessaging? _firebaseMessaging;
 
   @override
+  Future<void> initializeFirebase() async {}
 
   @override
+  FirebaseCrashlytics get firebaseCrashlytics {
+    return _firebaseCrashlytics ??= FakeFirebaseCrashlytics();
   }
 
   @override
+  FakeFirebaseMessaging get firebaseMessaging {
+    return _firebaseMessaging ??= FakeFirebaseMessaging();
   }
 
   @override
+  void firebaseMessagingOnBackgroundMessage(BackgroundMessageHandler handler) {
+    firebaseMessaging.onBackgroundMessage.stream.listen(handler);
   }
 
   @override
+  Stream<RemoteMessage> get firebaseMessagingOnMessage => firebaseMessaging.onMessage.stream;
 
   @override
+  Stream<RemoteMessage> get firebaseMessagingOnMessageOpenedApp =>
+      firebaseMessaging.onMessageOpenedApp.stream;
 
   Stockfish _stockfish = FakeStockfish();
 
@@ -198,6 +213,7 @@ class FakeSharedPreferences implements SharedPreferencesWithCache {
   }
 }
 
+typedef FirebaseMessagingRequestPermissionCall = ({
   bool alert,
   bool announcement,
   bool badge,
@@ -207,6 +223,7 @@ class FakeSharedPreferences implements SharedPreferencesWithCache {
   bool sound,
 });
 
+class FakeFirebaseCrashlytics extends Fake implements FirebaseCrashlytics {
   @override
   Future<void> recordError(
     dynamic exception,
@@ -221,6 +238,7 @@ class FakeSharedPreferences implements SharedPreferencesWithCache {
   Future<void> setCustomKey(String key, Object value) async {}
 }
 
+class FakeFirebaseMessaging extends Fake implements FirebaseMessaging {
   /// Whether [requestPermission] will grant permission.
   bool _willGrantPermission = true;
 
@@ -230,11 +248,13 @@ class FakeSharedPreferences implements SharedPreferencesWithCache {
     _willGrantPermission = value;
   }
 
+  List<FirebaseMessagingRequestPermissionCall> verifyRequestPermissionCalls() {
     final result = _requestPermissionCalls;
     _requestPermissionCalls = [];
     return result;
   }
 
+  List<FirebaseMessagingRequestPermissionCall> _requestPermissionCalls = [];
 
   NotificationSettings _notificationSettings = const NotificationSettings(
     alert: AppleNotificationSetting.disabled,
@@ -301,6 +321,7 @@ class FakeSharedPreferences implements SharedPreferencesWithCache {
   }
 
   @override
+  Future<RemoteMessage?> getInitialMessage() async {
     return null;
   }
 
@@ -330,13 +351,19 @@ class FakeSharedPreferences implements SharedPreferencesWithCache {
 
   /// Controller for [onMessage].
   ///
+  /// Call [StreamController.add] to simulate a message received from FCM while
   /// the application is in foreground.
+  StreamController<RemoteMessage> onMessage = StreamController.broadcast();
 
   /// Controller for [onMessageOpenedApp].
   ///
   /// Call [StreamController.add] to simulate a user press on a notification message
+  /// sent by FCM.
+  StreamController<RemoteMessage> onMessageOpenedApp = StreamController.broadcast();
 
   /// Controller for [onBackgroundMessage].
   ///
+  /// Call [StreamController.add] to simulate a message received from FCM while
   /// the application is in background.
+  StreamController<RemoteMessage> onBackgroundMessage = StreamController.broadcast();
 }

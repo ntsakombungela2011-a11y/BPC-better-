@@ -1,12 +1,12 @@
 import Foundation
 
-// Note: the daily-puzzle widget uses the `com.boipelo.chess://training/daily`
+// Note: the daily-puzzle widget uses the `org.lichess.mobile://training/daily`
 // custom scheme (optionally suffixed with `/{puzzleId}`) so the Flutter app
 // always opens the native "Daily Puzzle" screen for the tapped puzzle.
 
-private let kScheme = "com.boipelo.chess"
+private let kScheme = "org.lichess.mobile"
 
-/// Builds `com.boipelo.chess://training/daily[/{puzzleId}]` deeplinks handled
+/// Builds `org.lichess.mobile://training/daily[/{puzzleId}]` deeplinks handled
 /// by the Flutter app to open the native daily-puzzle screen. See `AppLinksService`.
 func dailyPuzzleDeeplink(puzzleId: String?) -> URL? {
     if let puzzleId {

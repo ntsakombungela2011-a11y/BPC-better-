@@ -12,6 +12,7 @@ import 'package:lichess_mobile/src/view/home/home_tab_screen.dart';
 import 'package:lichess_mobile/src/view/learn/learn_tab_screen.dart';
 import 'package:lichess_mobile/src/view/more/more_tab_screen.dart';
 import 'package:lichess_mobile/src/view/puzzle/puzzle_tab_screen.dart';
+import 'package:lichess_mobile/src/view/watch/watch_tab_screen.dart';
 import 'package:lichess_mobile/src/widgets/background.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -19,6 +20,7 @@ enum BottomTab {
   home,
   puzzles,
   learn,
+  watch,
   more;
 
   String label(AppLocalizations strings) {
@@ -29,6 +31,8 @@ enum BottomTab {
         return strings.mobilePuzzlesTab;
       case BottomTab.learn:
         return strings.learnMenu;
+      case BottomTab.watch:
+        return strings.mobileWatchTab;
       case BottomTab.more:
         return strings.more;
     }
@@ -40,6 +44,8 @@ enum BottomTab {
         return Symbols.home_rounded;
       case BottomTab.puzzles:
         return Symbols.extension_rounded;
+      case BottomTab.watch:
+        return Symbols.live_tv_rounded;
       case BottomTab.learn:
         return Symbols.school_rounded;
       case BottomTab.more:
@@ -57,6 +63,8 @@ final currentNavigatorKeyProvider = Provider<GlobalKey<NavigatorState>>((ref) {
       return homeNavigatorKey;
     case BottomTab.puzzles:
       return puzzlesNavigatorKey;
+    case BottomTab.watch:
+      return watchNavigatorKey;
     case BottomTab.learn:
       return learnNavigatorKey;
     case BottomTab.more:
@@ -73,6 +81,8 @@ final currentRootScrollControllerProvider = Provider<ScrollController>((ref) {
       return puzzlesScrollController;
     case BottomTab.learn:
       return learnScrollController;
+    case BottomTab.watch:
+      return watchScrollController;
     case BottomTab.more:
       return moreScrollController;
   }
@@ -81,11 +91,13 @@ final currentRootScrollControllerProvider = Provider<ScrollController>((ref) {
 final homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 final puzzlesNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'puzzles');
 final learnNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'learn');
+final watchNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'watch');
 final moreNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'more');
 
 final homeScrollController = ScrollController(debugLabel: 'HomeScroll');
 final puzzlesScrollController = ScrollController(debugLabel: 'PuzzlesScroll');
 final learnScrollController = ScrollController(debugLabel: 'learnScroll');
+final watchScrollController = ScrollController(debugLabel: 'WatchScroll');
 final moreScrollController = ScrollController(debugLabel: 'MoreScroll');
 
 final RouteObserver<PageRoute<void>> rootNavPageRouteObserver = RouteObserver<PageRoute<void>>();
@@ -101,6 +113,10 @@ final puzzlesTabInteraction = _BottomTabInteraction();
 /// A [ChangeNotifier] that can be used to notify when the learn tab is tapped, and all the built interactions
 /// (pop stack, scroll to top) are done.
 final learnTabInteraction = _BottomTabInteraction();
+
+/// A [ChangeNotifier] that can be used to notify when the Watch tab is tapped, and all the built in
+/// interactions (pop stack, scroll to top) are done.
+final watchTabInteraction = _BottomTabInteraction();
 
 /// A [ChangeNotifier] that can be used to notify when the More tab is tapped, and all the built in
 /// interactions (pop stack, scroll to top) are done.
@@ -188,6 +204,8 @@ class MainTabScaffold extends ConsumerWidget {
             puzzlesTabInteraction.notifyItemTapped();
           case BottomTab.learn:
             learnTabInteraction.notifyItemTapped();
+          case BottomTab.watch:
+            watchTabInteraction.notifyItemTapped();
           case BottomTab.more:
             moreTabInteraction.notifyItemTapped();
         }
@@ -218,6 +236,12 @@ class MainTabScaffold extends ConsumerWidget {
           builder: (context) => const LearnTabScreen(),
         );
       case 3:
+        return _MaterialTabView(
+          navigatorKey: watchNavigatorKey,
+          tab: BottomTab.watch,
+          builder: (context) => const WatchTabScreen(),
+        );
+      case 4:
         return _MaterialTabView(
           navigatorKey: moreNavigatorKey,
           tab: BottomTab.more,

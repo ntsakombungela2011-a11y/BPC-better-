@@ -37,6 +37,7 @@ final puzzleReplayProvider = FutureProvider.autoDispose
       ({int days, String theme}) params,
     ) async {
       final authUser = ref.watch(authControllerProvider);
+      if (authUser == null) return null;
       final repo = ref.read(puzzleRepositoryProvider);
       final remaining = await repo.puzzleReplay(params.days, params.theme);
       if (remaining.isEmpty) return null;
@@ -44,7 +45,7 @@ final puzzleReplayProvider = FutureProvider.autoDispose
       return PuzzleContext(
         puzzle: puzzle,
         angle: const PuzzleTheme(PuzzleThemeKey.mix),
-        userId: authUser?.user.id,
+        userId: authUser.user.id,
         replayRemaining: remaining.removeAt(0),
       );
     }, name: 'PuzzleReplayProvider');
@@ -101,6 +102,8 @@ final puzzleDashboardProvider = FutureProvider.autoDispose.family<PuzzleDashboar
   Ref ref,
   int days,
 ) {
+  final authUser = ref.watch(authControllerProvider);
+  if (authUser == null) return null;
   return ref.watch(puzzleRepositoryProvider).puzzleDashboard(days);
 }, name: 'PuzzleDashboardProvider');
 
@@ -108,6 +111,8 @@ final puzzleDashboardProvider = FutureProvider.autoDispose.family<PuzzleDashboar
 final puzzleRecentActivityProvider = FutureProvider.autoDispose<IList<PuzzleHistoryEntry>?>((
   Ref ref,
 ) {
+  final authUser = ref.watch(authControllerProvider);
+  if (authUser == null) return null;
   return ref.watch(puzzleRepositoryProvider).puzzleActivity(20);
 }, name: 'PuzzleRecentActivityProvider');
 

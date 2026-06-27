@@ -5,14 +5,13 @@ import 'package:lichess_mobile/src/model/settings/board_preferences.dart';
 import 'package:lichess_mobile/src/model/settings/general_preferences.dart';
 import 'package:lichess_mobile/src/styles/styles.dart';
 import 'package:lichess_mobile/src/utils/color_palette.dart';
-import 'package:lichess_mobile/src/theme_system.dart';
 
 const kSliderTheme = SliderThemeData(
   // ignore: deprecated_member_use
   year2023: false,
 );
 
-ThemeData makeAppTheme(BuildContext context, GeneralPrefs generalPrefs, BoardPrefs boardPrefs, ThemeModel appTheme) {
+ThemeData makeAppTheme(BuildContext context, GeneralPrefs generalPrefs, BoardPrefs boardPrefs) {
   final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
   final brightness = generalPrefs.isForcedDarkMode
       ? Brightness.dark
@@ -23,7 +22,7 @@ ThemeData makeAppTheme(BuildContext context, GeneralPrefs generalPrefs, BoardPre
         };
 
   if (generalPrefs.backgroundColor == null && generalPrefs.backgroundImage == null) {
-    return _makeDefaultTheme(brightness, generalPrefs, boardPrefs, isIOS, appTheme);
+    return _makeDefaultTheme(brightness, generalPrefs, boardPrefs, isIOS);
   } else {
     return _makeBackgroundImageTheme(
       baseTheme:
@@ -81,7 +80,6 @@ ThemeData _makeDefaultTheme(
   GeneralPrefs generalPrefs,
   BoardPrefs boardPrefs,
   bool isIOS,
-  ThemeModel appTheme,
 ) {
   final boardTheme = boardPrefs.boardTheme;
   final dynamicColorSchemes = getDynamicColorSchemes();
@@ -89,15 +87,17 @@ ThemeData _makeDefaultTheme(
     Brightness.light => dynamicColorSchemes?.light,
     Brightness.dark => dynamicColorSchemes?.dark,
   };
-  final hasSystemColors =
-      appTheme.id == ThemeRegistry.defaultTheme.id && systemScheme != null && generalPrefs.systemColors == true;
+  final hasSystemColors = systemScheme != null && generalPrefs.systemColors == true;
 
   final neutralScheme = ColorScheme.fromSeed(
     seedColor: boardTheme.colors.darkSquare,
     brightness: brightness,
     dynamicSchemeVariant: DynamicSchemeVariant.neutral,
   );
-  final defaultScheme = appTheme.colorScheme(brightness);
+  final defaultScheme = ColorScheme.fromSeed(
+    seedColor: boardTheme.colors.darkSquare,
+    brightness: brightness,
+  );
   // makes a theme with neutral surfaces and default colors
   final boardScheme = defaultScheme.copyWith(
     surface: neutralScheme.surface,

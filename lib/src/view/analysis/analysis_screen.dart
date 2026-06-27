@@ -590,6 +590,10 @@ class _BottomBar extends ConsumerWidget {
             BottomSheetAction(
               makeLabel: (context) => Text(context.l10n.requestAComputerAnalysis),
               onPressed: () {
+                if (authUser == null) {
+                  showSnackBar(context, context.l10n.youNeedAnAccountToDoThat);
+                  return;
+                }
                 ref
                     .read(analysisControllerProvider(options).notifier)
                     .requestServerAnalysis()

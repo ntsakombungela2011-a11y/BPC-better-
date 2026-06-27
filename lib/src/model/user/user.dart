@@ -67,10 +67,9 @@ extension LightUserExtension on Pick {
   }
 }
 
-@Freezed(fromJson: true, toJson: true)
+@freezed
 sealed class TemporaryBan with _$TemporaryBan {
   const factory TemporaryBan({required DateTime date, required Duration duration}) = _TemporaryBan;
-  factory TemporaryBan.fromJson(Map<String, dynamic> json) => _$TemporaryBanFromJson(json);
 }
 
 @freezed
