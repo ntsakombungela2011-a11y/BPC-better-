@@ -7,6 +7,9 @@ import 'package:lichess_mobile/src/model/notifications/notifications.dart';
 import 'package:lichess_mobile/src/model/user/user_repository.dart';
 import 'package:lichess_mobile/src/tab_scaffold.dart';
 import 'package:lichess_mobile/src/view/message/conversation_screen.dart';
+import 'package:lichess_mobile/src/view/message/private_chat_screen.dart';
+import 'package:lichess_mobile/src/model/notifications/bpc_notifications.dart';
+import 'package:lichess_mobile/src/model/chat/private_chat.dart';
 
 final messageServiceProvider = Provider<MessageService>((Ref ref) {
   final service = MessageService(ref);
@@ -24,6 +27,8 @@ class MessageService {
       final (_, notification) = data;
       if (notification is NewMessageNotification) {
         _onNotificationResponse(notification.conversationId);
+      } else if (notification is BpcPrivateChatNotification) {
+        _onBpcNotificationResponse(notification);
       }
     });
   }
@@ -38,6 +43,24 @@ class MessageService {
       rootNavState.popUntil((route) => route.isFirst);
     }
     Navigator.of(context, rootNavigator: true).push(ConversationScreen.buildRoute(user: user.lightUser));
+  }
+
+  Future<void> _onBpcNotificationResponse(BpcPrivateChatNotification notification) async {
+    final user = await ref.read(userRepositoryProvider).getUser(UserId(notification.otherUserId));
+    final context = ref.read(currentNavigatorKeyProvider).currentContext;
+    if (context == null || !context.mounted) return;
+
+    final rootNavState = Navigator.of(context, rootNavigator: true);
+    if (rootNavState.canPop()) {
+      rootNavState.popUntil((route) => route.isFirst);
+    }
+
+    Navigator.of(context, rootNavigator: true).push(
+      PrivateChatScreen.buildRoute(
+        conversationId: notification.conversationId,
+        otherUser: user.lightUser,
+      ),
+    );
   }
 
   void dispose() {

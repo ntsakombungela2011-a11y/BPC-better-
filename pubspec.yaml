@@ -1,5 +1,5 @@
 name: boipelo_chess
-description: Boipelo Chess: The Last Dance - A mobile chess app for lichess.org
+description: "Boipelo Chess: The Last Dance - A mobile chess app for lichess.org"
 publish_to: "none"
 
 version: 0.24.6+002406 # See README.md for details about versioning
