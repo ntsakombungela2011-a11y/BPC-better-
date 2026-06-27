@@ -40,8 +40,11 @@ jobs:
       - name: Install requirements for sqflite_common_ffi package
         run: sudo apt-get -y install libsqlite3-0 libsqlite3-dev
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Clean environment
+        run: |
+          flutter clean
+          rm -rf .dart_tool
+          flutter pub get
 
       - name: Code generation
         run: dart run build_runner build --delete-conflicting-outputs

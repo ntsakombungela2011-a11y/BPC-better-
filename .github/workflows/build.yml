@@ -30,8 +30,11 @@ jobs:
       - name: Checkout mobile code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Clean environment
+        run: |
+          flutter clean
+          rm -rf .dart_tool
+          flutter pub get
 
       - name: Code generation
         run: dart run build_runner build --delete-conflicting-outputs
