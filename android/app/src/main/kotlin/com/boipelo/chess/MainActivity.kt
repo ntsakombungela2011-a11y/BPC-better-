@@ -1,4 +1,4 @@
-package org.lichess.mobileV2
+package com.boipelo.chess
 
 import android.app.ActivityManager
 import android.content.Context

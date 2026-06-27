@@ -190,7 +190,6 @@ class _BodyState extends ConsumerState<_Body> {
       filter: gameFilterState,
     ));
     final gameListState = ref.watch(gameListProvider);
-    final isLoggedIn = ref.watch(isLoggedInProvider);
 
     return gameListState.when(
       data: (state) {
@@ -287,8 +286,7 @@ class _BodyState extends ConsumerState<_Body> {
                         ),
                       ],
                     ),
-                    endActionPane: isLoggedIn
-                        ? ActionPane(
+                    endActionPane: ActionPane(
                             motion: const StretchMotion(),
                             children: [
                               if (game.source == GameSource.friend)
@@ -346,8 +344,7 @@ class _BodyState extends ConsumerState<_Body> {
                                     : context.l10n.bookmarkThisGame,
                               ),
                             ],
-                          )
-                        : null,
+                          ),
                     child: gameTile,
                   );
                 },

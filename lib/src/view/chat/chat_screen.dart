@@ -272,11 +272,10 @@ class _ChatBottomBarState extends ConsumerState<_ChatBottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    final authUser = ref.watch(authControllerProvider);
     final sendButton = ValueListenableBuilder<TextEditingValue>(
       valueListenable: _textController,
       builder: (context, value, child) => SemanticIconButton(
-        onPressed: authUser != null && value.text.isNotEmpty
+        onPressed: value.text.isNotEmpty
             ? () {
                 ref
                     .read(chatControllerProvider(widget.options).notifier)
@@ -290,7 +289,7 @@ class _ChatBottomBarState extends ConsumerState<_ChatBottomBar> {
         semanticsLabel: context.l10n.send,
       ),
     );
-    final placeholder = authUser != null ? context.l10n.talkInChat : context.l10n.loginToChat;
+    final placeholder = context.l10n.talkInChat;
     return SafeArea(
       top: false,
       child: Padding(
@@ -307,7 +306,6 @@ class _ChatBottomBarState extends ConsumerState<_ChatBottomBar> {
           minLines: 1,
           maxLines: 4,
           enableSuggestions: true,
-          readOnly: authUser == null,
         ),
       ),
     );

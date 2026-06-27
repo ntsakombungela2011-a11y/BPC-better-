@@ -109,7 +109,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>org.lichess.mobile</string>
+				<string>com.boipelo.chess</string>
 			</array>
 		</dict>
 	</array>

@@ -8,7 +8,7 @@ import UIKit
 ///  - A `.pgn` file opened from the Files app or another app arrives as a
 ///    security-scoped `file://` URL.
 ///  - The Share Extension writes the PGN into the shared App Group container and
-///    opens `org.lichess.mobile://shared-pgn`, which we read back from the
+///    opens `com.boipelo.chess://shared-pgn`, which we read back from the
 ///    container here.
 ///
 /// The app uses a scene-based lifecycle (`FlutterSceneDelegate`), so URL opens
@@ -21,8 +21,8 @@ import UIKit
 public final class SharePlugin: NSObject, FlutterPlugin, FlutterStreamHandler,
   FlutterSceneLifeCycleDelegate
 {
-  private static let appGroupId = "group.org.lichess.mobileV2.share"
-  private static let lichessScheme = "org.lichess.mobile"
+  private static let appGroupId = "group.com.boipelo.chess.share"
+  private static let lichessScheme = "com.boipelo.chess"
   private static let sharedPgnHost = "shared-pgn"
   private static let sharedFileName = "shared.pgn"
 

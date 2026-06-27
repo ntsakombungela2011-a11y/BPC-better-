@@ -61,9 +61,8 @@ class AppLogService {
       } else {
         if (record.loggerName == 'Stockfish' && record.level >= Level.SEVERE) {
           // help debugging engine in error state issues in production
-          LichessBinding.instance.firebaseCrashlytics.recordError(
-            record.message,
-            record.stackTrace,
+          debugPrint(
+            "${record.message}\n${record.stackTrace}",
           );
         }
       }

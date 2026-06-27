@@ -16,7 +16,6 @@ import 'package:lichess_mobile/src/view/game/game_screen_providers.dart';
 import 'package:lichess_mobile/src/view/play/challenge_list_item.dart';
 import 'package:lichess_mobile/src/view/play/create_correspondence_game_bottom_sheet.dart';
 import 'package:lichess_mobile/src/widgets/adaptive_action_sheet.dart';
-import 'package:lichess_mobile/src/widgets/feedback.dart';
 import 'package:lichess_mobile/src/widgets/haptic_refresh_indicator.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/platform.dart';
@@ -85,10 +84,6 @@ class _ChallengesBodyState extends ConsumerState<CorrespondenceChallengesScreen>
           appBar: PlatformAppBar(title: Text(context.l10n.correspondence)),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              if (authUser == null) {
-                showSnackBar(context, context.l10n.youNeedAnAccountToDoThat);
-                return;
-              }
               showModalBottomSheet<void>(
                 context: context,
                 isScrollControlled: true,
@@ -123,10 +118,6 @@ class _ChallengesBodyState extends ConsumerState<CorrespondenceChallengesScreen>
                   ),
                   onPressed: isMySeek
                       ? null
-                      : authUser == null
-                      ? () {
-                          showSnackBar(context, context.l10n.youNeedAnAccountToDoThat);
-                        }
                       : () {
                           showConfirmDialog<void>(
                             context,

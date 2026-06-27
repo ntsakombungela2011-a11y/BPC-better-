@@ -20,15 +20,12 @@ import 'package:lichess_mobile/src/view/clock/clock_tool_screen.dart';
 import 'package:lichess_mobile/src/view/explorer/opening_explorer_screen.dart';
 import 'package:lichess_mobile/src/view/message/contacts_screen.dart';
 import 'package:lichess_mobile/src/view/more/import_pgn_screen.dart';
-import 'package:lichess_mobile/src/view/relation/friend_screen.dart';
 import 'package:lichess_mobile/src/view/settings/settings_screen.dart';
-import 'package:lichess_mobile/src/view/user/player_screen.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/misc.dart';
 import 'package:lichess_mobile/src/widgets/platform.dart';
 import 'package:lichess_mobile/src/widgets/settings.dart';
 import 'package:lichess_mobile/src/widgets/user.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MoreTabScreen extends ConsumerWidget {
   const MoreTabScreen({super.key});
@@ -67,8 +64,6 @@ class _Body extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isOnline = ref.watch(onlineStatusProvider).value ?? false;
-    final authUser = ref.watch(authControllerProvider);
-
     return ListTileTheme.merge(
       iconColor: Theme.of(context).colorScheme.primary,
       child: ListView(
@@ -142,58 +137,7 @@ class _Body extends ConsumerWidget {
               ),
             ],
           ),
-          ListSection(
-            header: SettingsSectionTitle(context.l10n.community),
-            hasLeading: true,
-            children: [
-              ListTile(
-                leading: const Icon(Icons.groups_3_outlined),
-                title: Text(context.l10n.players),
-                enabled: isOnline,
-                trailing: Theme.of(context).platform == TargetPlatform.iOS
-                    ? const CupertinoListTileChevron()
-                    : null,
-                onTap: () {
-                  Navigator.of(context, rootNavigator: true).push(PlayerScreen.buildRoute());
-                },
-              ),
-              if (authUser != null)
-                ListTile(
-                  leading: const Icon(Icons.people_outline),
-                  title: Text(context.l10n.friends),
-                  enabled: isOnline,
-                  trailing: Theme.of(context).platform == TargetPlatform.iOS
-                      ? const CupertinoListTileChevron()
-                      : null,
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true).push(FriendScreen.buildRoute());
-                  },
-                ),
-            ],
-          ),
           const _AccountSection(),
-          if (Theme.of(context).platform == TargetPlatform.android)
-            ListSection(
-              hasLeading: true,
-              children: [
-                ListTile(
-                  leading: PatronIcon(color: 10, size: IconTheme.of(context).size),
-                  title: Text(context.l10n.patronDonate),
-                  subtitle: Text(context.l10n.patronBecomePatron),
-                  enabled: isOnline,
-                  onTap: () {
-                    launchUrl(Uri.parse('https://lichess.org/patron'));
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.info_outline),
-                  title: Text(context.l10n.about),
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true).push(AboutScreen.buildRoute());
-                  },
-                ),
-              ],
-            ),
           Padding(
             padding: Styles.bodySectionPadding,
             child: LichessMessage(style: TextTheme.of(context).bodyMedium),

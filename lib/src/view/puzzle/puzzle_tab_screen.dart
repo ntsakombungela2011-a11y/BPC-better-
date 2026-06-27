@@ -5,7 +5,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_angle.dart';
 import 'package:lichess_mobile/src/model/puzzle/puzzle_opening.dart';
@@ -23,11 +22,13 @@ import 'package:lichess_mobile/src/utils/screen.dart';
 import 'package:lichess_mobile/src/utils/string.dart';
 import 'package:lichess_mobile/src/view/account/account_menu.dart';
 import 'package:lichess_mobile/src/view/puzzle/dashboard_screen.dart';
+import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
 import 'package:lichess_mobile/src/view/puzzle/puzzle_history_screen.dart';
 import 'package:lichess_mobile/src/view/puzzle/puzzle_screen.dart';
 import 'package:lichess_mobile/src/view/puzzle/puzzle_themes_screen.dart';
 import 'package:lichess_mobile/src/view/puzzle/storm_screen.dart';
 import 'package:lichess_mobile/src/view/puzzle/streak_screen.dart';
+import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
 import 'package:lichess_mobile/src/widgets/board_preview.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/platform.dart';
@@ -246,8 +247,6 @@ class _PuzzleMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isOnline = ref.watch(onlineStatusProvider).value ?? false;
-    final authUser = ref.watch(authControllerProvider);
-
     return ListSection(
       hasLeading: true,
       children: [
@@ -289,29 +288,27 @@ class _PuzzleMenu extends ConsumerWidget {
                 }
               : null,
         ),
-        if (authUser != null) ...[
-          _PuzzleMenuListTile(
-            icon: Icons.assessment_outlined,
-            title: context.l10n.puzzlePuzzleDashboard,
-            subtitle: context.l10n.puzzlePuzzleDashboardDescription,
-            enabled: isOnline,
-            onTap: isOnline
-                ? () => Navigator.of(context).push(PuzzleDashboardScreen.buildRoute())
-                : null,
-          ),
-          _PuzzleMenuListTile(
-            icon: Icons.history_outlined,
-            title: context.l10n.puzzleHistory,
-            subtitle: 'Review your past puzzle attempts.',
-            enabled: isOnline,
-            onTap: isOnline
-                ? () => Navigator.of(
-                    context,
-                    rootNavigator: true,
-                  ).push(PuzzleHistoryScreen.buildRoute())
-                : null,
-          ),
-        ],
+        _PuzzleMenuListTile(
+          icon: Icons.assessment_outlined,
+          title: context.l10n.puzzlePuzzleDashboard,
+          subtitle: context.l10n.puzzlePuzzleDashboardDescription,
+          enabled: isOnline,
+          onTap: isOnline
+              ? () => Navigator.of(context).push(PuzzleDashboardScreen.buildRoute())
+              : null,
+        ),
+        _PuzzleMenuListTile(
+          icon: Icons.history_outlined,
+          title: context.l10n.puzzleHistory,
+          subtitle: 'Review your past puzzle attempts.',
+          enabled: isOnline,
+          onTap: isOnline
+              ? () => Navigator.of(
+                  context,
+                  rootNavigator: true,
+                ).push(PuzzleHistoryScreen.buildRoute())
+              : null,
+        ),
       ],
     );
   }

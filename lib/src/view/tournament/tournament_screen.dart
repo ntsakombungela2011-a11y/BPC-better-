@@ -862,8 +862,6 @@ class _Verdicts extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isLoggedIn = ref.watch(authControllerProvider)?.user.id != null;
-
     if (verdicts.list.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -871,12 +869,8 @@ class _Verdicts extends ConsumerWidget {
     return Row(
       children: [
         Icon(
-          isLoggedIn && verdicts.accepted ? Icons.check : Icons.lock,
-          color: isLoggedIn
-              ? verdicts.accepted
-                    ? context.lichessColors.good
-                    : context.lichessColors.error
-              : null,
+          verdicts.accepted ? Icons.check : Icons.lock,
+          color: verdicts.accepted ? context.lichessColors.good : context.lichessColors.error,
           size: 30.0,
         ),
         const SizedBox(width: 10),
@@ -888,11 +882,9 @@ class _Verdicts extends ConsumerWidget {
                 Text(
                   verdict.condition,
                   style: TextStyle(
-                    color: isLoggedIn
-                        ? verdict.ok
-                              ? context.lichessColors.good
-                              : context.lichessColors.error
-                        : null,
+                    color: verdict.ok
+                        ? context.lichessColors.good
+                        : context.lichessColors.error,
                   ),
                 ),
             ],
@@ -1163,8 +1155,6 @@ class _BottomBarState extends ConsumerState<_BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    final authUser = ref.watch(authControllerProvider);
-    final signInState = ref.watch(signInMutation);
     final kidModeAsync = ref.watch(kidModeProvider);
 
     ref.listen(
@@ -1184,7 +1174,7 @@ class _BottomBarState extends ConsumerState<_BottomBar> {
         if (widget.state.chatOptions != null && kidModeAsync.value == false)
           ChatBottomBarButton(options: widget.state.chatOptions!, showLabel: true),
 
-        if (widget.state.tournament.isFinished != true && authUser != null)
+        if (widget.state.tournament.isFinished != true)
           joinOrLeaveInProgress
               ? const Center(child: CircularProgressIndicator.adaptive())
               : BottomBarButton(
@@ -1284,20 +1274,6 @@ class _BottomBarState extends ConsumerState<_BottomBar> {
                         }
                       : null,
                 )
-        else if (widget.state.tournament.isFinished != true)
-          BottomBarButton(
-            label: context.l10n.signIn,
-            showLabel: true,
-            icon: Icons.login,
-            onTap: switch (signInState) {
-              MutationPending() => null,
-              _ => () {
-                signInMutation.run(ref, (tsx) async {
-                  await tsx.get(authControllerProvider.notifier).signIn();
-                });
-              },
-            },
-          ),
       ],
     );
   }

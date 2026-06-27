@@ -14,7 +14,6 @@ import 'package:lichess_mobile/src/network/http.dart';
 import 'package:lichess_mobile/src/styles/lichess_colors.dart';
 import 'package:lichess_mobile/src/styles/lichess_icons.dart';
 import 'package:lichess_mobile/src/styles/styles.dart';
-import 'package:lichess_mobile/src/tab_scaffold.dart' show watchTabInteraction;
 import 'package:lichess_mobile/src/utils/http_network_image.dart';
 import 'package:lichess_mobile/src/utils/image.dart';
 import 'package:lichess_mobile/src/utils/l10n.dart';
@@ -69,28 +68,6 @@ class BroadcastCarousel extends StatefulWidget {
 
 class _BroadcastCarouselState extends State<BroadcastCarousel> {
   final _controller = CarouselController();
-
-  @override
-  void initState() {
-    super.initState();
-    watchTabInteraction.addListener(_onTabInteraction);
-  }
-
-  @override
-  void dispose() {
-    watchTabInteraction.removeListener(_onTabInteraction);
-    super.dispose();
-  }
-
-  void _onTabInteraction() {
-    if (_controller.hasClients) {
-      _controller.animateTo(
-        0,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
