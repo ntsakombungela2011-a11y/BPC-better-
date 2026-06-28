@@ -259,7 +259,7 @@ class _EditProfileFormState extends ConsumerState<_EditProfileForm> {
                                           maxWidth: MediaQuery.sizeOf(context).width * 0.9,
                                         ),
                                         child: const Center(
-                                          child: CircularProgressIndicator.adaptive(),
+                                          child: CenterLoadingIndicator(),
                                         ),
                                       ),
                                     );

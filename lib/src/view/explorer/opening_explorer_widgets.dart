@@ -1,4 +1,6 @@
 import 'package:dartchess/dartchess.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -280,12 +282,7 @@ class _IndexingIndicatorState extends State<IndexingIndicator> with TickerProvid
     return SizedBox(
       width: 12.0,
       height: 12.0,
-      child: CircularProgressIndicator(
-        strokeWidth: 1.5,
-        value: controller.value,
-        // TODO: l10n
-        semanticsLabel: 'Indexing',
-      ),
+      child: CenterLoadingIndicator(),
     );
   }
 }

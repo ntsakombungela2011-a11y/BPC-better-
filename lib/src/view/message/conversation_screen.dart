@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -190,7 +192,7 @@ class _Body extends ConsumerWidget {
         debugPrint('Error loading messages for ${user.id}: $e\n$st');
         return Center(child: Text('Error: $e'));
       case _:
-        return const Center(child: CircularProgressIndicator());
+        return const Center(child: CenterLoadingIndicator());
     }
   }
 

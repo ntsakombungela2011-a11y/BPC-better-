@@ -16,7 +16,7 @@ class AppBarLichessTitle extends StatelessWidget {
       TextSpan(
         children: [
           WidgetSpan(
-            alignment: .bottom,
+            alignment: PlaceholderAlignment.bottom,
             child: Icon(Icons.train, size: iconSize),
           ),
           const TextSpan(text: ' Boipelo Chess: The Last Dance'),

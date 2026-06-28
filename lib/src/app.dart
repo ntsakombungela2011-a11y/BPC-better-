@@ -58,10 +58,9 @@ class AppInitializationScreen extends ConsumerWidget {
         return const Application();
       case AsyncError(:final error, :final stackTrace):
         debugPrint('SEVERE: [App] could not initialize app; $error\n$stackTrace');
-        return const SizedBox.shrink();
+        return Scaffold(body: FullScreenRetryRequest(onRetry: () => ref.invalidate(preloadedDataProvider)));
       case _:
-        // loading screen is handled by the native splash screen
-        return const SizedBox.shrink();
+        return const Scaffold(body: Center(child: AnimatedTrainLogo(size: 60)));
     }
   }
 }

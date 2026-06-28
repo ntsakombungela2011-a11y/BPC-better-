@@ -1,4 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -180,7 +182,7 @@ class _SessionItem extends StatelessWidget {
                 padding: EdgeInsets.all(2.0),
                 child: FittedBox(
                   fit: BoxFit.cover,
-                  child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white),
+                  child: CenterLoadingIndicator(),
                 ),
               )
             : attempt?.ratingDiff != null && attempt!.ratingDiff != 0
