@@ -33,6 +33,8 @@ import 'package:lichess_mobile/src/widgets/board_preview.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/platform.dart';
 import 'package:lichess_mobile/src/widgets/shimmer.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 const _kNumberOfHistoryItemsOnHandset = 8;
 const _kNumberOfHistoryItemsOnTablet = 16;
@@ -45,7 +47,7 @@ class PuzzleTabScreen extends ConsumerWidget {
     final savedBatches = ref.watch(savedBatchesProvider).value;
 
     if (savedBatches == null) {
-      return const Center(child: CircularProgressIndicator.adaptive());
+      return const CenterLoadingIndicator();
     }
 
     return _MaterialTabBody(savedBatches);

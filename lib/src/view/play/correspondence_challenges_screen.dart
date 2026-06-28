@@ -19,6 +19,8 @@ import 'package:lichess_mobile/src/widgets/adaptive_action_sheet.dart';
 import 'package:lichess_mobile/src/widgets/haptic_refresh_indicator.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/platform.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 class CorrespondenceChallengesScreen extends ConsumerStatefulWidget {
   const CorrespondenceChallengesScreen({super.key});
@@ -139,7 +141,7 @@ class _ChallengesBodyState extends ConsumerState<CorrespondenceChallengesScreen>
           ),
         );
       case _:
-        return const Scaffold(body: Center(child: CircularProgressIndicator.adaptive()));
+        return const Scaffold(body: CenterLoadingIndicator());
     }
   }
 }

@@ -119,7 +119,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       case _:
         return Scaffold(
           appBar: AppBar(title: Text(context.l10n.editProfile)),
-          body: const Center(child: CircularProgressIndicator.adaptive()),
+          body: const CenterLoadingIndicator(),
         );
     }
   }

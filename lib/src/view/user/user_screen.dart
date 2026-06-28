@@ -114,7 +114,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
           setIsLoading,
           onRefresh: () => ref.refresh(_userScreenDataProvider(widget.user.id).future),
         ),
-        loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+        loading: () => const CenterLoadingIndicator(),
         error: (error, _) {
           if (error is ClientException && error.message.contains('404')) {
             return Center(

@@ -212,7 +212,7 @@ class _LoadNextPuzzle extends ConsumerWidget {
         return _PuzzleScaffold(
           angle: angle,
           initialPuzzleContext: null,
-          body: const Center(child: CircularProgressIndicator.adaptive()),
+          body: const CenterLoadingIndicator(),
         );
     }
   }
@@ -259,7 +259,7 @@ class _LoadReplayPuzzle extends ConsumerWidget {
         return const _PuzzleScaffold(
           angle: _angle,
           initialPuzzleContext: null,
-          body: Center(child: CircularProgressIndicator.adaptive()),
+          body: CenterLoadingIndicator(),
         );
     }
   }

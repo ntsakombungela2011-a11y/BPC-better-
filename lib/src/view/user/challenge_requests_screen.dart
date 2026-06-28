@@ -10,6 +10,8 @@ import 'package:lichess_mobile/src/utils/l10n_context.dart';
 import 'package:lichess_mobile/src/utils/navigation.dart';
 import 'package:lichess_mobile/src/view/play/challenge_list_item.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 class ChallengeRequestsScreen extends StatelessWidget {
   const ChallengeRequestsScreen({super.key});
@@ -58,7 +60,7 @@ class _Body extends ConsumerWidget {
           },
         );
       case _:
-        return const SafeArea(child: Center(child: CircularProgressIndicator.adaptive()));
+        return const SafeArea(child: CenterLoadingIndicator());
     }
   }
 }

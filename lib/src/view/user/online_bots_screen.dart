@@ -76,7 +76,7 @@ class OnlineBotsWidget extends ConsumerWidget {
           child: Text('Could not load online bots: $error'),
         );
       case _:
-        return const Center(child: CircularProgressIndicator.adaptive());
+        return const CenterLoadingIndicator();
     }
   }
 }
@@ -137,7 +137,7 @@ class _Body extends ConsumerWidget {
           );
         },
       ),
-      loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+      loading: () => const CenterLoadingIndicator(),
       error: (e, s) {
         debugPrint('Could not load bots: $e');
         return FullScreenRetryRequest(onRetry: () => ref.refresh(onlineBotsProvider));

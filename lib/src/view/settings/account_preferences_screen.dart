@@ -443,7 +443,7 @@ class _AccountPreferencesScreenState extends ConsumerState<AccountPreferencesScr
           ],
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+      loading: () => const CenterLoadingIndicator(),
       error: (err, _) {
         return FullScreenRetryRequest(onRetry: () => ref.invalidate(accountPreferencesProvider));
       },

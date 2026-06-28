@@ -13,6 +13,8 @@ import 'package:lichess_mobile/src/utils/navigation.dart';
 import 'package:lichess_mobile/src/view/user/user_or_profile_screen.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/user.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 /// Create a Screen with Top 10 players for each Lichess Variant
 class LeaderboardScreen extends StatelessWidget {
@@ -71,7 +73,7 @@ class _Body extends ConsumerWidget {
           ),
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+      loading: () => const CenterLoadingIndicator(),
       error: (error, stack) => const Center(child: Text('Could not load leaderboard.')),
     );
   }

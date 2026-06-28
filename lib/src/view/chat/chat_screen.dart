@@ -16,6 +16,8 @@ import 'package:lichess_mobile/src/widgets/bottom_bar.dart';
 import 'package:lichess_mobile/src/widgets/buttons.dart';
 import 'package:lichess_mobile/src/widgets/user.dart';
 import 'package:lichess_mobile/src/widgets/yes_no_dialog.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 class ChatBottomBarButton extends ConsumerWidget {
   const ChatBottomBarButton({required this.options, this.showLabel = false, super.key});
@@ -130,7 +132,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> with RouteAware {
       case AsyncError(:final error):
         return Scaffold(body: Center(child: Text(error.toString())));
       case _:
-        return const Scaffold(body: Center(child: CircularProgressIndicator.adaptive()));
+        return const Scaffold(body: CenterLoadingIndicator());
     }
   }
 }

@@ -140,7 +140,7 @@ flutter_native_splash:
   web: false
 
   color: "#ffffff"
-  image: assets/images/logo-black.png
+  image: null # replaced with train icon
 
   color_dark: "#000000"
-  image_dark: assets/images/logo-white.png
+  image_dark: null # replaced with train icon

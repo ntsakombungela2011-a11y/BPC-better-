@@ -14,6 +14,8 @@ import 'package:lichess_mobile/src/utils/navigation.dart';
 import 'package:lichess_mobile/src/view/broadcast/broadcast_team_screen.dart';
 import 'package:lichess_mobile/src/widgets/misc.dart';
 import 'package:lichess_mobile/src/widgets/platform.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 enum _SortingTypes { elo, score }
 
@@ -45,7 +47,7 @@ class BroadcastTeamStandingsScreen extends ConsumerWidget {
               : Center(child: Text(context.l10n.nothingToSeeHere)),
         (AsyncError(:final error), _) ||
         (_, AsyncError(:final error)) => Center(child: Text('Cannot load data: $error')),
-        _ => const Center(child: CircularProgressIndicator.adaptive()),
+        _ => const CenterLoadingIndicator(),
       },
     );
   }

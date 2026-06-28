@@ -16,6 +16,8 @@ import 'package:lichess_mobile/src/model/tournament/tournament_controller.dart';
 import 'package:lichess_mobile/src/utils/l10n_context.dart';
 import 'package:lichess_mobile/src/view/analysis/analysis_screen.dart';
 import 'package:lichess_mobile/src/view/game/status_l10n.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 class GameResultDialog extends ConsumerStatefulWidget {
   const GameResultDialog({required this.id, required this.onNewOpponentCallback, super.key});
@@ -204,7 +206,7 @@ class _GameResultDialogState extends ConsumerState<GameResultDialog> {
           ],
         ),
       ),
-      _ => const Center(child: CircularProgressIndicator.adaptive()),
+      _ => const CenterLoadingIndicator(),
     };
   }
 }

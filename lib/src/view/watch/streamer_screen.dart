@@ -77,13 +77,10 @@ class StreamerListTile extends StatelessWidget {
               height: thumbnailSize,
               fit: BoxFit.cover,
             )
-          : Image.asset(
-              Theme.of(context).brightness == Brightness.light
-                  ? 'assets/images/logo-black.png'
-                  : 'assets/images/logo-white.png',
-              width: thumbnailSize,
-              height: thumbnailSize,
-              fit: BoxFit.cover,
+          : Icon(
+              Icons.train,
+              size: thumbnailSize,
+              color: Theme.of(context).colorScheme.primary,
             ),
     );
 

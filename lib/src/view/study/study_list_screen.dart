@@ -237,7 +237,7 @@ class _StudyListScreenState extends ConsumerState<StudyListScreen> {
         _ => Column(
           children: [
             searchBar,
-            const Expanded(child: Center(child: CircularProgressIndicator.adaptive())),
+            const Expanded(child: CenterLoadingIndicator()),
           ],
         ),
       },

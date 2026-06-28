@@ -15,6 +15,8 @@ import 'package:lichess_mobile/src/view/broadcast/broadcast_round_screen.dart';
 import 'package:lichess_mobile/src/widgets/network_image.dart';
 import 'package:lichess_mobile/src/widgets/platform.dart';
 import 'package:lichess_mobile/src/widgets/stat_card.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 class BroadcastTeamScreen extends ConsumerWidget {
   const BroadcastTeamScreen({super.key, required this.tournamentId, required this.teamName});
@@ -57,7 +59,7 @@ class BroadcastTeamScreen extends ConsumerWidget {
         }(),
         (AsyncError(:final error), _) ||
         (_, AsyncError(:final error)) => Center(child: Text('Cannot load data: $error')),
-        _ => const Center(child: CircularProgressIndicator.adaptive()),
+        _ => const CenterLoadingIndicator(),
       },
     );
   }

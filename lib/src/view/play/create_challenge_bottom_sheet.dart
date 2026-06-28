@@ -420,7 +420,7 @@ class _CreateChallengeBottomSheetState extends ConsumerState<CreateChallengeBott
           ],
         );
       case _:
-        return const Center(child: CircularProgressIndicator.adaptive());
+        return const CenterLoadingIndicator();
     }
   }
 }

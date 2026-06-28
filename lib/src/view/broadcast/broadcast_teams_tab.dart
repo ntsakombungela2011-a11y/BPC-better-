@@ -19,6 +19,8 @@ import 'package:lichess_mobile/src/view/broadcast/broadcast_team_screen.dart';
 import 'package:lichess_mobile/src/view/broadcast/broadcast_team_standings_screen.dart';
 import 'package:lichess_mobile/src/view/engine/engine_gauge.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 const _kScoreContainerWidth = 75.0;
 const _kTeamNameMaxLines = 3;
@@ -57,7 +59,7 @@ class BroadcastTeamsTab extends ConsumerWidget {
         showTeamScores,
       ),
       AsyncError(:final error) => Center(child: Text('Cannot load teams data: $error')),
-      _ => const Center(child: CircularProgressIndicator.adaptive()),
+      _ => const CenterLoadingIndicator(),
     };
   }
 }
@@ -115,7 +117,7 @@ class BroadcastTeamsList extends ConsumerWidget {
         ],
       ),
       AsyncError(:final error) => Center(child: Text('Cannot load games data: $error')),
-      _ => const Center(child: CircularProgressIndicator.adaptive()),
+      _ => const CenterLoadingIndicator(),
     };
   }
 }

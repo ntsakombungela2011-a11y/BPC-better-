@@ -13,6 +13,8 @@ import 'package:lichess_mobile/src/view/puzzle/puzzle_screen.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/platform.dart';
 import 'package:lichess_mobile/src/widgets/platform_context_menu_button.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 final _openingsSortProvider = StateProvider.autoDispose<PuzzleOpeningSort>(
   (ref) => PuzzleOpeningSort.popular,
@@ -114,7 +116,7 @@ class _Body extends ConsumerWidget {
       error: (error, stack) {
         return const Center(child: Text('Could not load openings.'));
       },
-      loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+      loading: () => const CenterLoadingIndicator(),
     );
   }
 }
