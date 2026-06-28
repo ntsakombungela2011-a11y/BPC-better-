@@ -1,3 +1,4 @@
+import 'package:lichess_mobile/src/widgets/feedback.dart';
 import 'dart:async';
 import 'dart:io';
 
@@ -60,7 +61,7 @@ class AppInitializationScreen extends ConsumerWidget {
         debugPrint('SEVERE: [App] could not initialize app; $error\n$stackTrace');
         return Scaffold(body: FullScreenRetryRequest(onRetry: () => ref.invalidate(preloadedDataProvider)));
       case _:
-        return const Scaffold(body: Center(child: AnimatedTrainLogo(size: 60)));
+        return Scaffold(body: const Center(child: AnimatedTrainLogo(size: 60)));
     }
   }
 }
