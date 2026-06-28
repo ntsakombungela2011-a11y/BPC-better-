@@ -17,6 +17,8 @@ import 'package:lichess_mobile/src/widgets/haptic_refresh_indicator.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/platform.dart';
 import 'package:lichess_mobile/src/widgets/shimmer.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 class TournamentListScreen extends ConsumerStatefulWidget {
   const TournamentListScreen({super.key});
@@ -107,7 +109,7 @@ class _TournamentListScreenState extends ConsumerState<TournamentListScreen>
             ],
           ),
           AsyncError(:final error) => Center(child: Text('Could not load tournaments: $error')),
-          _ => const Center(child: CircularProgressIndicator.adaptive()),
+          _ => const CenterLoadingIndicator(),
         },
       ),
     );

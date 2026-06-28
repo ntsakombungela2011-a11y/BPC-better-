@@ -146,7 +146,7 @@ class _AnalysisScreenState extends ConsumerState<_AnalysisScreen>
             title: VariantAppBarTitle(variant: Variant.standard, title: context.l10n.analysis),
             actions: appBarActions,
           ),
-          body: const Center(child: CircularProgressIndicator.adaptive()),
+          body: const CenterLoadingIndicator(),
         );
     }
   }

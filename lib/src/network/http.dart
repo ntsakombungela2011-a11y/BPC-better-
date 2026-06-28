@@ -342,7 +342,7 @@ class LichessClient implements Client {
     final authUser = _ref.read(authControllerProvider);
 
     if (authUser != null && !request.headers.containsKey('Authorization')) {
-      final bearer = signBearerToken(authUser.token);
+      final bearer = authUser.token;
       request.headers['Authorization'] = 'Bearer $bearer';
     }
     request.headers['User-Agent'] = makeUserAgent(

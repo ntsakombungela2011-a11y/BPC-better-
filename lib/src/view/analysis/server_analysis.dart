@@ -143,7 +143,7 @@ class WaitingForServerAnalysis extends StatelessWidget {
         const SizedBox(width: 8.0),
         Text(context.l10n.waitingForAnalysis),
         const SizedBox(width: 8.0),
-        const CircularProgressIndicator.adaptive(),
+        const CenterLoadingIndicator(),
       ],
     );
   }

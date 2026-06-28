@@ -24,6 +24,8 @@ import 'package:lichess_mobile/src/widgets/progression_widget.dart';
 import 'package:lichess_mobile/src/widgets/side_indicator.dart';
 import 'package:lichess_mobile/src/widgets/stat_card.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 final broadcastTournamentIdProvider = FutureProvider.autoDispose
     .family<BroadcastTournamentId, BroadcastRoundId>((Ref ref, BroadcastRoundId roundId) async {
@@ -83,7 +85,7 @@ class BroadcastPlayerResultsScreenLoading extends ConsumerWidget {
       ),
       _ => Scaffold(
         appBar: AppBar(title: const Text('')),
-        body: const Center(child: CircularProgressIndicator.adaptive()),
+        body: const CenterLoadingIndicator(),
       ),
     };
   }
@@ -242,7 +244,7 @@ class _Body extends ConsumerWidget {
       case AsyncError(:final error):
         return Center(child: Text('Cannot load player data: $error'));
       case _:
-        return const Center(child: CircularProgressIndicator.adaptive());
+        return const CenterLoadingIndicator();
     }
   }
 }

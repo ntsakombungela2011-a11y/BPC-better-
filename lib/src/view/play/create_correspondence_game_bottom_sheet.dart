@@ -17,6 +17,8 @@ import 'package:lichess_mobile/src/widgets/adaptive_choice_picker.dart';
 import 'package:lichess_mobile/src/widgets/expanded_section.dart';
 import 'package:lichess_mobile/src/widgets/non_linear_slider.dart';
 import 'package:lichess_mobile/src/widgets/variant_app_bar_title.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 class CreateCorrespondenceGameBottomSheet extends ConsumerStatefulWidget {
   const CreateCorrespondenceGameBottomSheet({super.key});
@@ -171,7 +173,7 @@ class _CreateGameBodyState extends ConsumerState<CreateCorrespondenceGameBottomS
           ],
         );
       case _:
-        return const Center(child: CircularProgressIndicator.adaptive());
+        return const CenterLoadingIndicator();
     }
   }
 }

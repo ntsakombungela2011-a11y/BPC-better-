@@ -17,6 +17,8 @@ import 'package:lichess_mobile/src/widgets/board_thumbnail.dart';
 import 'package:lichess_mobile/src/widgets/clock.dart';
 import 'package:lichess_mobile/src/widgets/platform_search_bar.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 // height of 1.0 is important because we need to determine the height of the text
 // to calculate the height of the header and footer of the board
@@ -69,7 +71,7 @@ class BroadcastBoardsTab extends ConsumerWidget {
                 customScoring: value.round.customScoring,
               ),
       AsyncError(:final error) => Center(child: Text('Could not load broadcast: $error')),
-      _ => const Center(child: CircularProgressIndicator.adaptive()),
+      _ => const CenterLoadingIndicator(),
     };
   }
 }

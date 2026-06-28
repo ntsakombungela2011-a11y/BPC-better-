@@ -13,6 +13,8 @@ import 'package:lichess_mobile/src/view/puzzle/puzzle_screen.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/platform.dart';
 import 'package:lichess_mobile/src/widgets/platform_search_bar.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 final _themesProvider =
     FutureProvider.autoDispose<
@@ -145,7 +147,7 @@ class _BodyState extends ConsumerState<_Body> {
           ],
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+      loading: () => const CenterLoadingIndicator(),
       error: (error, stack) => const Center(child: Text('Could not load themes.')),
     );
   }

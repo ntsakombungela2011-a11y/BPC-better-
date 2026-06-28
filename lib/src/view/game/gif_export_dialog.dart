@@ -1,4 +1,6 @@
 import 'package:dartchess/dartchess.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lichess_mobile/src/model/common/id.dart';
@@ -122,7 +124,7 @@ class _GifExportState extends ConsumerState<GifExport> {
                 ? const SizedBox(
                     height: 20,
                     width: 20,
-                    child: CircularProgressIndicator.adaptive(strokeWidth: 3),
+                    child: CenterLoadingIndicator(),
                   )
                 : Text(context.l10n.next, textAlign: TextAlign.center),
           ),

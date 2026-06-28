@@ -3,11 +3,11 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lichess_mobile/src/model/account/account_repository.dart';
 import 'package:lichess_mobile/src/model/account/home_preferences.dart';
 import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
 import 'package:lichess_mobile/src/model/common/speed.dart';
 import 'package:lichess_mobile/src/model/common/time_increment.dart';
+import 'package:lichess_mobile/src/model/game/game_repository_providers.dart';
 import 'package:lichess_mobile/src/model/lobby/game_seek.dart';
 import 'package:lichess_mobile/src/network/connectivity.dart';
 import 'package:lichess_mobile/src/styles/styles.dart';
@@ -15,36 +15,35 @@ import 'package:lichess_mobile/src/utils/l10n_context.dart';
 import 'package:lichess_mobile/src/view/game/game_screen.dart';
 import 'package:lichess_mobile/src/view/game/game_screen_providers.dart';
 import 'package:lichess_mobile/src/view/play/play_bottom_sheet.dart';
-import 'package:lichess_mobile/src/view/play/playban.dart';
+import 'package:lichess_mobile/src/widgets/buttons.dart';
+import 'package:lichess_mobile/src/widgets/platform.dart';
 
-const _kMatrixSpacing = 8.0;
+const double _kMatrixSpacing = 10.0;
 
 class QuickGameMatrix extends ConsumerWidget {
   const QuickGameMatrix({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final playban = ref.watch(accountProvider).value?.playban;
-    final brightness = Theme.of(context).brightness;
-    final logoColor = brightness == Brightness.light
-        ? const Color(0x0F000000)
-        : const Color(0x80FFFFFF);
+    final homePrefs = ref.watch(homePreferencesProvider);
+    final showCustom = homePrefs.customButtonEnabled;
+    final disabledTimeControls = homePrefs.disabledTimeControls;
+
+    final presets = TimeIncrement.matrixPresets
+        .where((tc) => !disabledTimeControls.contains(tc))
+        .toList();
+
+    final logoColor = ColorScheme.of(context).onSurface.withValues(alpha: 0.05);
     final scaffoldOpacity = Theme.of(context).scaffoldBackgroundColor.a;
 
-    if (playban != null) {
-      return PlaybanMessage(playban: playban);
+    final List<List<TimeIncrement>> rows = [];
+    for (var i = 0; i < presets.length; i++) {
+      if (i % 3 == 0) {
+        rows.add([]);
+      }
+      rows.last.add(presets[i]);
     }
 
-    final homePrefs = ref.watch(homePreferencesProvider);
-    final enabledControls = TimeIncrement.matrixPresets
-        .where((tc) => !homePrefs.disabledTimeControls.contains(tc))
-        .toList();
-    final showCustom = homePrefs.customButtonEnabled;
-
-    final rows = <List<TimeIncrement>>[];
-    for (var i = 0; i < enabledControls.length; i += 3) {
-      rows.add(enabledControls.sublist(i, (i + 3).clamp(0, enabledControls.length)));
-    }
     if (rows.isEmpty && showCustom) {
       rows.add([]);
     }
@@ -54,31 +53,33 @@ class QuickGameMatrix extends ConsumerWidget {
       children: [
         Text(context.l10n.quickPairing, style: Styles.sectionTitle),
         const SizedBox(height: 6.0),
-        Container(
-          decoration: scaffoldOpacity != 0
-              ? BoxDecoration(
-                  image: DecorationImage(
-                    colorFilter: ColorFilter.mode(logoColor, BlendMode.modulate),
-                    image: const AssetImage('assets/images/logo-transp.png'),
-                    fit: BoxFit.contain,
-                  ),
-                )
-              : null,
-          child: Column(
-            children: [
-              for (final (index, row) in rows.indexed) ...[
-                if (index > 0) const SizedBox(height: _kMatrixSpacing),
-                _SectionChoices(
-                  choices: row,
-                  showCustom: showCustom && index == rows.length - 1 && row.length < 3,
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            if (scaffoldOpacity != 0)
+              const Opacity(
+                opacity: 0.05,
+                child: Icon(
+                  Icons.train,
+                  size: 200,
                 ),
+              ),
+            Column(
+              children: [
+                for (final (index, row) in rows.indexed) ...[
+                  if (index > 0) const SizedBox(height: _kMatrixSpacing),
+                  _SectionChoices(
+                    choices: row,
+                    showCustom: showCustom && index == rows.length - 1 && row.length < 3,
+                  ),
+                ],
+                if (showCustom && rows.every((r) => r.length >= 3)) ...[
+                  const SizedBox(height: _kMatrixSpacing),
+                  const _SectionChoices(choices: [], showCustom: true),
+                ],
               ],
-              if (showCustom && rows.every((r) => r.length >= 3)) ...[
-                const SizedBox(height: _kMatrixSpacing),
-                const _SectionChoices(choices: [], showCustom: true),
-              ],
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
@@ -179,8 +180,8 @@ class _ChoiceChip extends StatelessWidget {
     final scaffoldOpacity = Theme.of(context).scaffoldBackgroundColor.a;
     final bgColor = Theme.of(context).brightness == Brightness.dark
         ? scaffoldOpacity > 0
-              ? Colors.white10
-              : ColorScheme.of(context).surfaceContainerLow
+            ? Colors.white10
+            : ColorScheme.of(context).surfaceContainerLow
         : ColorScheme.of(context).surfaceContainerHighest.withValues(alpha: 0.50);
 
     return Opacity(

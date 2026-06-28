@@ -104,7 +104,7 @@ class UserContextMenu extends ConsumerWidget {
           children: [
             Padding(
               padding: Styles.bodyPadding,
-              child: Center(child: CircularProgressIndicator.adaptive()),
+              child: CenterLoadingIndicator(),
             ),
           ],
         );

@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lichess_mobile/src/model/engine/engine.dart';
@@ -109,9 +111,7 @@ class _EngineSettingsScreenState extends ConsumerState<EngineSettingsScreen> {
                                 animation: _downloadProgress,
                                 builder: (_, _) {
                                   final progress = _downloadProgress.value;
-                                  return CircularProgressIndicator(
-                                    value: progress > 0.0 ? progress : null,
-                                  );
+                                  return CenterLoadingIndicator();
                                 },
                               )
                             : const Icon(Icons.download),

@@ -10,6 +10,8 @@ import 'package:lichess_mobile/src/view/engine/engine_button.dart';
 import 'package:lichess_mobile/src/widgets/adaptive_bottom_sheet.dart';
 import 'package:lichess_mobile/src/widgets/bottom_bar.dart';
 import 'package:lichess_mobile/src/widgets/buttons.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 class StudyBottomBar extends ConsumerWidget {
   const StudyBottomBar({required this.options});
@@ -243,7 +245,7 @@ class _NextChapterButtonState extends ConsumerState<_NextChapterButton> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const Center(child: CircularProgressIndicator.adaptive())
+        ? const CenterLoadingIndicator()
         : BottomBarButton(
             onTap: widget.hasNextChapter
                 ? () {

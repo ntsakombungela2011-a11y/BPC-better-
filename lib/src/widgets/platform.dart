@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:lichess_mobile/src/constants.dart';
 import 'package:lichess_mobile/src/tab_scaffold.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 /// A simple widget that builds different things on different platforms.
 class PlatformWidget extends StatelessWidget {
@@ -44,7 +46,7 @@ class PlatformAppBarLoadingIndicator extends StatelessWidget {
       child: SizedBox(
         height: 24,
         width: 24,
-        child: Center(child: CircularProgressIndicator.adaptive()),
+        child: CenterLoadingIndicator(),
       ),
     );
   }

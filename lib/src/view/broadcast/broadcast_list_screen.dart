@@ -12,6 +12,8 @@ import 'package:lichess_mobile/src/widgets/filter.dart';
 import 'package:lichess_mobile/src/widgets/haptic_refresh_indicator.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/misc.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 enum _BroadcastFilter {
   all,
@@ -165,7 +167,7 @@ class _Body extends ConsumerWidget {
           );
         },
         error: (_, _) => const Center(child: Text('Cannot load broadcasts')),
-        loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+        loading: () => const CenterLoadingIndicator(),
       ),
     );
   }

@@ -412,7 +412,7 @@ class _HomeScreenState extends ConsumerState<HomeTabScreen> {
           ),
         );
       },
-      error: (_, _) => const CenterLoadingIndicator(),
+      error: (error, _) => PlatformScaffold(body: FullScreenRetryRequest(onRetry: () => ref.invalidate(onlineStatusProvider))),
       loading: () => const CenterLoadingIndicator(),
     );
   }

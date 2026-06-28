@@ -1,4 +1,6 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
@@ -107,7 +109,7 @@ class _ContactsScreenState extends ConsumerState<ContactsScreen> {
                   ...result.users.map((user) => UserTile(user, openConvo: pushConversationScreen)),
                 ],
               ),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CenterLoadingIndicator()),
               error: (e, st) => Center(child: Text('Error: $e')),
             )
           : HapticRefreshIndicator(
@@ -162,7 +164,7 @@ class ContactsListView extends ConsumerWidget {
         debugPrint('Error loading contacts: $error\n$stackTrace');
         return Center(child: Text('Could not load contacts: $error'));
       case _:
-        return const Center(child: CircularProgressIndicator());
+        return const Center(child: CenterLoadingIndicator());
     }
   }
 }

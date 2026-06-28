@@ -14,6 +14,8 @@ import 'package:lichess_mobile/src/widgets/adaptive_bottom_sheet.dart';
 import 'package:lichess_mobile/src/widgets/network_image.dart';
 import 'package:lichess_mobile/src/widgets/platform_search_bar.dart';
 import 'package:lichess_mobile/src/widgets/progression_widget.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 final playersAndTournamentProvider = FutureProvider.autoDispose
     .family<
@@ -37,7 +39,7 @@ class BroadcastPlayersTab extends ConsumerWidget {
     return switch (ref.watch(playersAndTournamentProvider(tournamentId))) {
       AsyncData(value: final data) => BroadcastPlayersList(data.$1, data.$2),
       AsyncError(:final error) => Center(child: Text('Cannot load players data: $error')),
-      _ => const Center(child: CircularProgressIndicator.adaptive()),
+      _ => const CenterLoadingIndicator(),
     };
   }
 }

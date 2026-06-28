@@ -8,6 +8,8 @@ import 'package:lichess_mobile/src/utils/navigation.dart';
 import 'package:lichess_mobile/src/view/broadcast/broadcast_list_tile.dart';
 import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/platform_search_bar.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 class BroadcastSearchScreen extends StatefulWidget {
   const BroadcastSearchScreen();
@@ -103,7 +105,7 @@ class _Body extends ConsumerWidget {
                 );
         },
         error: (_, _) => const Center(child: Text('Could not load round data')),
-        loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+        loading: () => const CenterLoadingIndicator(),
       ),
     );
   }

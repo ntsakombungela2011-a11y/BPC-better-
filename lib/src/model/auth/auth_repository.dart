@@ -90,11 +90,15 @@ class AuthRepository {
       throw Exception('Access token not found.');
     }
 
+    _log.fine('Fetching account with token...');
     final user = await _client.readJson(
       Uri(path: '/api/account'),
-      headers: {'Authorization': 'Bearer ${signBearerToken(token)}'},
+      headers: {'Authorization': 'Bearer ${token}'},
       mapper: User.fromServerJson,
-    );
+    ).catchError((e, st) {
+      _log.severe('Failed to fetch account: $e', e, st);
+      throw e;
+    });
     return AuthUser(token: token, user: user.lightUser);
   }
 

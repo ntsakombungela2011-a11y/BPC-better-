@@ -400,7 +400,7 @@ void main() {
         await tester.tap(find.widgetWithText(TextButton, 'OK'));
         await tester.pumpAndSettle(); // wait for home screen to re-appear
 
-        expect(find.byIcon(LichessIcons.logo_lichess), findsOneWidget); // we're back on home
+        expect(find.byIcon(Icons.train), findsOneWidget); // we're back on home
 
         expect(find.text(customizeTip), findsNothing);
       });

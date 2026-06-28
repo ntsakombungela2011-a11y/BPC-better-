@@ -10,8 +10,8 @@
     <application
         android:label="@string/app_name"
         android:name="${applicationName}"
-        android:icon="@drawable/logo_black"
-        android:roundIcon="@drawable/logo_black"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:fullBackupContent="@xml/backup_rules">
 
         <meta-data

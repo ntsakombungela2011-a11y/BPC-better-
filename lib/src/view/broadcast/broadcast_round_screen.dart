@@ -24,6 +24,8 @@ import 'package:lichess_mobile/src/widgets/list.dart';
 import 'package:lichess_mobile/src/widgets/misc.dart';
 import 'package:lichess_mobile/src/widgets/platform.dart';
 import 'package:lichess_mobile/src/widgets/settings.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 enum BroadcastRoundTab {
   overview,
@@ -88,7 +90,7 @@ class BroadcastRoundScreenLoading extends ConsumerWidget {
       ),
       _ => Scaffold(
         appBar: AppBar(title: const Text('')),
-        body: const Center(child: CircularProgressIndicator.adaptive()),
+        body: const CenterLoadingIndicator(),
       ),
     };
   }
@@ -269,7 +271,7 @@ class _BroadcastRoundScreenState extends ConsumerState<BroadcastRoundScreen>
       _ => PlatformScaffold(
         extendBody: Theme.of(context).platform == TargetPlatform.iOS,
         appBar: PlatformAppBar(title: AppBarTitleText(widget.broadcast.title, maxLines: 2)),
-        body: const Center(child: CircularProgressIndicator.adaptive()),
+        body: const CenterLoadingIndicator(),
       ),
     };
   }

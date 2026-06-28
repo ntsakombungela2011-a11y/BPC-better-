@@ -139,7 +139,7 @@ class _TournamentScreenState extends ConsumerState<TournamentScreen> with RouteA
       AsyncValue(:final value?) => _Body(id: widget.id, state: value),
       _ => PlatformScaffold(
         appBar: PlatformAppBar(title: const SizedBox.shrink()),
-        body: const Center(child: CircularProgressIndicator.adaptive()),
+        body: const CenterLoadingIndicator(),
       ),
     };
   }
@@ -1176,7 +1176,7 @@ class _BottomBarState extends ConsumerState<_BottomBar> {
 
         if (widget.state.tournament.isFinished != true)
           joinOrLeaveInProgress
-              ? const Center(child: CircularProgressIndicator.adaptive())
+              ? const CenterLoadingIndicator()
               : BottomBarButton(
                   label: widget.state.joined ? context.l10n.pause : context.l10n.join,
                   icon: widget.state.joined ? Icons.pause : Icons.play_arrow,
@@ -1303,7 +1303,7 @@ void _showPlayerDetails(BuildContext context, TournamentId tournamentId, UserId 
                 AsyncError(error: final error) => Center(
                   child: Text('Error loading player data: $error'),
                 ),
-                _ => const Center(child: CircularProgressIndicator.adaptive()),
+                _ => const CenterLoadingIndicator(),
               };
             },
           );
@@ -1599,7 +1599,7 @@ void _showTeamDetails(BuildContext context, TournamentId tournamentId, TeamId te
                 AsyncError(error: final error) => Center(
                   child: Text('Error loading team data: $error'),
                 ),
-                _ => const Center(child: CircularProgressIndicator.adaptive()),
+                _ => const CenterLoadingIndicator(),
               };
             },
           );
@@ -1865,7 +1865,7 @@ class _AllTeamsScreen extends ConsumerWidget {
             );
           },
         ),
-        loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+        loading: () => const CenterLoadingIndicator(),
         error: (error, _) => Center(child: Text('Error loading teams: $error')),
       ),
     );

@@ -15,6 +15,8 @@ import 'package:lichess_mobile/src/widgets/platform.dart';
 import 'package:lichess_mobile/src/widgets/platform_search_bar.dart';
 import 'package:logging/logging.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 final Logger _logger = Logger('AppLogSettingsScreen');
 
@@ -170,7 +172,7 @@ class _AppLogSettingsScreenState extends ConsumerState<AppLogSettingsScreen> {
             child: Text('Failed to load logs: $error'),
           ),
         ),
-        _ => const Center(child: CircularProgressIndicator.adaptive()),
+        _ => const CenterLoadingIndicator(),
       },
     );
   }

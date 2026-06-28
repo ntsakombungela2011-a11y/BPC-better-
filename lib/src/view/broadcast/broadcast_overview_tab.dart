@@ -10,6 +10,8 @@ import 'package:lichess_mobile/src/styles/styles.dart';
 import 'package:lichess_mobile/src/utils/l10n_context.dart';
 import 'package:lichess_mobile/src/widgets/network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:lichess_mobile/src/widgets/feedback.dart';
+
 
 final _dateFormatter = DateFormat.MMMd();
 
@@ -89,7 +91,7 @@ class BroadcastOverviewTab extends ConsumerWidget {
       case AsyncError(:final error):
         return Center(child: Text('Cannot load broadcast data: $error'));
       case _:
-        return const Center(child: CircularProgressIndicator.adaptive());
+        return const CenterLoadingIndicator();
     }
   }
 }

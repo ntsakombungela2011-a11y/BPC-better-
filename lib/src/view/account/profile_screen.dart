@@ -131,7 +131,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+        loading: () => const CenterLoadingIndicator(),
         error: (error, _) {
           return FullScreenRetryRequest(onRetry: () => ref.invalidate(accountProvider));
         },

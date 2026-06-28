@@ -138,7 +138,7 @@ class _StudyScreenLoader extends ConsumerWidget {
                 fen: kEmptyFEN,
               ),
               smallBoard: studyPrefs.smallBoard,
-              children: const [Center(child: CircularProgressIndicator.adaptive())],
+              children: const [CenterLoadingIndicator()],
             ),
           ),
         );
