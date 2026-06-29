@@ -70,7 +70,7 @@ class _AppInitializationScreenState extends ConsumerState<AppInitializationScree
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final current = ref.read(preloadedDataProvider);
-      if ((current case AsyncData() || AsyncError()) && !_showApp) {
+      if ((current is AsyncData || current is AsyncError) && !_showApp) {
         FlutterNativeSplash.remove();
         _splashAnimController.forward().then((_) {
           if (mounted) {
@@ -102,7 +102,7 @@ class _AppInitializationScreenState extends ConsumerState<AppInitializationScree
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if (_showApp || ref.watch(preloadedDataProvider) case AsyncData())
+        if (_showApp || ref.watch(preloadedDataProvider) is AsyncData)
           const Application(),
         if (!_showApp)
           FadeTransition(

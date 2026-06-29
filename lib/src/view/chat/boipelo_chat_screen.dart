@@ -104,7 +104,7 @@ class _BoipeloChatScreenState extends ConsumerState<BoipeloChatScreen> {
                 ? const Center(child: CircularProgressIndicator())
                 : state.messages.isEmpty
                 ? _buildEmptyState()
-                : _buildMessageList(),
+                : _buildMessageList(state),
           ),
           if (state.boipeloIsTyping)
             _buildTypingIndicator(),
@@ -139,7 +139,7 @@ class _BoipeloChatScreenState extends ConsumerState<BoipeloChatScreen> {
     );
   }
 
-  Widget _buildMessageList() {
+  Widget _buildMessageList(BoipeloChatState state) {
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
