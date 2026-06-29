@@ -62,7 +62,13 @@ class PuzzleErrorBoardWidget extends ConsumerWidget {
                                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                                 ),
                                 padding: const EdgeInsets.all(10.0),
-                                child: Text(errorMessage!),
+                                child: Text(
+                                  errorMessage!.startsWith('<!DOCTYPE html>') || errorMessage!.contains('<html>')
+                                      ? 'Failed to load puzzle. Please check your connection.'
+                                      : errorMessage!,
+                                  maxLines: 5,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
                           ),

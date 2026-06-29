@@ -19,7 +19,7 @@ class AppBarLichessTitle extends StatelessWidget {
             alignment: .bottom,
             child: Icon(LichessIcons.logo_lichess, size: iconSize),
           ),
-          const TextSpan(text: ' Boipelo Chess'),
+          const TextSpan(text: ' Boipelo Chess: The Last Dance'),
           TextSpan(
             text: '.org',
             style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
@@ -92,7 +92,7 @@ class _LichessMessageState extends State<LichessMessage> {
 
   @override
   Widget build(BuildContext context) {
-    final trans = context.l10n.xIsAFreeYLibreOpenSourceChessServer('Boipelo Chess', context.l10n.really);
+    final trans = context.l10n.xIsAFreeYLibreOpenSourceChessServer('Boipelo Chess: The Last Dance', context.l10n.really);
     final regexp = RegExp(r'''^([^(]*\()([^)]*)(\).*)$''');
     final match = regexp.firstMatch(trans);
     final List<TextSpan> spans = [];

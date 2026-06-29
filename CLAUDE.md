@@ -29,7 +29,7 @@ flutter analyze --watch &
 
 ### Running the App
 ```bash
-# Run on all devices (uses lichess.dev server by default)
+# Run on all devices (uses lichess.org server by default)
 flutter run -d all
 
 # Run with custom server

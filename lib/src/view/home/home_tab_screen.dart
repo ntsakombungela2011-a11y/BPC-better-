@@ -14,6 +14,7 @@ import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
 import 'package:lichess_mobile/src/model/blog/blog.dart';
 import 'package:lichess_mobile/src/model/blog/blog_repository.dart';
 import 'package:lichess_mobile/src/model/challenge/challenges.dart';
+import 'package:lichess_mobile/src/model/chat/boipelo_chat_controller.dart';
 import 'package:lichess_mobile/src/model/common/id.dart';
 import 'package:lichess_mobile/src/model/correspondence/correspondence_game_storage.dart';
 import 'package:lichess_mobile/src/model/correspondence/offline_correspondence_game.dart';
@@ -36,6 +37,7 @@ import 'package:lichess_mobile/src/utils/navigation.dart';
 import 'package:lichess_mobile/src/utils/screen.dart';
 import 'package:lichess_mobile/src/view/account/account_menu.dart';
 import 'package:lichess_mobile/src/view/account/profile_screen.dart';
+import 'package:lichess_mobile/src/view/chat/boipelo_chat_screen.dart';
 import 'package:lichess_mobile/src/view/correspondence/offline_correspondence_game_screen.dart';
 import 'package:lichess_mobile/src/view/game/game_screen.dart';
 import 'package:lichess_mobile/src/view/game/game_screen_providers.dart';
@@ -376,6 +378,7 @@ class _HomeScreenState extends ConsumerState<HomeTabScreen> {
                       actions: const [
                         _ChallengeScreenButton(),
                         _PlayerScreenButton(),
+                        _BoipeloChatButton(),
                         AccountMenuButton(),
                       ],
                     ),
@@ -872,6 +875,26 @@ class _PlayerScreenButton extends ConsumerWidget {
         semanticsLabel: context.l10n.players,
         onPressed: null,
       ),
+    );
+  }
+}
+
+class _BoipeloChatButton extends ConsumerWidget {
+  const _BoipeloChatButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final unread = ref.watch(boipeloUnreadCountProvider);
+    return SemanticIconButton(
+      icon: Badge.count(
+        count: unread,
+        isLabelVisible: unread > 0,
+        child: const Icon(Icons.chat_bubble_outline),
+      ),
+      semanticsLabel: 'Chat',
+      onPressed: () {
+        Navigator.of(context).push(BoipeloChatScreen.buildRoute());
+      },
     );
   }
 }

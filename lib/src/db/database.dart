@@ -63,7 +63,7 @@ Future<Database> openAppDatabase(DatabaseFactory dbFactory, String path) {
   return dbFactory.openDatabase(
     path,
     options: OpenDatabaseOptions(
-      version: 5,
+      version: 6,
       onConfigure: (db) async {
         final version = await _getDatabaseVersion(db);
         _logger.info('SQLite version: $version');
@@ -93,6 +93,7 @@ Future<Database> openAppDatabase(DatabaseFactory dbFactory, String path) {
         _createGameTableV2(batch);
         _createHttpLogTableV4(batch);
         _createAppLogTableV5(batch);
+        _createBoipeloChatTableV6(batch);
         await batch.commit();
       },
       onUpgrade: (db, oldVersion, newVersion) async {
@@ -108,6 +109,9 @@ Future<Database> openAppDatabase(DatabaseFactory dbFactory, String path) {
         }
         if (oldVersion < 5) {
           _createAppLogTableV5(batch);
+        }
+        if (oldVersion < 6) {
+          _createBoipeloChatTableV6(batch);
         }
         await batch.commit();
       },
@@ -229,6 +233,18 @@ void _createAppLogTableV5(Batch batch) {
     lastModified TEXT NOT NULL
   )
     ''');
+}
+
+void _createBoipeloChatTableV6(Batch batch) {
+  batch.execute('''
+    CREATE TABLE IF NOT EXISTS boipelo_chat_messages(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      senderId TEXT NOT NULL,
+      text TEXT NOT NULL,
+      timestamp TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'sent'
+    )
+  ''');
 }
 
 Future<void> _deleteOldEntries(DatabaseExecutor db, String table, Duration ttl) async {

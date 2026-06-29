@@ -67,12 +67,17 @@ class PuzzleRepository {
   }
 
   Future<Puzzle> fetch(PuzzleId id) {
-    return client.readJson(Uri(path: '/api/puzzle/$id'), mapper: _puzzleFromJson);
+    return client.readJson(
+      Uri(path: '/api/puzzle/$id'),
+      headers: {'Accept': 'application/json'},
+      mapper: _puzzleFromJson,
+    );
   }
 
   Future<PuzzleStreakResponse> streak() {
     return client.readJson(
       Uri(path: '/api/streak'),
+      headers: {'Accept': 'application/json'},
       mapper: (Map<String, dynamic> json) {
         return PuzzleStreakResponse(
           puzzle: _puzzleFromPick(pick(json).required()),

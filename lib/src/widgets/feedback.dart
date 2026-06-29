@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lichess_mobile/src/network/connectivity.dart';
 import 'package:lichess_mobile/src/network/socket.dart';
 import 'package:lichess_mobile/src/styles/styles.dart';
 import 'package:lichess_mobile/src/utils/l10n_context.dart';
+import 'package:lichess_mobile/src/widgets/animated_train_logo.dart';
 import 'package:lichess_mobile/src/widgets/buttons.dart';
 import 'package:popover/popover.dart';
 import 'package:signal_strength_indicator/signal_strength_indicator.dart';
@@ -146,7 +146,7 @@ class LagIndicator extends StatelessWidget {
           ),
           if (lagRating == 0)
             Center(
-              child: SpinKitThreeBounce(color: Colors.grey, size: size / 2),
+              child: TrainSpinner(size: size, color: Colors.grey),
             ),
         ],
       ),
@@ -206,7 +206,7 @@ class ButtonLoadingIndicator extends StatelessWidget {
     return const SizedBox(
       height: 20,
       width: 20,
-      child: CircularProgressIndicator.adaptive(strokeWidth: 2),
+      child: TrainSpinner(size: 20),
     );
   }
 }
@@ -217,7 +217,7 @@ class CenterLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: CircularProgressIndicator.adaptive());
+    return const Center(child: TrainSpinner());
   }
 }
 
@@ -260,4 +260,46 @@ void showSnackBar(BuildContext context, String message, {SnackBarType type = Sna
       backgroundColor: type == SnackBarType.error ? context.lichessColors.error : null,
     ),
   );
+}
+
+class TrainSpinner extends StatefulWidget {
+  const TrainSpinner({this.size = 50, this.color, super.key});
+
+  final double size;
+  final Color? color;
+
+  @override
+  State<TrainSpinner> createState() => _TrainSpinnerState();
+}
+
+class _TrainSpinnerState extends State<TrainSpinner> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: widget.size,
+      height: widget.size,
+      child: AnimatedTrainLogo(
+        size: widget.size,
+        controller: _controller,
+        reverse: true,
+      ),
+    );
+  }
 }

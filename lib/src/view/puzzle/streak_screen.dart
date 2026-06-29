@@ -1,3 +1,4 @@
+import 'package:lichess_mobile/src/widgets/feedback.dart';
 import 'package:chessground/chessground.dart';
 import 'package:dartchess/dartchess.dart';
 import 'package:flutter/cupertino.dart';
@@ -74,7 +75,7 @@ class _Load extends ConsumerWidget {
           streak: value.streak,
         );
       case _:
-        return const Center(child: CircularProgressIndicator.adaptive());
+        return const Center(child: TrainSpinner());
     }
   }
 }

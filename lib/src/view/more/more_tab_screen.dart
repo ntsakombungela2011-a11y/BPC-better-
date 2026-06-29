@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lichess_mobile/src/model/account/account_repository.dart';
 import 'package:lichess_mobile/src/model/analysis/analysis_controller.dart';
 import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
+import 'package:lichess_mobile/src/model/chat/boipelo_chat_controller.dart';
 import 'package:lichess_mobile/src/model/common/chess.dart';
 import 'package:lichess_mobile/src/model/common/id.dart';
 import 'package:lichess_mobile/src/model/message/message_repository.dart';
@@ -16,6 +17,7 @@ import 'package:lichess_mobile/src/view/account/account_menu.dart';
 import 'package:lichess_mobile/src/view/account/profile_screen.dart';
 import 'package:lichess_mobile/src/view/analysis/analysis_screen.dart';
 import 'package:lichess_mobile/src/view/board_editor/board_editor_screen.dart';
+import 'package:lichess_mobile/src/view/chat/boipelo_chat_screen.dart';
 import 'package:lichess_mobile/src/view/clock/clock_tool_screen.dart';
 import 'package:lichess_mobile/src/view/explorer/opening_explorer_screen.dart';
 import 'package:lichess_mobile/src/view/message/contacts_screen.dart';
@@ -137,6 +139,7 @@ class _Body extends ConsumerWidget {
               ),
             ],
           ),
+          const _ChatSection(),
           const _AccountSection(),
           Padding(
             padding: Styles.bodySectionPadding,
@@ -144,6 +147,38 @@ class _Body extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ChatSection extends ConsumerWidget {
+  const _ChatSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final unread = ref.watch(boipeloUnreadCountProvider);
+    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
+    return ListSection(
+      header: const SettingsSectionTitle('Boipelo Chat'),
+      hasLeading: true,
+      children: [
+        ListTile(
+          leading: Badge.count(
+            isLabelVisible: unread > 0,
+            count: unread,
+            child: const Icon(Icons.chat_outlined),
+          ),
+          title: const Text('Private Chat'),
+          subtitle: const Text('Chat with Boipelo'),
+          trailing: isIOS ? const CupertinoListTileChevron() : null,
+          onTap: () {
+            Navigator.of(context, rootNavigator: true).push(
+              BoipeloChatScreen.buildRoute(),
+            );
+          },
+        ),
+      ],
     );
   }
 }
