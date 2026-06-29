@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 const _kBoipeloUserId = 'boipelo';
 
 final boipeloChatServiceProvider = Provider<BoipeloChatService>((ref) {
-  final dbAsync = ref.watch(databaseProvider);
+  final dbAsync = ref.watch(databaseProvider.future);
   return BoipeloChatService(dbAsync);
 });
 

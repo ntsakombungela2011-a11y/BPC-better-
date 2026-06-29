@@ -159,6 +159,5 @@ class BoipeloChatController extends Notifier<BoipeloChatState> {
   @override
   void dispose() {
     _typingTimeout?.cancel();
-    super.dispose();
   }
 }
