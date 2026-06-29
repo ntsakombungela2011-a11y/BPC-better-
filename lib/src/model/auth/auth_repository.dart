@@ -3,7 +3,6 @@ import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lichess_mobile/src/constants.dart';
 import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
-import 'package:lichess_mobile/src/model/auth/bearer.dart';
 import 'package:lichess_mobile/src/model/auth/sign_in_failure_reporter.dart';
 import 'package:lichess_mobile/src/model/user/user.dart';
 import 'package:lichess_mobile/src/network/http.dart';
@@ -92,7 +91,7 @@ class AuthRepository {
 
     final user = await _client.readJson(
       Uri(path: '/api/account'),
-      headers: {'Authorization': 'Bearer ${signBearerToken(token)}'},
+      headers: {'Authorization': 'Bearer $token'},
       mapper: User.fromServerJson,
     );
     return AuthUser(token: token, user: user.lightUser);

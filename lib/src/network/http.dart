@@ -23,7 +23,6 @@ import 'package:http/io_client.dart';
 import 'package:http/retry.dart';
 import 'package:lichess_mobile/src/constants.dart';
 import 'package:lichess_mobile/src/model/auth/auth_controller.dart';
-import 'package:lichess_mobile/src/model/auth/bearer.dart';
 import 'package:lichess_mobile/src/model/common/preloaded_data.dart';
 import 'package:lichess_mobile/src/model/log/http_log_storage.dart';
 import 'package:lichess_mobile/src/model/user/user.dart';
@@ -342,8 +341,7 @@ class LichessClient implements Client {
     final authUser = _ref.read(authControllerProvider);
 
     if (authUser != null && !request.headers.containsKey('Authorization')) {
-      final bearer = signBearerToken(authUser.token);
-      request.headers['Authorization'] = 'Bearer $bearer';
+      request.headers['Authorization'] = 'Bearer ${authUser.token}';
     }
     request.headers['User-Agent'] = makeUserAgent(
       _ref.read(preloadedDataProvider).requireValue.packageInfo,

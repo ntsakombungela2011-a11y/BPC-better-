@@ -1,11 +1,10 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lichess_mobile/src/network/connectivity.dart';
 import 'package:lichess_mobile/src/network/socket.dart';
 import 'package:lichess_mobile/src/styles/styles.dart';
 import 'package:lichess_mobile/src/utils/l10n_context.dart';
+import 'package:lichess_mobile/src/widgets/animated_train_logo.dart';
 import 'package:lichess_mobile/src/widgets/buttons.dart';
 import 'package:popover/popover.dart';
 import 'package:signal_strength_indicator/signal_strength_indicator.dart';
@@ -280,9 +279,9 @@ class _TrainSpinnerState extends State<TrainSpinner> with SingleTickerProviderSt
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 800),
       vsync: this,
-    )..repeat();
+    )..repeat(reverse: true);
   }
 
   @override
@@ -293,18 +292,14 @@ class _TrainSpinnerState extends State<TrainSpinner> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Transform.rotate(
-          angle: _controller.value * 2 * math.pi,
-          child: Icon(
-            Icons.train,
-            size: widget.size,
-            color: widget.color ?? ColorScheme.of(context).primary,
-          ),
-        );
-      },
+    return SizedBox(
+      width: widget.size,
+      height: widget.size,
+      child: AnimatedTrainLogo(
+        size: widget.size,
+        controller: _controller,
+        reverse: true,
+      ),
     );
   }
 }

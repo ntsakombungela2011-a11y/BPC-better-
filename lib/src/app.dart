@@ -33,6 +33,7 @@ import 'package:lichess_mobile/src/tab_scaffold.dart';
 import 'package:lichess_mobile/src/theme.dart';
 import 'package:lichess_mobile/src/theme_system.dart';
 import 'package:lichess_mobile/src/utils/screen.dart';
+import 'package:lichess_mobile/src/widgets/animated_train_logo.dart';
 
 const String _kIosAppGroupId = 'group.com.boipelo.chess.LichessWidgets';
 const List<String> _kIosBlogWidgetKinds = [
@@ -42,27 +43,102 @@ const List<String> _kIosBlogWidgetKinds = [
 ];
 
 /// Application initialization and main entry point.
-class AppInitializationScreen extends ConsumerWidget {
+class AppInitializationScreen extends ConsumerStatefulWidget {
   const AppInitializationScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<AsyncValue<PreloadedData>>(preloadedDataProvider, (_, state) {
-      if (state.hasValue || state.hasError) {
+  ConsumerState<AppInitializationScreen> createState() => _AppInitializationScreenState();
+}
+
+class _AppInitializationScreenState extends ConsumerState<AppInitializationScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _splashAnimController;
+  late Animation<double> _fadeOut;
+  bool _showApp = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _splashAnimController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+    _fadeOut = CurvedAnimation(
+      parent: _splashAnimController,
+      curve: const Interval(0.85, 1.0, curve: Curves.easeOut),
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final current = ref.read(preloadedDataProvider);
+      if ((current case AsyncData() || AsyncError()) && !_showApp) {
         FlutterNativeSplash.remove();
+        _splashAnimController.forward().then((_) {
+          if (mounted) {
+            setState(() => _showApp = true);
+          }
+        });
+      } else {
+        ref.listenManual(preloadedDataProvider, (prev, state) {
+          if ((state.hasValue || state.hasError) && !_showApp) {
+            FlutterNativeSplash.remove();
+            _splashAnimController.forward().then((_) {
+              if (mounted) {
+                setState(() => _showApp = true);
+              }
+            });
+          }
+        });
       }
     });
+  }
 
-    switch (ref.watch(preloadedDataProvider)) {
-      case AsyncData():
-        return const Application();
-      case AsyncError(:final error, :final stackTrace):
-        debugPrint('SEVERE: [App] could not initialize app; $error\n$stackTrace');
-        return const SizedBox.shrink();
-      case _:
-        // loading screen is handled by the native splash screen
-        return const SizedBox.shrink();
-    }
+  @override
+  void dispose() {
+    _splashAnimController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        if (_showApp || ref.watch(preloadedDataProvider) case AsyncData())
+          const Application(),
+        if (!_showApp)
+          FadeTransition(
+            opacity: _fadeOut,
+            child: Container(
+              color: Theme.of(context).colorScheme.surface,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AnimatedTrainLogo(
+                      size: 200,
+                      controller: _splashAnimController,
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      'Boipelo Chess',
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'The Last Dance',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
   }
 }
 
